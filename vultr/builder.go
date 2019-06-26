@@ -13,7 +13,7 @@ import (
 	"github.com/hashicorp/packer/packer"
 )
 
-// vultr constants
+// Special OS IDs
 const (
 	CustomOSID   = 159
 	SnapshotOSID = 164
@@ -32,108 +32,120 @@ type Builder struct {
 
 // Prepare ...
 func (b *Builder) Prepare(raws ...interface{}) (warnings []string, err error) {
+	c := &b.config
 	opts := &config.DecodeOpts{
 		Interpolate:        true,
 		InterpolateContext: &b.config.interCtx,
 	}
-	if err = config.Decode(&b.config, opts, raws...); err != nil {
+	if err = config.Decode(c, opts, raws...); err != nil {
 		return warnings, err
 	}
 
 	b.ctx, b.cancel = context.WithCancel(context.Background())
 	b.done = make(chan struct{})
 
-	if b.config.APIKey == "" {
+	if c.Description == "" {
+		return warnings, errors.New("configuration value `description` is not defined")
+	}
+
+	if c.APIKey == "" {
 		return warnings, errors.New("configuration value `api_key` not defined")
 	}
 
-	b.v = lib.NewClient(b.config.APIKey, nil)
+	b.v = lib.NewClient(c.APIKey, nil)
 
-	if b.config.RegionID == 0 {
-		if b.config.RegionCode != "" {
-			regions, err := b.v.GetRegions()
-			if err != nil {
-				return warnings, err
+	if c.RegionID == 0 && c.RegionName == "" && c.RegionCode == "" {
+		return warnings, errors.New("please define one of: `region_id`, `region_name`, `region_code`")
+	}
+	if c.RegionName != "" && c.RegionCode != "" {
+		return warnings, errors.New("you can define either `region_name` or `region_code`, not both")
+	}
+	if c.RegionName != "" {
+		if c.RegionID != 0 {
+			return warnings, errors.New("you can define either `region_name` or `region_id`, not both")
+		}
+		regions, err := b.v.GetRegions()
+		if err != nil {
+			return warnings, err
+		}
+		for _, r := range regions {
+			if r.Name == c.RegionName {
+				c.RegionID = r.ID
+				break
 			}
-			for _, region := range regions {
-				if region.Code == b.config.RegionCode {
-					b.config.RegionID = region.ID
-					break
-				}
+		}
+		if c.RegionID == 0 {
+			return warnings, fmt.Errorf("cannot find region with name %q", c.RegionName)
+		}
+	}
+	if c.RegionCode != "" {
+		if c.RegionID != 0 {
+			return warnings, errors.New("you can define either `region_code` or `region_id`, not both")
+		}
+		regions, err := b.v.GetRegions()
+		if err != nil {
+			return warnings, err
+		}
+		for _, r := range regions {
+			if r.Code == c.RegionCode {
+				c.RegionID = r.ID
+				break
 			}
-			if b.config.RegionID == 0 {
-				return warnings, errors.New("invalid region code: " + b.config.RegionCode)
-			}
-		} else if b.config.RegionName != "" {
-			regions, err := b.v.GetRegions()
-			if err != nil {
-				return warnings, err
-			}
-			for _, region := range regions {
-				if region.Name == b.config.RegionName {
-					b.config.RegionID = region.ID
-					break
-				}
-			}
-			if b.config.RegionID == 0 {
-				return warnings, errors.New("invalid region name: " + b.config.RegionCode)
-			}
-		} else {
-			return warnings, errors.New("one of `region_id` or `region_code` must be defined")
+		}
+		if c.RegionID == 0 {
+			return warnings, fmt.Errorf("cannot find region with code %q", c.RegionCode)
 		}
 	}
 
-	if b.config.PlanID == 0 {
-		if b.config.PlanName != "" {
-			plans, err := b.v.GetPlans()
-			if err != nil {
-				return warnings, err
+	if c.PlanID == 0 && c.PlanName == "" {
+		return warnings, errors.New("please define one of: `plan_id`, `plan_name`")
+	}
+	if c.PlanName != "" {
+		if c.PlanID != 0 {
+			return warnings, errors.New("you can define either `plan_name` or `plan_id`, not both")
+		}
+		plans, err := b.v.GetPlans()
+		if err != nil {
+			return warnings, err
+		}
+		for _, p := range plans {
+			if p.Name == c.PlanName {
+				c.PlanID = p.ID
+				break
 			}
-			for _, plan := range plans {
-				if plan.Name == b.config.PlanName {
-					b.config.PlanID = plan.ID
-					break
-				}
-			}
-			if b.config.PlanID == 0 {
-				return warnings, errors.New("invalid plan name: " + b.config.PlanName)
-			}
-		} else {
-			return warnings, errors.New("configuration value `plan_id` not defined")
+		}
+		if c.PlanID == 0 {
+			return warnings, fmt.Errorf("cannot find plan with name %q", c.PlanName)
 		}
 	}
 
-	if b.config.SnapshotID != "" {
-		b.config.OSID = SnapshotOSID
-	} else if b.config.OSID == 0 {
-		if b.config.OSName != "" {
+	if c.SnapshotID != "" {
+		c.OSID = SnapshotOSID
+	} else if c.OSID == 0 {
+		if c.OSName != "" {
 			oss, err := b.v.GetOS()
 			if err != nil {
 				return warnings, err
 			}
 			for _, os := range oss {
-				if os.Name == b.config.OSName {
-					b.config.OSID = os.ID
+				if os.Name == c.OSName {
+					c.OSID = os.ID
 					break
 				}
 			}
-			if b.config.OSID == 0 {
-				return warnings, errors.New("invalid os name: " + b.config.OSName)
+			if c.OSID == 0 {
+				return warnings, errors.New("invalid os name: " + c.OSName)
 			}
 		} else {
 			return warnings, errors.New("configuration value `os_id` not defined")
 		}
 	}
 
-	if (b.config.OSID == SnapshotOSID || b.config.OSID == CustomOSID) && b.config.Comm.SSHPassword == "" {
+	if (c.OSID == SnapshotOSID || c.OSID == CustomOSID) && c.Comm.SSHPassword == "" {
 		return nil, errors.New("no SSH password defined for snapshot or custom OS")
 	}
 
-	if b.config.Description == "" {
-		return warnings, errors.New("configuration value `description` is not defined")
-	}
-
-	if es := b.config.Comm.Prepare(&b.config.interCtx); len(es) > 0 {
+	if es := c.Comm.Prepare(&c.interCtx); len(es) > 0 {
 		return warnings, multierror.Append(err, es...)
 	}
 
