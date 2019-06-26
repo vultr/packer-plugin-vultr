@@ -1,11 +1,17 @@
 package main
 
 import (
+	"log"
+
 	"github.com/ivandeex/packer-builder-vultr/vultr"
 	"github.com/hashicorp/packer/packer/plugin"
 )
 
+var version = "DEV"
+
 func main() {
+	log.Println("[INFO] Vultr builder version:", version)
+
 	server, err := plugin.Server()
 	if err != nil {
 		panic(err)

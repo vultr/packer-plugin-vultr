@@ -1,0 +1,32 @@
+language: go
+branches:
+  only:
+    - master
+    - "/^v/"
+go: 1.12.x
+go_import_path: github.com/ivandeex/packer-builder-vultr
+env:
+  - GO111MODULE=off
+install:
+  - make setup-tools
+script:
+  - make build
+  - make test
+  - make lint
+before_deploy:
+  - goreleaser --rm-dist --skip-publish
+deploy:
+  provider: releases
+  api_key: $GITHUB_TOKEN
+  file_glob: true
+  file:
+    - dist/*.txt
+    - dist/*.tar.gz
+    - dist/*.zip
+  skip_cleanup: true
+  overwrite: true
+  on:
+    repo: ivandeex/packer-builder-vultr
+    tags: true
+    all_branches: true
+    condition: $TRAVIS_PULL_REQUEST == false
