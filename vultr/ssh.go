@@ -1,6 +1,7 @@
 package vultr
 
 import (
+	"fmt"
 	"net"
 
 	"github.com/JamesClonk/vultr/lib"
@@ -23,7 +24,8 @@ func keyboardInteractive(password string) ssh.KeyboardInteractiveChallenge {
 }
 
 func sshConfig(state multistep.StateBag) (*ssh.ClientConfig, error) {
-	c := state.Get("config").(Config)
+	b := state.Get("config").(Config)
+	c := b.Comm
 	server := state.Get("server").(lib.Server)
 
 	config := &ssh.ClientConfig{
@@ -34,10 +36,27 @@ func sshConfig(state multistep.StateBag) (*ssh.ClientConfig, error) {
 		},
 	}
 
-	if c.OSID == SnapshotOSID || c.OSID == CustomOSID {
+	if b.OSID == SnapshotOSID || b.OSID == CustomOSID {
 		config.Auth = append(config.Auth, ssh.Password(c.SSHPassword), keyboardInteractive(c.SSHPassword))
 	} else {
 		config.Auth = append(config.Auth, ssh.Password(server.DefaultPassword), keyboardInteractive(server.DefaultPassword))
+	}
+
+	// Please note that here the private ssh key is completely independent
+	// of snapshot, i.e. we attempt to use key login alongside password
+	// whenever it appears in the template.
+	// This allows us to change root password in provisioner and login with key
+	// afterwards when builder needs to gracefully shutdown server.
+	if c.SSHPrivateKeyFile != "" {
+		privateKey, err := c.ReadSSHPrivateKeyFile()
+		if err != nil {
+			return nil, fmt.Errorf("Error on reading SSH private key: %s", err)
+		}
+		signer, err := ssh.ParsePrivateKey(privateKey)
+		if err != nil {
+			return nil, fmt.Errorf("Error on parsing SSH private key: %s", err)
+		}
+		config.Auth = append(config.Auth, ssh.PublicKeys(signer))
 	}
 
 	return config, nil

@@ -125,7 +125,7 @@ func (b *Builder) Prepare(raws ...interface{}) (warnings []string, err error) {
 		}
 	}
 
-	if (b.config.OSID == SnapshotOSID || b.config.OSID == CustomOSID) && b.config.SSHPassword == "" {
+	if (b.config.OSID == SnapshotOSID || b.config.OSID == CustomOSID) && b.config.Comm.SSHPassword == "" {
 		return nil, errors.New("no SSH password defined for snapshot or custom OS")
 	}
 
