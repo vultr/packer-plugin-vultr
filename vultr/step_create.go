@@ -19,8 +19,10 @@ func (s *stepCreate) Run(_ context.Context, state multistep.StateBag) multistep.
 	ui := state.Get("ui").(packer.Ui)
 
 	opts := &lib.ServerOptions{
-		Script:               c.ScriptID,
-		DontNotifyOnActivate: true,
+		Script:            c.ScriptID,
+		IPV6:              c.IPv6,
+		PrivateNetworking: c.PrivateNetworking,
+		//DontNotifyOnActivate: true,
 	}
 	if c.OSID == SnapshotOSID {
 		opts.Snapshot = c.SnapshotID

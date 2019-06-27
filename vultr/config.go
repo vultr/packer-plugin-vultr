@@ -21,6 +21,8 @@ type Config struct {
 	PlanName            string              `mapstructure:"plan_name"`
 	OSID                int                 `mapstructure:"os_id"`
 	OSName              string              `mapstructure:"os_name"`
+	IPv6                bool                `mapstructure:"ipv6"`
+	PrivateNetworking   bool                `mapstructure:"private_networking"`
 	ScriptID            int                 `mapstructure:"script_id"`
 	SnapshotID          string              `mapstructure:"snapshot_id"`
 	ShutdownCommand     string              `mapstructure:"shutdown_command"`
