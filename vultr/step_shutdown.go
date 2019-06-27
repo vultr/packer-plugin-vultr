@@ -4,55 +4,47 @@ import (
 	"context"
 	"time"
 
-	"github.com/JamesClonk/vultr/lib"
 	"github.com/hashicorp/packer/helper/multistep"
 	"github.com/hashicorp/packer/packer"
-	"golang.org/x/crypto/ssh"
+)
+
+// shutdown delays
+const (
+	ShutdownDelaySec = 10
+	ShutdownWaitSec  = 10
 )
 
 type stepShutdown struct{}
 
-func (s *stepShutdown) Run(_ context.Context, state multistep.StateBag) multistep.StepAction {
+func (s *stepShutdown) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	c := state.Get("config").(Config)
 	ui := state.Get("ui").(packer.Ui)
-	server := state.Get("server").(lib.Server)
 
-	ui.Say("Preparing the server for a graceful shutdown...")
-	config, err := sshConfig(state)
-	if err != nil {
+	ui.Say("Performing graceful shutdown...")
+	time.Sleep(ShutdownDelaySec * time.Second)
+
+	comm := state.Get("communicator").(packer.Communicator)
+
+	cmd := &packer.RemoteCmd{
+		Command: c.ShutdownCommand,
+	}
+	if cmd.Command == "" {
+		cmd.Command = "shutdown -P now"
+	}
+
+	if err := comm.Start(ctx, cmd); err != nil {
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
 	}
+	cmd.Wait()
 
-	client, err := ssh.Dial("tcp", server.MainIP+":22", config)
-	if err != nil {
-		state.Put("error", err)
-		ui.Error(err.Error())
-		return multistep.ActionHalt
+	if cmd.ExitStatus() == packer.CmdDisconnect {
+		ui.Say("Server is successfully shut down")
+		time.Sleep(ShutdownDelaySec * time.Second)
+	} else {
+		ui.Say("Sleeping to ensure that server is shut down...")
 	}
-
-	session, err := client.NewSession()
-	if err != nil {
-		state.Put("error", err)
-		ui.Error(err.Error())
-		return multistep.ActionHalt
-	}
-
-	if c.ShutdownCommand == "" {
-		c.ShutdownCommand = "shutdown -P now"
-	}
-	ui.Say("Shutting down server...")
-	err = session.Run(c.ShutdownCommand)
-	if err != nil {
-		state.Put("error", err)
-		ui.Error(err.Error())
-		return multistep.ActionHalt
-	}
-
-	ui.Say("Sleeping to ensure that server is shut down...")
-	time.Sleep(3 * time.Second)
-
 	return multistep.ActionContinue
 }
 
