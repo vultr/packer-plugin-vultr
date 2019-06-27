@@ -3,6 +3,7 @@ package vultr
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/JamesClonk/vultr/lib"
 	"github.com/hashicorp/go-multierror"
@@ -143,6 +144,13 @@ func (b *Builder) Prepare(raws ...interface{}) (warnings []string, err error) {
 
 	if (c.OSID == SnapshotOSID || c.OSID == CustomOSID) && c.Comm.SSHPassword == "" {
 		return nil, errors.New("no SSH password defined for snapshot or custom OS")
+	}
+
+	if c.RawStateTimeout == "" {
+		c.RawStateTimeout = "10m"
+	}
+	if c.stateTimeout, err = time.ParseDuration(c.RawStateTimeout); err != nil {
+		return warnings, errors.New("invalid state timeout: " + c.RawStateTimeout)
 	}
 
 	if es := c.Comm.Prepare(&c.interCtx); len(es) > 0 {

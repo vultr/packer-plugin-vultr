@@ -1,6 +1,8 @@
 package vultr
 
 import (
+	"time"
+
 	"github.com/hashicorp/packer/common"
 	"github.com/hashicorp/packer/helper/communicator"
 	"github.com/hashicorp/packer/template/interpolate"
@@ -22,5 +24,7 @@ type Config struct {
 	ScriptID            int                 `mapstructure:"script_id"`
 	SnapshotID          string              `mapstructure:"snapshot_id"`
 	ShutdownCommand     string              `mapstructure:"shutdown_command"`
+	RawStateTimeout     string              `mapstructure:"state_timeout"`
+	stateTimeout        time.Duration
 	interCtx            interpolate.Context
 }

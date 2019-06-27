@@ -2,6 +2,7 @@ package vultr
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/JamesClonk/vultr/lib"
@@ -20,27 +21,21 @@ func (s *stepSnapshot) Run(_ context.Context, state multistep.StateBag) multiste
 
 	snapshot, err := s.v.CreateSnapshot(server.ID, c.Description)
 	if err != nil {
+		err := fmt.Errorf("Error creating snapshot: %s", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
 	}
 
-	ui.Message("Snapshot " + snapshot.ID + " created, waiting for it to complete...")
-	for snapshot.Status != "complete" {
-		time.Sleep(1 * time.Second)
-		// Crude workaround for the lack of singular GetSnapshot() method
-		if snapshots, err := s.v.GetSnapshots(); err != nil {
-			state.Put("error", err)
-			ui.Error(err.Error())
-			return multistep.ActionHalt
-		} else {
-			for _, s := range snapshots {
-				if s.ID == snapshot.ID {
-					snapshot = s
-					break
-				}
-			}
-		}
+	ui.Say(fmt.Sprintf("Waiting %ds for snapshot %s to complete...",
+		int(c.stateTimeout/time.Second), snapshot.ID))
+
+	err = waitForSnapshotState("complete", snapshot.ID, s.v, c.stateTimeout)
+	if err != nil {
+		err := fmt.Errorf("Error waiting for snapshot: %s", err)
+		state.Put("error", err)
+		ui.Error(err.Error())
+		return multistep.ActionHalt
 	}
 
 	state.Put("snapshot", snapshot)
