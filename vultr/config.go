@@ -25,6 +25,7 @@ type Config struct {
 	PrivateNetworking   bool                `mapstructure:"private_networking"`
 	ScriptID            int                 `mapstructure:"script_id"`
 	SnapshotID          string              `mapstructure:"snapshot_id"`
+	SnapshotName        string              `mapstructure:"snapshot_name"`
 	ShutdownCommand     string              `mapstructure:"shutdown_command"`
 	RawStateTimeout     string              `mapstructure:"state_timeout"`
 	stateTimeout        time.Duration

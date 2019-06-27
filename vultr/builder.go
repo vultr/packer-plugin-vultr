@@ -3,6 +3,7 @@ package vultr
 import (
 	"context"
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/JamesClonk/vultr/lib"
@@ -120,30 +121,59 @@ func (b *Builder) Prepare(raws ...interface{}) (warnings []string, err error) {
 		}
 	}
 
-	if c.SnapshotID != "" {
-		c.OSID = SnapshotOSID
-	} else if c.OSID == 0 {
-		if c.OSName != "" {
-			oss, err := b.v.GetOS()
-			if err != nil {
-				return warnings, err
+	if c.SnapshotID == "" && c.SnapshotName == "" && c.OSID == 0 && c.OSName == "" {
+		return warnings, errors.New("please define one of: `os_id`, `os_name`, `snapshot_id`, `snapshot_name`")
+	}
+
+	if c.OSName != "" {
+		if c.OSID != 0 {
+			return warnings, errors.New("you can define either `os_id` or `os_name`, not both")
+		}
+		oses, err := b.v.GetOS()
+		if err != nil {
+			return warnings, err
+		}
+		for _, os := range oses {
+			if os.Name == c.OSName {
+				c.OSID = os.ID
+				break
 			}
-			for _, os := range oss {
-				if os.Name == c.OSName {
-					c.OSID = os.ID
-					break
-				}
-			}
-			if c.OSID == 0 {
-				return warnings, errors.New("invalid os name: " + c.OSName)
-			}
-		} else {
-			return warnings, errors.New("configuration value `os_id` not defined")
+		}
+		if c.OSID == 0 {
+			return warnings, fmt.Errorf("OS name %q is invalid", c.OSName)
 		}
 	}
 
-	if (c.OSID == SnapshotOSID || c.OSID == CustomOSID) && c.Comm.SSHPassword == "" {
-		return nil, errors.New("no SSH password defined for snapshot or custom OS")
+	if c.SnapshotName != "" {
+		if c.SnapshotID != "" {
+			return warnings, errors.New("you can define either `snapshot_id` or `snapshot_name`, not both")
+		}
+		snapshots, err := b.v.GetSnapshots()
+		if err != nil {
+			return warnings, err
+		}
+		for _, s := range snapshots {
+			if s.Description == c.SnapshotName {
+				if c.SnapshotID != "" {
+					return warnings, fmt.Errorf("snapshot name %q is ambiguous", c.SnapshotName)
+				}
+				c.SnapshotID = s.ID
+			}
+		}
+		if c.SnapshotID == "" {
+			return warnings, fmt.Errorf("cannot find snapshot with name %q", c.SnapshotName)
+		}
+	}
+
+	if c.OSID != 0 && c.SnapshotID != "" {
+		return warnings, errors.New("you can define either OS or Snapshot, not both")
+	}
+	if c.SnapshotID != "" {
+		c.OSID = SnapshotOSID
+	}
+
+	if (c.OSID == SnapshotOSID || c.OSID == CustomOSID) && c.Comm.SSHPassword == "" && c.Comm.SSHPrivateKeyFile == "" {
+		return warnings, errors.New("either `ssh_password` or `ssh_private_key_file` must be defined for snapshot or custom OS")
 	}
 
 	if c.RawStateTimeout == "" {
