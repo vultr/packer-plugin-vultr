@@ -153,6 +153,9 @@ func (b *Builder) Prepare(raws ...interface{}) (warnings []string, err error) {
 			return warnings, err
 		}
 		for _, s := range snapshots {
+			if s.Status != "complete" {
+				continue // snapshot is not ready, skip
+			}
 			if s.Description == c.SnapshotName {
 				if c.SnapshotID != "" {
 					return warnings, fmt.Errorf("snapshot name %q is ambiguous", c.SnapshotName)
