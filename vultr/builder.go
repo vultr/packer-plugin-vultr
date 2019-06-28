@@ -206,6 +206,27 @@ func (b *Builder) Prepare(raws ...interface{}) (warnings []string, err error) {
 		}
 	}
 
+	if c.SSHKeyName != "" {
+		if c.SSHKeyID != "" {
+			return warnings, errors.New("you can define `sshkey_id` or `sshkey_name`, not both")
+		}
+		sshkeys, err := b.v.GetSSHKeys()
+		if err != nil {
+			return warnings, err
+		}
+		for _, s := range sshkeys {
+			if s.Name == c.SSHKeyName {
+				if c.SSHKeyID != "" {
+					return warnings, fmt.Errorf("SSH key name %q is ambiguous", c.SSHKeyName)
+				}
+				c.SSHKeyID = s.ID
+			}
+		}
+		if c.SSHKeyID == "" {
+			return warnings, fmt.Errorf("cannot find SSH key with name %q", c.SSHKeyName)
+		}
+	}
+
 	if c.RawStateTimeout == "" {
 		c.RawStateTimeout = "10m"
 	}

@@ -26,6 +26,7 @@ func (s *stepCreate) Run(_ context.Context, state multistep.StateBag) multistep.
 
 	opts := &lib.ServerOptions{
 		Script:            c.ScriptID,
+		SSHKey:            c.SSHKeyID,
 		IPV6:              c.IPv6,
 		PrivateNetworking: c.PrivateNetworking,
 		//DontNotifyOnActivate: true,

@@ -25,6 +25,8 @@ type Config struct {
 	PrivateNetworking   bool                `mapstructure:"private_networking"`
 	ScriptID            int                 `mapstructure:"startup_script_id"`
 	ScriptName          string              `mapstructure:"startup_script_name"`
+	SSHKeyID            string              `mapstructure:"sshkey_id"`
+	SSHKeyName          string              `mapstructure:"sshkey_name"`
 	SnapshotID          string              `mapstructure:"snapshot_id"`
 	SnapshotName        string              `mapstructure:"snapshot_name"`
 	ShutdownCommand     string              `mapstructure:"shutdown_command"`
