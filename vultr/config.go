@@ -23,7 +23,8 @@ type Config struct {
 	OSName              string              `mapstructure:"os_name"`
 	IPv6                bool                `mapstructure:"ipv6"`
 	PrivateNetworking   bool                `mapstructure:"private_networking"`
-	ScriptID            int                 `mapstructure:"script_id"`
+	ScriptID            int                 `mapstructure:"startup_script_id"`
+	ScriptName          string              `mapstructure:"startup_script_name"`
 	SnapshotID          string              `mapstructure:"snapshot_id"`
 	SnapshotName        string              `mapstructure:"snapshot_name"`
 	ShutdownCommand     string              `mapstructure:"shutdown_command"`

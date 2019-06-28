@@ -10,6 +10,12 @@ import (
 	"github.com/hashicorp/packer/packer"
 )
 
+// Delays
+const (
+	StartupScriptDelaySec = 20
+	ServerDestroyWaitMin  = 3
+)
+
 type stepCreate struct {
 	v *lib.Client
 }
@@ -59,6 +65,12 @@ func (s *stepCreate) Run(_ context.Context, state multistep.StateBag) multistep.
 		return multistep.ActionHalt
 	}
 	state.Put("server", server)
+
+	if c.ScriptID != 0 {
+		ui.Say(fmt.Sprintf("Delay %ds for startup script %v to complete...", StartupScriptDelaySec, c.ScriptID))
+		time.Sleep(StartupScriptDelaySec * time.Second)
+	}
+
 	return multistep.ActionContinue
 }
 
@@ -67,9 +79,9 @@ func (s *stepCreate) Cleanup(state multistep.StateBag) {
 	serverID := state.Get("server_id").(string)
 	startTime := state.Get("server-creation-time").(time.Time)
 
-	wait := (5 * time.Minute) - time.Since(startTime)
+	wait := (ServerDestroyWaitMin * time.Minute) - time.Since(startTime)
 	if wait > 0 {
-		ui.Say("Vultr requires you to wait 5 minutes before destroying a server, we have " + wait.String() + " left...")
+		ui.Say(fmt.Sprintf("Vultr requires you to wait %dm before destroying a server, we have %v left...", ServerDestroyWaitMin, wait))
 		time.Sleep(wait)
 	}
 

@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/JamesClonk/vultr/lib"
@@ -177,6 +178,32 @@ func (b *Builder) Prepare(raws ...interface{}) (warnings []string, err error) {
 
 	if (c.OSID == SnapshotOSID || c.OSID == CustomOSID) && c.Comm.SSHPassword == "" && c.Comm.SSHPrivateKeyFile == "" {
 		return warnings, errors.New("either `ssh_password` or `ssh_private_key_file` must be defined for snapshot or custom OS")
+	}
+
+	if c.ScriptName != "" {
+		if c.ScriptID != 0 {
+			return warnings, errors.New("you can define `script_id` or `script_name`, not both")
+		}
+		scripts, err := b.v.GetStartupScripts()
+		if err != nil {
+			return warnings, err
+		}
+		for _, s := range scripts {
+			if s.Type != "boot" {
+				continue
+			}
+			if s.Name == c.ScriptName {
+				if c.ScriptID != 0 {
+					return warnings, fmt.Errorf("startup script name %q is ambiguous", c.ScriptName)
+				}
+				if c.ScriptID, err = strconv.Atoi(s.ID); err != nil {
+					return warnings, err
+				}
+			}
+		}
+		if c.ScriptID == 0 {
+			return warnings, fmt.Errorf("cannot find startup script with name %q", c.ScriptName)
+		}
 	}
 
 	if c.RawStateTimeout == "" {
