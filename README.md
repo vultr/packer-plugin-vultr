@@ -2,7 +2,7 @@
 [![GitHub downloads](https://img.shields.io/github/downloads/ivandeex/packer-builder-vultr/total.svg)](https://github.com/ivandeex/packer-builder-vultr/releases)
 [![Build Status](https://travis-ci.org/ivandeex/packer-builder-vultr.svg?branch=master)](https://travis-ci.org/ivandeex/packer-builder-vultr)
 [![Go Report Card](https://goreportcard.com/badge/github.com/ivandeex/packer-builder-vultr)](https://goreportcard.com/report/github.com/ivandeex/packer-builder-vultr)
-[![GoDoc](https://godoc.org/github.com/ivandeex/packer-builder-vultr?status.svg)](https://godoc.org/github.com/ivandeex/packer-builder-vultr/vultr)
+[![GoDoc](https://godoc.org/github.com/ivandeex/packer-builder-vultr?status.svg)](https://godoc.org/github.com/vultr/packer-builder-vultr/vultr)
 
 # Packer Builder for Vultr
 
@@ -21,7 +21,7 @@ $ go get github.com/ivandeex/packer-builder-vultr
 
 ## Examples
 
-See Ubuntu template in the [examples folder](https://github.com/ivandeex/packer-builder-vultr/tree/master/examples/).
+See Ubuntu template in the [examples folder](https://github.com/vultr/packer-builder-vultr/tree/master/examples/).
 
 You must have your Vultr API token obtained from the Vultr account pages.
 

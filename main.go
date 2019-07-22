@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/ivandeex/packer-builder-vultr/vultr"
+	"github.com/vultr/packer-builder-vultr/vultr"
 	"github.com/hashicorp/packer/packer/plugin"
 )
 
