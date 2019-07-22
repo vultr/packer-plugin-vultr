@@ -8,6 +8,9 @@
 
 This is a [HashiCorp Packer](https://www.packer.io/) plugin for creating [Vultr](https://www.vultr.com/) snapshots. It uses the public [Vultr API](https://www.vultr.com/api/).
 
+## Work in Progress
+This project is currently being worked on and updated.
+
 ## Installation
 * Download binaries from the [releases page](https://github.com/ivandeex/packer-builder-vultr/releases).
 * [Install](https://www.packer.io/docs/extending/plugins.html#installing-plugins) the plugin, or simply put it into the same directory with JSON templates.
