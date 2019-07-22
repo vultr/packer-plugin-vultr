@@ -118,3 +118,6 @@ $ curl https://api.vultr.com/v1/os/list | jq
 * `startup_script_id`(number) — You can use a numeric startup script ID instead of the full name.
 * `sshkey_name`(string) — Name of the SSH key to add to the instance on launch. The key must be manually configured in your Vultr dashboard before use. The builder will fail if there are multiple SSH keys with the same name. The `sshkey` parameter name deliberately lacks underscore to make it different from connection related parameters.
 * `sshkey_id`(string) — You can use a short SSH key ID instead of the full name.
+
+## Authors
+* [**Ivan Andreev**](https://github.com/ivandeex)
