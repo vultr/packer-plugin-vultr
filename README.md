@@ -1,27 +1,30 @@
-[![GitHub latest release](https://img.shields.io/github/release/ivandeex/packer-builder-vultr.svg)](https://github.com/ivandeex/packer-builder-vultr/releases)
-[![GitHub downloads](https://img.shields.io/github/downloads/ivandeex/packer-builder-vultr/total.svg)](https://github.com/ivandeex/packer-builder-vultr/releases)
-[![Build Status](https://travis-ci.org/ivandeex/packer-builder-vultr.svg?branch=master)](https://travis-ci.org/ivandeex/packer-builder-vultr)
-[![Go Report Card](https://goreportcard.com/badge/github.com/ivandeex/packer-builder-vultr)](https://goreportcard.com/report/github.com/ivandeex/packer-builder-vultr)
-[![GoDoc](https://godoc.org/github.com/ivandeex/packer-builder-vultr?status.svg)](https://godoc.org/github.com/ivandeex/packer-builder-vultr/vultr)
+[![GitHub latest release](https://img.shields.io/github/release/vultr/packer-builder-vultr.svg)](https://github.com/vultr/packer-builder-vultr/releases)
+[![GitHub downloads](https://img.shields.io/github/downloads/vultr/packer-builder-vultr/total.svg)](https://github.com/vultr/packer-builder-vultr/releases)
+[![Build Status](https://travis-ci.org/vultr/packer-builder-vultr.svg?branch=master)](https://travis-ci.org/vultr/packer-builder-vultr)
+[![Go Report Card](https://goreportcard.com/badge/github.com/vultr/packer-builder-vultr)](https://goreportcard.com/report/github.com/vultr/packer-builder-vultr)
+[![GoDoc](https://godoc.org/github.com/vultr/packer-builder-vultr?status.svg)](https://godoc.org/github.com/vultr/packer-builder-vultr/vultr)
 
 # Packer Builder for Vultr
 
 This is a [HashiCorp Packer](https://www.packer.io/) plugin for creating [Vultr](https://www.vultr.com/) snapshots. It uses the public [Vultr API](https://www.vultr.com/api/).
 
+## Work in Progress
+This project is currently being worked on and updated.
+
 ## Installation
-* Download binaries from the [releases page](https://github.com/ivandeex/packer-builder-vultr/releases).
+* Download binaries from the [releases page](https://github.com/vultr/packer-builder-vultr/releases).
 * [Install](https://www.packer.io/docs/extending/plugins.html#installing-plugins) the plugin, or simply put it into the same directory with JSON templates.
 
 ## Build
 
 Install Go, then run:
 ```sh
-$ go get github.com/ivandeex/packer-builder-vultr
+$ go get github.com/vultr/packer-builder-vultr
 ```
 
 ## Examples
 
-See Ubuntu template in the [examples folder](https://github.com/ivandeex/packer-builder-vultr/tree/master/examples/).
+See Ubuntu template in the [examples folder](https://github.com/vultr/packer-builder-vultr/tree/master/examples/).
 
 You must have your Vultr API token obtained from the Vultr account pages.
 

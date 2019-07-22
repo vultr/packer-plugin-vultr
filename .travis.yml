@@ -4,7 +4,7 @@ branches:
     - master
     - "/^v/"
 go: 1.12.x
-go_import_path: github.com/ivandeex/packer-builder-vultr
+go_import_path: github.com/vultr/packer-builder-vultr
 env:
   - GO111MODULE=off
 install:
@@ -26,7 +26,7 @@ deploy:
   skip_cleanup: true
   overwrite: true
   on:
-    repo: ivandeex/packer-builder-vultr
+    repo: vultr/packer-builder-vultr
     tags: true
     all_branches: true
     condition: $TRAVIS_PULL_REQUEST == false
