@@ -1,16 +1,17 @@
 package vultr
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"time"
 
-	"github.com/JamesClonk/vultr/lib"
+	"github.com/vultr/govultr"
 )
 
 // waitForState simply blocks until the server is in a state we expect,
 // while eventually timing out.
-func waitForServerState(state string, power string, serverID string, client *lib.Client, timeout time.Duration) error {
+func waitForServerState(state string, power string, serverID string, client *govultr.Client, timeout time.Duration) error {
 	done := make(chan struct{})
 	defer close(done)
 	result := make(chan error, 1)
@@ -19,7 +20,7 @@ func waitForServerState(state string, power string, serverID string, client *lib
 		for {
 			attempts++
 			log.Printf("Checking server status... (attempt: %d)", attempts)
-			serverInfo, err := client.GetServer(serverID)
+			serverInfo, err := client.Server.GetServer(context.Background(), serverID)
 			if err != nil {
 				result <- err
 				return
@@ -43,15 +44,14 @@ func waitForServerState(state string, power string, serverID string, client *lib
 	}()
 	log.Printf("Waiting for up to %d seconds for server", timeout/time.Second)
 	select {
-	case retval := <-result:
-		return retval
-	case <-time.After(timeout):
-		err := fmt.Errorf("Timeout while waiting to for server")
+	case err := <-result:
 		return err
+	case <-time.After(timeout):
+		return fmt.Errorf("Timeout while waiting to for server")
 	}
 }
 
-func waitForSnapshotState(state string, snapshotID string, client *lib.Client, timeout time.Duration) error {
+func waitForSnapshotState(state string, snapshotID string, client *govultr.Client, timeout time.Duration) error {
 	done := make(chan struct{})
 	defer close(done)
 	result := make(chan error, 1)
@@ -61,28 +61,13 @@ func waitForSnapshotState(state string, snapshotID string, client *lib.Client, t
 			attempts++
 			log.Printf("Checking snapshot status... (attempt: %d)", attempts)
 
-			// Crude workaround for the lack of singular GetSnapshot() method
-			snapshots, err := client.GetSnapshots()
+			snapshot, err := client.Snapshot.Get(context.Background(), snapshotID)
 			if err != nil {
 				result <- err
 				return
 			}
 
-			found := false
-			var snapshotInfo lib.Snapshot
-			for _, s := range snapshots {
-				if s.ID == snapshotID {
-					snapshotInfo = s
-					found = true
-					break
-				}
-			}
-			if !found {
-				result <- fmt.Errorf("Snapshot is lost")
-				return
-			}
-
-			if snapshotInfo.Status == state {
+			if snapshot.Status == state {
 				result <- nil
 				return
 			}
@@ -101,10 +86,9 @@ func waitForSnapshotState(state string, snapshotID string, client *lib.Client, t
 	}()
 	log.Printf("Waiting for up to %d seconds for snapshot", timeout/time.Second)
 	select {
-	case retval := <-result:
-		return retval
-	case <-time.After(timeout):
-		err := fmt.Errorf("Timeout while waiting to for snapshot")
+	case err := <-result:
 		return err
+	case <-time.After(timeout):
+		return fmt.Errorf("Timeout while waiting to for snapshot")
 	}
 }

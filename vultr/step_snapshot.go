@@ -5,21 +5,23 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/JamesClonk/vultr/lib"
 	"github.com/hashicorp/packer/helper/multistep"
 	"github.com/hashicorp/packer/packer"
+	"github.com/vultr/govultr"
 )
 
-type stepSnapshot struct {
-	v *lib.Client
+type stepCreateSnapshot struct {
+	client *govultr.Client
 }
 
-func (s *stepSnapshot) Run(_ context.Context, state multistep.StateBag) multistep.StepAction {
-	c := state.Get("config").(Config)
+func (s *stepCreateSnapshot) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+	c := state.Get("config").(*Config)
 	ui := state.Get("ui").(packer.Ui)
-	server := state.Get("server").(lib.Server)
+	server := state.Get("server").(*govultr.Server)
 
-	snapshot, err := s.v.CreateSnapshot(server.ID, c.Description)
+	s.client = govultr.NewClient(nil, c.APIKey)
+
+	snapshot, err := s.client.Snapshot.Create(ctx, server.InstanceID, c.Description)
 	if err != nil {
 		err := fmt.Errorf("Error creating snapshot: %s", err)
 		state.Put("error", err)
@@ -28,9 +30,9 @@ func (s *stepSnapshot) Run(_ context.Context, state multistep.StateBag) multiste
 	}
 
 	ui.Say(fmt.Sprintf("Waiting %ds for snapshot %s to complete...",
-		int(c.stateTimeout/time.Second), snapshot.ID))
+		int(c.stateTimeout/time.Second), snapshot.SnapshotID))
 
-	err = waitForSnapshotState("complete", snapshot.ID, s.v, c.stateTimeout)
+	err = waitForSnapshotState("complete", snapshot.SnapshotID, s.client, c.stateTimeout)
 	if err != nil {
 		err := fmt.Errorf("Error waiting for snapshot: %s", err)
 		state.Put("error", err)
@@ -42,5 +44,5 @@ func (s *stepSnapshot) Run(_ context.Context, state multistep.StateBag) multiste
 	return multistep.ActionContinue
 }
 
-func (s *stepSnapshot) Cleanup(state multistep.StateBag) {
+func (s *stepCreateSnapshot) Cleanup(state multistep.StateBag) {
 }

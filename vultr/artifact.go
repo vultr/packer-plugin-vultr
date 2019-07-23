@@ -1,39 +1,46 @@
 package vultr
 
-import "github.com/JamesClonk/vultr/lib"
+import (
+	"context"
+	"fmt"
+	"log"
 
-// Artifact ...
+	"github.com/vultr/govultr"
+)
+
 type Artifact struct {
+	// The ID of the snapshot
 	SnapshotID string
-	apiKey     string
+
+	// The Description of the snapshot
+	Description string
+
+	// The client for making
+	client *govultr.Client
 }
 
-// BuilderId ...
 func (a *Artifact) BuilderId() string {
-	return "vultr"
+	return BuilderID
 }
 
-// Files ...
 func (a *Artifact) Files() []string {
 	return nil
 }
 
-// Id ...
 func (a *Artifact) Id() string {
 	return a.SnapshotID
 }
 
-// String ...
 func (a *Artifact) String() string {
-	return "Snapshot: " + a.SnapshotID
+	return fmt.Sprintf("Vultr Snapshot: %s (%s)", a.Description, a.SnapshotID)
 }
 
-// State ...
 func (a *Artifact) State(name string) interface{} {
 	return nil
 }
 
-// Destroy ...
 func (a *Artifact) Destroy() error {
-	return lib.NewClient(a.apiKey, nil).DeleteSnapshot(a.SnapshotID)
+	log.Printf("Destroying Vultr Snapshot: %s (%s)", a.SnapshotID, a.Description)
+	err := a.client.Snapshot.Delete(context.Background(), a.SnapshotID)
+	return err
 }
