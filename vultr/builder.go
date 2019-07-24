@@ -9,7 +9,6 @@ import (
 	"github.com/hashicorp/packer/helper/communicator"
 	"github.com/hashicorp/packer/helper/multistep"
 	"github.com/hashicorp/packer/packer"
-
 	"github.com/vultr/govultr"
 )
 
@@ -64,7 +63,7 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (ret 
 		&common.StepCleanupTempKeys{
 			Comm: &b.config.Comm,
 		},
-		//&stepShutdown{},
+		&stepShutdown{client},
 		&stepCreateSnapshot{client},
 	}
 

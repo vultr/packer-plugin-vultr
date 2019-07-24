@@ -67,6 +67,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 	}
 	state.Put("server", server)
 	state.Put("server_ip", server.MainIP)
+	state.Put("server_id", server.InstanceID)
 
 	return multistep.ActionContinue
 }
