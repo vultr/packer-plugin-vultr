@@ -26,10 +26,11 @@ const testBuilderAccBasic = `
 	"builders": [{
 		"type": "test",
 		"snapshot_description": "packer-test-snapshot",
-		"region_id":            "3",
-		"os_id":                "127",
-		"plan_id":              "401",
-		"ssh_username":         "root"
+        "region_id": 4,
+        "plan_id": 402,
+        "os_id": 127,
+        "ssh_username": "root",
+		"state_timeout": "20m"
 	}]
 }
 `
