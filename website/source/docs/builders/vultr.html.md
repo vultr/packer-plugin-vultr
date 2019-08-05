@@ -76,5 +76,17 @@ builder.
 Here is a Vultr builder example. The vultr_api_key should be replaced with an actual Vultr API Key
 
 ``` json
-
+    "variables": {
+        "vultr_api_key": "{{ env `VULTR_API_KEY` }}"
+    },
+    "builders": [{
+        "type": "vultr",
+        "api_key": "{{ user `vultr_api_key` }}",
+        "snapshot_description": "Packer-test-with updates",
+        "region_id": 4,
+        "plan_id": 402,
+        "os_id": 127,
+        "ssh_username": "root",
+        "stateTimeout": 100
+    }],
 ```
