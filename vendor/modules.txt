@@ -138,6 +138,7 @@ github.com/hashicorp/packer/communicator/ssh
 github.com/hashicorp/packer/communicator/winrm
 github.com/hashicorp/packer/helper/ssh
 github.com/hashicorp/packer/template
+github.com/hashicorp/packer/helper/builder/testing
 github.com/hashicorp/packer/common/random
 github.com/hashicorp/packer/common/retry
 # github.com/hashicorp/serf v0.8.2

@@ -1,32 +1,22 @@
 language: go
-branches:
-  only:
-    - master
-    - "/^v/"
-go: 1.12.x
-go_import_path: github.com/vultr/packer-builder-vultr
+go:
+  - 1.11.x
+  - 1.12.x
+  - tip
 env:
-  - GO111MODULE=off
-install:
-  - make setup-tools
+  - GO111MODULE=on
+matrix:
+  allow_failures:
+    - go: tip
 script:
-  - make build
-  - make test
-  - make lint
-before_deploy:
-  - goreleaser --rm-dist --skip-publish
+  - go test -v -mod=vendor ./vultr/...
 deploy:
-  provider: releases
-  api_key: $GITHUB_TOKEN
-  file_glob: true
-  file:
-    - dist/*.txt
-    - dist/*.tar.gz
-    - dist/*.zip
-  skip_cleanup: true
-  overwrite: true
-  on:
-    repo: vultr/packer-builder-vultr
-    tags: true
-    all_branches: true
-    condition: $TRAVIS_PULL_REQUEST == false
+  - provider: script
+    skip_cleanup: true
+    script: curl -sL https://git.io/goreleaser | bash
+    on:
+      tags: true
+      condition: $TRAVIS_OS_NAME = linux
+notifications:
+  slack:
+    secure: JYztYsTfz734J9z6bPekW+3ykFoVtGSox1XyBkgHSzYsJjFuGoM/HtIH20RJEtPo4ABYMGmgS+rRFyPMbNb4jfyAJt2xBB7zdkYZaQ9Yo4F1zkq6tAaSFQk8UgqgLTTJ/Qpw+4LrLcWP1K4IKAHrBZ1fXxUSupf3tLxKL0UbCGAiEujzbLqtskrVw0Va6X23oJjY9n7oQ9wDKSxG9CK68pkYZFOfH/rcxMy4k7ZbvJ3m44v15D8DcMoD2CXhVTO0iM9NI2G0v71qVKKJLzbYb0JyZCWXdaNWCMX/nSUo6qIVZlGlStbYp2maQpNWCao9jIRPhOhkXwnTkOSof5l8+xK1cpIBCUKaogDUfg/DHu3MbyklGRVHWtqP+MxZOLcnLvgV9OTslUpkwcfaC9zOKfM3qz3T4YdlJONDUVoLwBf78840IafBPpiN3tFvql55WQmh/kTtwQ85SYIOSCAHfYt5iBde1AUpykNn8ZvioXBEIaEqrw1sah4Jzg5tbf6zaTmrRlo2Y3W3YlcMidQrit8Oqit6ZPlAA5i+XHF0DLKb4x/WD8HmQbpOlPHUldj7MnV9LBjEAxhektBaqr3h0TzFjh3DVBUU6i3816F/LmenXYnMF/tLKOwl7ryU1K520+Q6RRlqAmES+NJl9rKGAmYEuQxBxPlP1kLDQ0d5U+A=
