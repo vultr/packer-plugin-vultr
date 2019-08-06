@@ -9,7 +9,7 @@ matrix:
   allow_failures:
     - go: tip
 script:
-  - go test -v ./vultr/...
+  - go test -v -mod=vendor ./vultr/...
 deploy:
   - provider: script
     skip_cleanup: true
