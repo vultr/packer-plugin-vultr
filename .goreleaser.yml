@@ -59,7 +59,7 @@ changelog:
       - '^docs:'
       - '^test:'
 
-#release:
-#  github:
-#    owner: vultr
-#    name: packer-builder-vultr
+release:
+  github:
+    owner: vultr
+    name: packer-builder-vultr
