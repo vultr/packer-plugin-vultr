@@ -17,7 +17,7 @@ This is a [HashiCorp Packer](https://www.packer.io/) plugin for creating [Vultr]
 
 ### Install from source:
 
-Clone repository to: `$GOPATH/src/github.com/vultr/packer-builder-vultr`
+Clone repository to `$GOPATH/src/github.com/vultr/packer-builder-vultr`
 
 ```sh
 $ mkdir -p $GOPATH/src/github.com/vultr; cd $GOPATH/src/github.com/vultr
