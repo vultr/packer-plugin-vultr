@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/JamesClonk/vultr/lib"
 	"github.com/hashicorp/packer/helper/multistep"
+	"github.com/vultr/govultr"
 	"golang.org/x/crypto/ssh"
 )
 
 func commHost(state multistep.StateBag) (string, error) {
-	return state.Get("server").(lib.Server).MainIP, nil
+	return state.Get("server").(*govultr.Server).MainIP, nil
 }
 
 func keyboardInteractive(password string) ssh.KeyboardInteractiveChallenge {
@@ -24,12 +24,12 @@ func keyboardInteractive(password string) ssh.KeyboardInteractiveChallenge {
 }
 
 func sshConfig(state multistep.StateBag) (*ssh.ClientConfig, error) {
-	b := state.Get("config").(Config)
+	b := state.Get("config").(*Config)
 	c := b.Comm
-	server := state.Get("server").(lib.Server)
+	server := state.Get("server").(*govultr.Server)
 
 	config := &ssh.ClientConfig{
-		User: c.SSHUsername,
+		User: "root",
 		Auth: make([]ssh.AuthMethod, 0),
 		HostKeyCallback: func(hostname string, remote net.Addr, key ssh.PublicKey) error {
 			return nil // accept anything
