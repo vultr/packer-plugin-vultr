@@ -1,5 +1,9 @@
 # Change Log
 
+## [v1.0.1](https://github.com/vultr/packer-builder-vultr/compare/v1.0.0..v1.0.1) (2019-09-11)
+### Bug
+- Manually shutdown instead of Halt API in shutdown step [#15](https://github.com/vultr/packer-builder-vultr/pull/15)
+
 ## [v1.0.0](https://github.com/vultr/packer-builder-vultr/compare/v0.2.1..v1.0.0) (2019-08-12)
 ### Enhancements
 - The packer Vultr plugin has been refactored.
