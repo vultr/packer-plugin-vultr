@@ -1,7 +1,5 @@
-before:
-  hooks:
-    - go mod download
-    - go generate ./...
+env:
+  - GO111MODULE=on
 builds:
   -
     env:
