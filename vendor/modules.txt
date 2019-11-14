@@ -88,16 +88,18 @@ github.com/hashicorp/consul/api
 github.com/hashicorp/errwrap
 # github.com/hashicorp/go-checkpoint v0.0.0-20171009173528-1545e56e46de
 github.com/hashicorp/go-checkpoint
-# github.com/hashicorp/go-cleanhttp v0.5.0
+# github.com/hashicorp/go-cleanhttp v0.5.1
 github.com/hashicorp/go-cleanhttp
 # github.com/hashicorp/go-getter v1.3.1-0.20190906090232-a0f878cb75da
 github.com/hashicorp/go-getter
 github.com/hashicorp/go-getter/helper/url
+# github.com/hashicorp/go-hclog v0.9.2
+github.com/hashicorp/go-hclog
 # github.com/hashicorp/go-immutable-radix v1.0.0
 github.com/hashicorp/go-immutable-radix
 # github.com/hashicorp/go-multierror v1.0.0
 github.com/hashicorp/go-multierror
-# github.com/hashicorp/go-retryablehttp v0.5.2
+# github.com/hashicorp/go-retryablehttp v0.6.3
 github.com/hashicorp/go-retryablehttp
 # github.com/hashicorp/go-rootcerts v0.0.0-20160503143440-6bb64b370b90
 github.com/hashicorp/go-rootcerts
@@ -201,7 +203,7 @@ github.com/ulikunitz/xz
 github.com/ulikunitz/xz/internal/hash
 github.com/ulikunitz/xz/internal/xlog
 github.com/ulikunitz/xz/lzma
-# github.com/vultr/govultr v0.1.5
+# github.com/vultr/govultr v0.1.7
 github.com/vultr/govultr
 # go.opencensus.io v0.22.0
 go.opencensus.io
