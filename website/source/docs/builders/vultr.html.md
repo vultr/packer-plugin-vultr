@@ -71,6 +71,8 @@ builder.
 
 -   `tag` (string) - The tag to assign to this server.
 
+-   `state_timeout` (string) - A duration to wait for the instance to boot or a snapshot to be taken. Must be a string in [golang Duration-parsable format](https://golang.org/pkg/time/#ParseDuration), like "10m" or "30s". 
+
 ## Basic Example
 
 Here is a Vultr builder example. The vultr_api_key should be replaced with an actual Vultr API Key
@@ -87,6 +89,6 @@ Here is a Vultr builder example. The vultr_api_key should be replaced with an ac
         "plan_id": 402,
         "os_id": 127,
         "ssh_username": "root",
-        "stateTimeout": 100
+        "state_timeout": "15m"
     }],
 ```
