@@ -1,4 +1,5 @@
 //go:generate struct-markdown
+//go:generate mapstructure-to-hcl2 -type Config,SSH,WinRM
 
 package communicator
 
@@ -10,7 +11,9 @@ import (
 	"os"
 	"time"
 
+	"github.com/hashicorp/hcl/v2/hcldec"
 	packerssh "github.com/hashicorp/packer/communicator/ssh"
+	"github.com/hashicorp/packer/helper/config"
 	"github.com/hashicorp/packer/helper/multistep"
 	helperssh "github.com/hashicorp/packer/helper/ssh"
 	"github.com/hashicorp/packer/packer"
@@ -110,7 +113,8 @@ type SSH struct {
 	// use this option with a key pair already configured in the source AMI,
 	// leave the `ssh_keypair_name` blank. To associate an existing key pair in
 	// AWS with the source instance, set the `ssh_keypair_name` field to the
-	// name of the key pair.
+	// name of the key pair. The environment variable `SSH_AUTH_SOCK` must be
+	// set for this option to work properly.
 	SSHAgentAuth bool `mapstructure:"ssh_agent_auth"`
 	// If true, SSH agent forwarding will be disabled. Defaults to `false`.
 	SSHDisableAgentForwarding bool `mapstructure:"ssh_disable_agent_forwarding"`
@@ -159,9 +163,27 @@ type SSH struct {
 	SSHLocalTunnels []string `mapstructure:"ssh_local_tunnels"`
 
 	// SSH Internals
-	SSHPublicKey  []byte
-	SSHPrivateKey []byte
+	SSHPublicKey  []byte `mapstructure:"ssh_public_key"`
+	SSHPrivateKey []byte `mapstructure:"ssh_private_key"`
 }
+
+func (c *SSH) ConfigSpec() hcldec.ObjectSpec   { return c.FlatMapstructure().HCL2Spec() }
+func (c *WinRM) ConfigSpec() hcldec.ObjectSpec { return c.FlatMapstructure().HCL2Spec() }
+
+func (c *SSH) Configure(raws ...interface{}) ([]string, error) {
+	err := config.Decode(c, nil, raws...)
+	return nil, err
+}
+
+func (c *WinRM) Configure(raws ...interface{}) ([]string, error) {
+	err := config.Decode(c, nil, raws...)
+	return nil, err
+}
+
+var (
+	_ packer.ConfigurableCommunicator = new(SSH)
+	_ packer.ConfigurableCommunicator = new(WinRM)
+)
 
 type SSHInterface struct {
 	// One of `public_ip`, `private_ip`, `public_dns`, or `private_dns`. If
@@ -469,7 +491,7 @@ func (c *Config) prepareSSH(ctx *interpolate.Context) []error {
 	return errs
 }
 
-func (c *Config) prepareWinRM(ctx *interpolate.Context) []error {
+func (c *Config) prepareWinRM(ctx *interpolate.Context) (errs []error) {
 	if c.WinRMPort == 0 && c.WinRMUseSSL {
 		c.WinRMPort = 5986
 	} else if c.WinRMPort == 0 {
@@ -484,7 +506,6 @@ func (c *Config) prepareWinRM(ctx *interpolate.Context) []error {
 		c.WinRMTransportDecorator = func() winrm.Transporter { return &winrm.ClientNTLM{} }
 	}
 
-	var errs []error
 	if c.WinRMUser == "" {
 		errs = append(errs, errors.New("winrm_username must be specified."))
 	}
