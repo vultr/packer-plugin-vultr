@@ -258,6 +258,7 @@ func (c *Core) Build(n string) (Build, error) {
 			current = append(current, CoreBuildPostProcessor{
 				PostProcessor:     postProcessor,
 				PType:             rawP.Type,
+				PName:             rawP.Name,
 				config:            rawP.Config,
 				keepInputArtifact: rawP.KeepInputArtifact,
 			})
@@ -396,12 +397,17 @@ func (c *Core) init() error {
 		allVariables[k] = v
 	}
 
+	// Regex to exclude any build function variable or template variable
+	// from interpolating earlier
+	// E.g.: {{ .HTTPIP }}  won't interpolate now
+	renderFilter := "{{(\\s|)\\.(.*?)(\\s|)}}"
+
 	for i := 0; i < 100; i++ {
 		shouldRetry = false
 		// First, loop over the variables in the template
 		for k, v := range allVariables {
 			// Interpolate the default
-			renderedV, err := interpolate.Render(v, ctx)
+			renderedV, err := interpolate.RenderRegex(v, ctx, renderFilter)
 			switch err.(type) {
 			case nil:
 				// We only get here if interpolation has succeeded, so something is
