@@ -371,7 +371,7 @@ func Parse(r io.Reader) (*Template, error) {
 			if unused[0] == '_' {
 				commentVal, ok := unusedMap[unused].(string)
 				if !ok {
-					return nil, fmt.Errorf("Failed to cast root level comment value to string")
+					return nil, fmt.Errorf("Failed to cast root level comment value in comment \"%s\" to string.", unused)
 				}
 
 				comment := map[string]string{
@@ -408,7 +408,7 @@ func ParseFile(path string) (*Template, error) {
 		defer os.Remove(f.Name())
 		defer f.Close()
 		io.Copy(f, os.Stdin)
-		f.Seek(0, os.SEEK_SET)
+		f.Seek(0, io.SeekStart)
 	} else {
 		f, err = os.Open(path)
 		if err != nil {
@@ -423,7 +423,7 @@ func ParseFile(path string) (*Template, error) {
 			return nil, err
 		}
 		// Rewind the file and get a better error
-		f.Seek(0, os.SEEK_SET)
+		f.Seek(0, io.SeekStart)
 		// Grab the error location, and return a string to point to offending syntax error
 		line, col, highlight := highlightPosition(f, syntaxErr.Offset)
 		err = fmt.Errorf("Error parsing JSON: %s\nAt line %d, column %d (offset %d):\n%s", err, line, col, syntaxErr.Offset, highlight)
