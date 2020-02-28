@@ -146,7 +146,7 @@ github.com/hashicorp/hcl/json/token
 github.com/hashicorp/hcl/v2
 github.com/hashicorp/hcl/v2/ext/customdecode
 github.com/hashicorp/hcl/v2/hcldec
-# github.com/hashicorp/packer v1.5.2
+# github.com/hashicorp/packer v1.5.4
 github.com/hashicorp/packer/common
 github.com/hashicorp/packer/common/filelock
 github.com/hashicorp/packer/common/net
@@ -234,7 +234,7 @@ github.com/ulikunitz/xz
 github.com/ulikunitz/xz/internal/hash
 github.com/ulikunitz/xz/internal/xlog
 github.com/ulikunitz/xz/lzma
-# github.com/vultr/govultr v0.2.0
+# github.com/vultr/govultr v0.3.0
 github.com/vultr/govultr
 # github.com/zclconf/go-cty v1.2.1
 github.com/zclconf/go-cty/cty
