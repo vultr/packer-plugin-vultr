@@ -261,6 +261,8 @@ github.com/hashicorp/memberlist v0.1.3 h1:EmmoJme1matNzb+hMpDuR/0sbJSUisxyqBGG67
 github.com/hashicorp/memberlist v0.1.3/go.mod h1:ajVTdAv/9Im8oMAAj5G31PhhMCZJV2pPBoIllUwCN7I=
 github.com/hashicorp/packer v1.5.2 h1:GrHeVj1GUYXcKQq9I5+I3PpGcpCjdbWr+O6Cg9qItWs=
 github.com/hashicorp/packer v1.5.2/go.mod h1:SyToS0Xz2OLiclyxwkxovrafmsagfnMFMfnmT1R70Ms=
+github.com/hashicorp/packer v1.5.4 h1:hyxflw1XMlYLa3dtyRNQlqru6/BHQpq+EXFYWx5Dnrw=
+github.com/hashicorp/packer v1.5.4/go.mod h1:SyToS0Xz2OLiclyxwkxovrafmsagfnMFMfnmT1R70Ms=
 github.com/hashicorp/serf v0.8.2 h1:YZ7UKsJv+hKjqGVUUbtE3HNj79Eln2oQ75tniF6iPt0=
 github.com/hashicorp/serf v0.8.2/go.mod h1:6hOLApaqBFA1NXqRQAsxw9QxuDEvNxSQRwA/JwenrHc=
 github.com/hashicorp/vault v1.1.0 h1:v79NUgO5xCZnXVzUkIqFOXtP8YhpnHAi1fk3eo9cuOE=
@@ -444,6 +446,8 @@ github.com/vmware/govmomi v0.21.0/go.mod h1:zbnFoBQ9GIjs2RVETy8CNEpb+L+Lwkjs3XZU
 github.com/vmware/vmw-guestinfo v0.0.0-20170707015358-25eff159a728/go.mod h1:x9oS4Wk2s2u4tS29nEaDLdzvuHdB19CvSGJjPgkZJNk=
 github.com/vultr/govultr v0.2.0 h1:CZSNNCk+PHz9hzmfH2PFGkDgc3qNetwZqtcaqL8shlg=
 github.com/vultr/govultr v0.2.0/go.mod h1:glSLa57Jdj5s860EEc6+DEBbb/t3aUOKnB4gVPmDVlQ=
+github.com/vultr/govultr v0.3.0 h1:vHmgJpAkVdDZynAb6sVA6C1QdGZ9FZoKvUNzfpCzZXM=
+github.com/vultr/govultr v0.3.0/go.mod h1:glSLa57Jdj5s860EEc6+DEBbb/t3aUOKnB4gVPmDVlQ=
 github.com/xanzy/go-cloudstack v0.0.0-20190526095453-42f262b63ed0 h1:NJrcIkdzq0C3I8ypAZwFE9RHtGbfp+mJvqIcoFATZuk=
 github.com/xanzy/go-cloudstack v0.0.0-20190526095453-42f262b63ed0/go.mod h1:sBh287mCRwCz6zyXHMmw7sSZGPohVpnx+o+OY4M+i3A=
 github.com/yandex-cloud/go-genproto v0.0.0-20190916101622-7617782d381e h1:hzwq5GUKP0aQzDja1XP4sBYyOmnezs/RVtzP+xiLbfI=
