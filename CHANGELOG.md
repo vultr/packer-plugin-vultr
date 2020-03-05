@@ -1,5 +1,9 @@
 # Change Log
 
+## [v1.0.4](https://github.com/vultr/packer-builder-vultr/compare/v1.0.3..v1.0.4) (2020-03-04)
+### Enhancements
+- Updated dependencies to newer versions [#27](https://github.com/vultr/packer-builder-vultr/pull/27)
+
 ## [v1.0.3](https://github.com/vultr/packer-builder-vultr/compare/v1.0.2..v1.0.3) (2020-02-14)
 ### Enhancements
 - Updated Packer to 1.5.2 and GoVultr to v0.2.0 [#23](https://github.com/vultr/packer-builder-vultr/pull/23)
