@@ -116,7 +116,7 @@ github.com/hashicorp/go-getter/v2/helper/url
 github.com/hashicorp/go-immutable-radix
 # github.com/hashicorp/go-multierror v1.0.0
 github.com/hashicorp/go-multierror
-# github.com/hashicorp/go-retryablehttp v0.6.4
+# github.com/hashicorp/go-retryablehttp v0.6.6
 github.com/hashicorp/go-retryablehttp
 # github.com/hashicorp/go-rootcerts v0.0.0-20160503143440-6bb64b370b90
 github.com/hashicorp/go-rootcerts
@@ -232,7 +232,7 @@ github.com/ulikunitz/xz
 github.com/ulikunitz/xz/internal/hash
 github.com/ulikunitz/xz/internal/xlog
 github.com/ulikunitz/xz/lzma
-# github.com/vultr/govultr v0.3.2
+# github.com/vultr/govultr v0.3.3
 github.com/vultr/govultr
 # github.com/zclconf/go-cty v1.3.2-0.20200309235747-0b5d9cf50df7
 github.com/zclconf/go-cty/cty
