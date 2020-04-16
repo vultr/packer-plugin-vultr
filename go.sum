@@ -244,6 +244,8 @@ github.com/hashicorp/go-retryablehttp v0.6.3 h1:tuulM+WnToeqa05z83YLmKabZxrySOmJ
 github.com/hashicorp/go-retryablehttp v0.6.3/go.mod h1:vAew36LZh98gCBJNLH42IQ1ER/9wtLZZ8meHqQvEYWY=
 github.com/hashicorp/go-retryablehttp v0.6.4 h1:BbgctKO892xEyOXnGiaAwIoSq1QZ/SS4AhjoAh9DnfY=
 github.com/hashicorp/go-retryablehttp v0.6.4/go.mod h1:vAew36LZh98gCBJNLH42IQ1ER/9wtLZZ8meHqQvEYWY=
+github.com/hashicorp/go-retryablehttp v0.6.6 h1:HJunrbHTDDbBb/ay4kxa1n+dLmttUlnP3V9oNE4hmsM=
+github.com/hashicorp/go-retryablehttp v0.6.6/go.mod h1:vAew36LZh98gCBJNLH42IQ1ER/9wtLZZ8meHqQvEYWY=
 github.com/hashicorp/go-rootcerts v0.0.0-20160503143440-6bb64b370b90 h1:VBj0QYQ0u2MCJzBfeYXGexnAl17GsH1yidnoxCqqD9E=
 github.com/hashicorp/go-rootcerts v0.0.0-20160503143440-6bb64b370b90/go.mod h1:o4zcYY1e0GEZI6eSEr+43QDYmuGglw1qSO6qdHUHCgg=
 github.com/hashicorp/go-safetemp v1.0.0 h1:2HR189eFNrjHQyENnQMMpCiBAsRxzbTMIgBhEyExpmo=
@@ -473,6 +475,8 @@ github.com/vultr/govultr v0.3.1 h1:r0JPvWUSGmRAHEhevtpJS+j+7DdK+m8xyvGkZlIc2XA=
 github.com/vultr/govultr v0.3.1/go.mod h1:81RwK1wAmb08alkFDJiZmu9gdv+IO+UamzaF0+PIieE=
 github.com/vultr/govultr v0.3.2 h1:1tV/88jkm+4Y345qAXBe3peNbnmvCY/VAIZApklbKkI=
 github.com/vultr/govultr v0.3.2/go.mod h1:81RwK1wAmb08alkFDJiZmu9gdv+IO+UamzaF0+PIieE=
+github.com/vultr/govultr v0.3.3 h1:fVaF4h9u3VzTXxFsxvgBUCiM52EiahLqAPkizamLzYM=
+github.com/vultr/govultr v0.3.3/go.mod h1:TUuUizMOFc7z+PNMssb6iGjKjQfpw5arIaOLfocVudQ=
 github.com/xanzy/go-cloudstack v0.0.0-20190526095453-42f262b63ed0 h1:NJrcIkdzq0C3I8ypAZwFE9RHtGbfp+mJvqIcoFATZuk=
 github.com/xanzy/go-cloudstack v0.0.0-20190526095453-42f262b63ed0/go.mod h1:sBh287mCRwCz6zyXHMmw7sSZGPohVpnx+o+OY4M+i3A=
 github.com/yandex-cloud/go-genproto v0.0.0-20190916101622-7617782d381e h1:hzwq5GUKP0aQzDja1XP4sBYyOmnezs/RVtzP+xiLbfI=
