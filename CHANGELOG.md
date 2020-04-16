@@ -3,7 +3,7 @@
 ## [v1.0.6](https://github.com/vultr/packer-builder-vultr/compare/v1.0.5..v1.06) (2020-04-16)
 ### Dependencies 
 - GoVultr v0.3.2 -> v0.3.3 [#38](https://github.com/vultr/packer-builder-vultr/pull/38)
-- hcl/v2 2.3.0 -> 2.4.0 [#38](https://github.com/vultr/packer-builder-vultr/pull/37)
+- hcl/v2 2.3.0 -> 2.4.0 [#37](https://github.com/vultr/packer-builder-vultr/pull/37)
 
 ## [v1.0.5](https://github.com/vultr/packer-builder-vultr/compare/v1.0.4..v1.0.5) (2020-03-31)
 ### Dependencies 
