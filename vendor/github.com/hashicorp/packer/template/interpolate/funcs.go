@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/packer/version"
 	vaultapi "github.com/hashicorp/vault/api"
 	strftime "github.com/jehiah/go-strftime"
+	awssmapi "github.com/overdrive3000/secretsmanager"
 )
 
 // InitTime is the UTC time when this package was initialized. It is
@@ -29,22 +30,23 @@ func init() {
 
 // Funcs are the interpolation funcs that are available within interpolations.
 var FuncGens = map[string]interface{}{
-	"build_name":     funcGenBuildName,
-	"build_type":     funcGenBuildType,
-	"env":            funcGenEnv,
-	"isotime":        funcGenIsotime,
-	"strftime":       funcGenStrftime,
-	"pwd":            funcGenPwd,
-	"split":          funcGenSplitter,
-	"template_dir":   funcGenTemplateDir,
-	"timestamp":      funcGenTimestamp,
-	"uuid":           funcGenUuid,
-	"user":           funcGenUser,
-	"packer_version": funcGenPackerVersion,
-	"consul_key":     funcGenConsul,
-	"vault":          funcGenVault,
-	"sed":            funcGenSed,
-	"build":          funcGenBuild,
+	"build_name":         funcGenBuildName,
+	"build_type":         funcGenBuildType,
+	"env":                funcGenEnv,
+	"isotime":            funcGenIsotime,
+	"strftime":           funcGenStrftime,
+	"pwd":                funcGenPwd,
+	"split":              funcGenSplitter,
+	"template_dir":       funcGenTemplateDir,
+	"timestamp":          funcGenTimestamp,
+	"uuid":               funcGenUuid,
+	"user":               funcGenUser,
+	"packer_version":     funcGenPackerVersion,
+	"consul_key":         funcGenConsul,
+	"vault":              funcGenVault,
+	"sed":                funcGenSed,
+	"build":              funcGenBuild,
+	"aws_secretsmanager": funcGenAwsSecrets,
 
 	"replace":     replace,
 	"replace_all": replace_all,
@@ -296,14 +298,14 @@ func funcGenVault(ctx *Context) interface{} {
 		vaultConfig := vaultapi.DefaultConfig()
 		cli, err := vaultapi.NewClient(vaultConfig)
 		if err != nil {
-			return "", errors.New(fmt.Sprintf("Error getting Vault client: %s", err))
+			return "", fmt.Errorf("Error getting Vault client: %s", err)
 		}
 		secret, err := cli.Logical().Read(path)
 		if err != nil {
-			return "", errors.New(fmt.Sprintf("Error reading vault secret: %s", err))
+			return "", fmt.Errorf("Error reading vault secret: %s", err)
 		}
 		if secret == nil {
-			return "", errors.New(fmt.Sprintf("Vault Secret does not exist at the given path."))
+			return "", errors.New("Vault Secret does not exist at the given path")
 		}
 
 		data, ok := secret.Data["data"]
@@ -315,8 +317,8 @@ func funcGenVault(ctx *Context) interface{} {
 			}
 
 			// neither v1 nor v2 proudced a valid value
-			return "", errors.New(fmt.Sprintf("Vault data was empty at the "+
-				"given path. Warnings: %s", strings.Join(secret.Warnings, "; ")))
+			return "", fmt.Errorf("Vault data was empty at the "+
+				"given path. Warnings: %s", strings.Join(secret.Warnings, "; "))
 		}
 
 		value := data.(map[string]interface{})[key].(string)
@@ -324,11 +326,33 @@ func funcGenVault(ctx *Context) interface{} {
 	}
 }
 
+func funcGenAwsSecrets(ctx *Context) interface{} {
+	return func(name string) (string, error) {
+		if !ctx.EnableEnv {
+			// The error message doesn't have to be that detailed since
+			// semantic checks should catch this.
+			return "", errors.New("AWS Secrets Manager vars are only allowed in the variables section")
+		}
+		// client uses AWS SDK CredentialChain method. So,credentials can
+		// be loaded from credential file, environment variables, or IAM
+		// roles.
+		client, err := awssmapi.New()
+		if err != nil {
+			return "", fmt.Errorf("Error getting AWS Secrets Manager client: %s", err)
+		}
+		secret, err := client.GetSecret(name)
+		if err != nil {
+			return "", fmt.Errorf("Error getting secret: %s", err)
+		}
+		return secret, nil
+	}
+}
+
 func funcGenSed(ctx *Context) interface{} {
 	return func(expression string, inputString string) (string, error) {
 		return "", errors.New("template function `sed` is deprecated " +
 			"use `replace` or `replace_all` instead." +
-			"Documentation: https://www.packer.io/docs/templates/engine.html")
+			"Documentation: https://www.packer.io/docs/templates/engine")
 	}
 }
 

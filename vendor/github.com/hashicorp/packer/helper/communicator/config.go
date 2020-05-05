@@ -105,7 +105,8 @@ type SSH struct {
 	// The time to wait for SSH to become available. Packer uses this to
 	// determine when the machine has booted so this is usually quite long.
 	// Example value: `10m`.
-	SSHTimeout time.Duration `mapstructure:"ssh_timeout"`
+	SSHTimeout     time.Duration `mapstructure:"ssh_timeout"`
+	SSHWaitTimeout time.Duration `mapstructure:"ssh_wait_timeout" undocumented:"true"`
 	// If true, the local SSH agent will be used to authenticate connections to
 	// the source instance. No temporary keypair will be created, and the
 	// values of [`ssh_password`](#ssh_password) and
@@ -175,7 +176,7 @@ type WinRM struct {
 	//
 	// NOTE: If using an Amazon EBS builder, you can specify the interface
 	// WinRM connects to via
-	// [`ssh_interface`](https://www.packer.io/docs/builders/amazon-ebs.html#ssh_interface)
+	// [`ssh_interface`](/docs/builders/amazon-ebs#ssh_interface)
 	WinRMHost string `mapstructure:"winrm_host"`
 	// The WinRM port to connect to. This defaults to `5985` for plain
 	// unencrypted connection and `5986` for SSL when `winrm_use_ssl` is set to
@@ -420,6 +421,11 @@ func (c *Config) prepareSSH(ctx *interpolate.Context) []error {
 
 	if c.SSHFileTransferMethod == "" {
 		c.SSHFileTransferMethod = "scp"
+	}
+
+	// Backwards compatibility
+	if c.SSHWaitTimeout != 0 {
+		c.SSHTimeout = c.SSHWaitTimeout
 	}
 
 	// Validation

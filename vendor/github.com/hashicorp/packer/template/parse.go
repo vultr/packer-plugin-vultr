@@ -76,6 +76,7 @@ func (r *rawTemplate) decodeProvisioner(raw interface{}) (Provisioner, error) {
 	delete(p.Config, "only")
 	delete(p.Config, "override")
 	delete(p.Config, "pause_before")
+	delete(p.Config, "max_retries")
 	delete(p.Config, "type")
 	delete(p.Config, "timeout")
 
@@ -475,8 +476,12 @@ func ParseFile(path string) (*Template, error) {
 		}
 		defer os.Remove(f.Name())
 		defer f.Close()
-		io.Copy(f, os.Stdin)
-		f.Seek(0, io.SeekStart)
+		if _, err = io.Copy(f, os.Stdin); err != nil {
+			return nil, err
+		}
+		if _, err = f.Seek(0, io.SeekStart); err != nil {
+			return nil, err
+		}
 	} else {
 		f, err = os.Open(path)
 		if err != nil {
@@ -491,7 +496,9 @@ func ParseFile(path string) (*Template, error) {
 			return nil, err
 		}
 		// Rewind the file and get a better error
-		f.Seek(0, io.SeekStart)
+		if _, err := f.Seek(0, io.SeekStart); err != nil {
+			return nil, err
+		}
 		// Grab the error location, and return a string to point to offending syntax error
 		line, col, highlight := highlightPosition(f, syntaxErr.Offset)
 		err = fmt.Errorf("Error parsing JSON: %s\nAt line %d, column %d (offset %d):\n%s", err, line, col, syntaxErr.Offset, highlight)
