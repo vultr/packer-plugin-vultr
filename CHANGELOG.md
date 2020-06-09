@@ -1,5 +1,10 @@
 # Change Log
 
+## [v1.0.9](https://github.com/vultr/packer-builder-vultr/compare/v1.0.8..v1.0.9) (2020-06-09)
+### Dependencies 
+- hcl/v2 2.5.1 -> 2.6.0 [#48](https://github.com/vultr/packer-builder-vultr/pull/48)
+- GoVultr v0.4.1 -> v0.4.2 [#47](https://github.com/vultr/packer-builder-vultr/pull/47)
+
 ## [v1.0.8](https://github.com/vultr/packer-builder-vultr/compare/v1.0.7..v1.0.8) (2020-05-19)
 ### Dependencies 
 - hcl/v2 2.5.0 -> 2.5.1 (Fixes panic) [#45](https://github.com/vultr/packer-builder-vultr/pull/45)
