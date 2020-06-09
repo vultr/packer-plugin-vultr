@@ -237,7 +237,7 @@ github.com/ulikunitz/xz
 github.com/ulikunitz/xz/internal/hash
 github.com/ulikunitz/xz/internal/xlog
 github.com/ulikunitz/xz/lzma
-# github.com/vultr/govultr v0.4.1
+# github.com/vultr/govultr v0.4.2
 github.com/vultr/govultr
 # github.com/zclconf/go-cty v1.3.2-0.20200309235747-0b5d9cf50df7
 github.com/zclconf/go-cty/cty
