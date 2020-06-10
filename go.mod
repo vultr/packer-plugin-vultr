@@ -4,8 +4,8 @@ go 1.13
 
 require (
 	github.com/hashicorp/hcl/v2 v2.6.0
-	github.com/hashicorp/packer v1.5.6
+	github.com/hashicorp/packer v1.6.0
 	github.com/vultr/govultr v0.4.2
-	github.com/zclconf/go-cty v1.3.2-0.20200309235747-0b5d9cf50df7
-	golang.org/x/crypto v0.0.0-20200117160349-530e935923ad
+	github.com/zclconf/go-cty v1.4.0
+	golang.org/x/crypto v0.0.0-20200422194213-44a606286825
 )
