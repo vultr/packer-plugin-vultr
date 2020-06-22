@@ -3,7 +3,7 @@
 //
 // getter is unique in its ability to download both directories and files.
 // It also detects certain source strings to be protocol-specific URLs. For
-// example, "github.com/hashicorp/go-getter" would turn into a Git URL and
+// example, "github.com/hashicorp/go-getter/v2" would turn into a Git URL and
 // use the Git protocol.
 //
 // Protocols and detectors are extensible.
@@ -43,17 +43,20 @@ type Getter interface {
 	// allow clients to let the getters decide which mode to use.
 	Mode(context.Context, *url.URL) (Mode, error)
 
-	// SetClient allows a getter to know it's client
-	// in order to access client's Get functions or
-	// progress tracking.
-	SetClient(*Client)
+	// Detect detects whether the Request.Src matches a known pattern to
+	// turn it into a proper URL, and also transforms and update Request.Src
+	// when necessary.
+	// The Getter must validate if the Request.Src is a valid URL
+	// with a valid scheme for the Getter, and also check if the
+	// current Getter is the forced one and return true if that's the case.
+	Detect(*Request) (bool, error)
 }
 
 // Getters is the mapping of scheme to the Getter implementation that will
 // be used to get a dependency.
-var Getters map[string]Getter
+var Getters []Getter
 
-// forcedRegexp is the regular expression that finds forced getters. This
+// forcedRegexp is the regular expression that finds Forced getters. This
 // syntax is schema::url, example: git::https://foo.com
 var forcedRegexp = regexp.MustCompile(`^([A-Za-z0-9]+)::(.+)$`)
 
@@ -62,7 +65,6 @@ var httpClient = cleanhttp.DefaultClient()
 
 var DefaultClient = &Client{
 	Getters:       Getters,
-	Detectors:     Detectors,
 	Decompressors: Decompressors,
 }
 
@@ -71,14 +73,20 @@ func init() {
 		Netrc: true,
 	}
 
-	Getters = map[string]Getter{
-		"file":  new(FileGetter),
-		"git":   new(GitGetter),
-		"gcs":   new(GCSGetter),
-		"hg":    new(HgGetter),
-		"s3":    new(S3Getter),
-		"http":  httpGetter,
-		"https": httpGetter,
+	// The order of the Getters in the list may affect the result
+	// depending if the Request.Src is detected as valid by multiple getters
+	Getters = []Getter{
+		&GitGetter{[]Detector{
+			new(GitHubDetector),
+			new(GitDetector),
+			new(BitBucketDetector),
+		},
+		},
+		new(HgGetter),
+		new(SmbClientGetter),
+		new(SmbMountGetter),
+		httpGetter,
+		new(FileGetter),
 	}
 }
 
@@ -148,6 +156,7 @@ func getRunCommand(cmd *exec.Cmd) error {
 
 // getForcedGetter takes a source and returns the tuple of the forced
 // getter and the raw URL (without the force syntax).
+// For example "git::https://...". returns "git" "https://".
 func getForcedGetter(src string) (string, string) {
 	var forced string
 	if ms := forcedRegexp.FindStringSubmatch(src); ms != nil {

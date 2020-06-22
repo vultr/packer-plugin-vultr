@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/hashicorp/packer/common/net"
-	"github.com/hashicorp/packer/helper/common"
 	"github.com/hashicorp/packer/helper/multistep"
 	"github.com/hashicorp/packer/packer"
 )
@@ -25,6 +24,7 @@ type StepHTTPServer struct {
 	HTTPDir     string
 	HTTPPortMin int
 	HTTPPortMax int
+	HTTPAddress string
 
 	l *net.Listener
 }
@@ -43,7 +43,7 @@ func (s *StepHTTPServer) Run(ctx context.Context, state multistep.StateBag) mult
 	s.l, err = net.ListenRangeConfig{
 		Min:     s.HTTPPortMin,
 		Max:     s.HTTPPortMax,
-		Addr:    "0.0.0.0",
+		Addr:    s.HTTPAddress,
 		Network: "tcp",
 	}.Listen(ctx)
 
@@ -63,46 +63,8 @@ func (s *StepHTTPServer) Run(ctx context.Context, state multistep.StateBag) mult
 
 	// Save the address into the state so it can be accessed in the future
 	state.Put("http_port", s.l.Port)
-	SetHTTPPort(fmt.Sprintf("%d", s.l.Port))
 
 	return multistep.ActionContinue
-}
-
-func SetHTTPPort(port string) error {
-	return common.SetSharedState("port", port, "")
-}
-
-func SetHTTPIP(ip string) error {
-	return common.SetSharedState("ip", ip, "")
-}
-
-func GetHTTPAddr() string {
-	ip, err := common.RetrieveSharedState("ip", "")
-	if err != nil {
-		return ""
-	}
-
-	port, err := common.RetrieveSharedState("port", "")
-	if err != nil {
-		return ""
-	}
-	return fmt.Sprintf("%s:%s", ip, port)
-}
-
-func GetHTTPPort() string {
-	port, err := common.RetrieveSharedState("port", "")
-	if err != nil {
-		return ""
-	}
-	return port
-}
-
-func GetHTTPIP() string {
-	ip, err := common.RetrieveSharedState("ip", "")
-	if err != nil {
-		return ""
-	}
-	return ip
 }
 
 func (s *StepHTTPServer) Cleanup(multistep.StateBag) {
@@ -110,6 +72,4 @@ func (s *StepHTTPServer) Cleanup(multistep.StateBag) {
 		// Close the listener so that the HTTP server stops
 		s.l.Close()
 	}
-	common.RemoveSharedStateFile("port", "")
-	common.RemoveSharedStateFile("ip", "")
 }
