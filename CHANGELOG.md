@@ -1,5 +1,10 @@
 # Change Log
 
+## [v1.0.10](https://github.com/vultr/packer-builder-vultr/compare/v1.0.9..v1.0.10) (2020-06-22)
+### Dependencies 
+- packer 1.5.6 -> 1.6.0 [#50](https://github.com/vultr/packer-builder-vultr/pull/50)
+
+
 ## [v1.0.9](https://github.com/vultr/packer-builder-vultr/compare/v1.0.8..v1.0.9) (2020-06-09)
 ### Dependencies 
 - hcl/v2 2.5.1 -> 2.6.0 [#48](https://github.com/vultr/packer-builder-vultr/pull/48)
