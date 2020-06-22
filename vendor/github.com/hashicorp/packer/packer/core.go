@@ -1,6 +1,7 @@
 package packer
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"regexp"
@@ -9,8 +10,10 @@ import (
 
 	ttmp "text/template"
 
+	"github.com/google/go-cmp/cmp"
 	multierror "github.com/hashicorp/go-multierror"
 	version "github.com/hashicorp/go-version"
+	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/packer/template"
 	"github.com/hashicorp/packer/template/interpolate"
 )
@@ -126,9 +129,24 @@ func NewCore(c *CoreConfig) (*Core, error) {
 }
 
 // BuildNames returns the builds that are available in this configured core.
-func (c *Core) BuildNames() []string {
+func (c *Core) BuildNames(only, except []string) []string {
+
+	sort.Strings(only)
+	sort.Strings(except)
+	c.except = except
+	c.only = only
+
 	r := make([]string, 0, len(c.builds))
 	for n := range c.builds {
+		onlyPos := sort.SearchStrings(only, n)
+		foundInOnly := onlyPos < len(only) && only[onlyPos] == n
+		if len(only) > 0 && !foundInOnly {
+			continue
+		}
+
+		if pos := sort.SearchStrings(except, n); pos < len(except) && except[pos] == n {
+			continue
+		}
 		r = append(r, n)
 	}
 	sort.Strings(r)
@@ -185,6 +203,55 @@ func (c *Core) generateCoreBuildProvisioner(rawP *template.Provisioner, rawName 
 	return cbp, nil
 }
 
+// This is used for json templates to launch the build plugins.
+// They will be prepared via b.Prepare() later.
+func (c *Core) GetBuilds(opts GetBuildsOptions) ([]Build, hcl.Diagnostics) {
+	buildNames := c.BuildNames(opts.Only, opts.Except)
+	builds := []Build{}
+	diags := hcl.Diagnostics{}
+	for _, n := range buildNames {
+		b, err := c.Build(n)
+		if err != nil {
+			diags = append(diags, &hcl.Diagnostic{
+				Severity: hcl.DiagError,
+				Summary:  fmt.Sprintf("Failed to initialize build %q", n),
+				Detail:   err.Error(),
+			})
+			continue
+		}
+
+		// Now that build plugin has been launched, call Prepare()
+		log.Printf("Preparing build: %s", b.Name())
+		b.SetDebug(opts.Debug)
+		b.SetForce(opts.Force)
+		b.SetOnError(opts.OnError)
+
+		warnings, err := b.Prepare()
+		if err != nil {
+			diags = append(diags, &hcl.Diagnostic{
+				Severity: hcl.DiagError,
+				Summary:  fmt.Sprintf("Failed to prepare build: %q", n),
+				Detail:   err.Error(),
+			})
+			continue
+		}
+
+		// Only append builds to list if the Prepare() is successful.
+		builds = append(builds, b)
+
+		if len(warnings) > 0 {
+			for _, warning := range warnings {
+				diags = append(diags, &hcl.Diagnostic{
+					Severity: hcl.DiagWarning,
+					Summary:  fmt.Sprintf("Warning when preparing build: %q", n),
+					Detail:   warning,
+				})
+			}
+		}
+	}
+	return builds, diags
+}
+
 // Build returns the Build object for the given name.
 func (c *Core) Build(n string) (Build, error) {
 	// Setup the builder
@@ -192,6 +259,12 @@ func (c *Core) Build(n string) (Build, error) {
 	if !ok {
 		return nil, fmt.Errorf("no such build found: %s", n)
 	}
+	// BuilderStore = config.Builders, gathered in loadConfig() in main.go
+	// For reference, the builtin BuilderStore is generated in
+	// packer/config.go in the Discover() func.
+
+	// the Start command launches the builder plugin of the given type without
+	// calling Prepare() or passing any build-specific details.
 	builder, err := c.components.BuilderStore.Start(configBuilder.Type)
 	if err != nil {
 		return nil, fmt.Errorf(
@@ -248,7 +321,7 @@ func (c *Core) Build(n string) (Build, error) {
 				}
 			}
 			if foundExcept {
-				continue
+				break
 			}
 
 			// Get the post-processor
@@ -282,6 +355,8 @@ func (c *Core) Build(n string) (Build, error) {
 
 	// TODO hooks one day
 
+	// Return a structure that contains the plugins, their types, variables, and
+	// the raw builder config loaded from the json template
 	return &CoreBuild{
 		Type:               n,
 		Builder:            builder,
@@ -301,6 +376,112 @@ func (c *Core) Context() *interpolate.Context {
 		TemplatePath:  c.Template.Path,
 		UserVariables: c.variables,
 	}
+}
+
+var ConsoleHelp = strings.TrimSpace(`
+Packer console JSON Mode.
+The Packer console allows you to experiment with Packer interpolations.
+You may access variables in the Packer config you called the console with.
+
+Type in the interpolation to test and hit <enter> to see the result.
+
+"variables" will dump all available variables and their values.
+
+"{{timestamp}}" will output the timestamp, for example "1559855090".
+
+To exit the console, type "exit" and hit <enter>, or use Control-C.
+
+/!\ If you would like to start console in hcl2 mode without a config you can
+use the --config-type=hcl2 option.
+`)
+
+func (c *Core) EvaluateExpression(line string) (string, bool, hcl.Diagnostics) {
+	switch {
+	case line == "":
+		return "", false, nil
+	case line == "exit":
+		return "", true, nil
+	case line == "help":
+		return ConsoleHelp, false, nil
+	case line == "variables":
+		varsstring := "\n"
+		for k, v := range c.Context().UserVariables {
+			varsstring += fmt.Sprintf("%s: %+v,\n", k, v)
+		}
+
+		return varsstring, false, nil
+	default:
+		ctx := c.Context()
+		rendered, err := interpolate.Render(line, ctx)
+		var diags hcl.Diagnostics
+		if err != nil {
+			diags = append(diags, &hcl.Diagnostic{
+				Summary: "Interpolation error",
+				Detail:  err.Error(),
+			})
+		}
+		return rendered, false, diags
+	}
+}
+
+func (c *Core) FixConfig(opts FixConfigOptions) hcl.Diagnostics {
+	var diags hcl.Diagnostics
+
+	// Remove once we have support for the Inplace FixConfigMode
+	if opts.Mode != Diff {
+		diags = append(diags, &hcl.Diagnostic{
+			Severity: hcl.DiagError,
+			Summary:  fmt.Sprintf("FixConfig only supports template diff; FixConfigMode %d not supported", opts.Mode),
+		})
+
+		return diags
+	}
+
+	var rawTemplateData map[string]interface{}
+	input := make(map[string]interface{})
+	templateData := make(map[string]interface{})
+	if err := json.Unmarshal(c.Template.RawContents, &rawTemplateData); err != nil {
+		diags = append(diags, &hcl.Diagnostic{
+			Severity: hcl.DiagError,
+			Summary:  fmt.Sprintf("unable to read the contents of the JSON configuration file: %s", err),
+			Detail:   err.Error(),
+		})
+		return diags
+	}
+	// Hold off on Diff for now - need to think about displaying to user.
+	// delete empty top-level keys since the fixers seem to add them
+	// willy-nilly
+	for k := range input {
+		ml, ok := input[k].([]map[string]interface{})
+		if !ok {
+			continue
+		}
+		if len(ml) == 0 {
+			delete(input, k)
+		}
+	}
+	// marshal/unmarshal to make comparable to templateData
+	var fixedData map[string]interface{}
+	// Guaranteed to be valid json, so we can ignore errors
+	j, _ := json.Marshal(input)
+	if err := json.Unmarshal(j, &fixedData); err != nil {
+		diags = append(diags, &hcl.Diagnostic{
+			Severity: hcl.DiagError,
+			Summary:  fmt.Sprintf("unable to read the contents of the JSON configuration file: %s", err),
+			Detail:   err.Error(),
+		})
+
+		return diags
+	}
+
+	if diff := cmp.Diff(templateData, fixedData); diff != "" {
+		diags = append(diags, &hcl.Diagnostic{
+			Severity: hcl.DiagError,
+			Summary:  "Fixable configuration found.\nPlease run `packer fix` to get your build to run correctly.\nSee debug log for more information.",
+			Detail:   diff,
+		})
+	}
+	return diags
 }
 
 // validate does a full validation of the template.
