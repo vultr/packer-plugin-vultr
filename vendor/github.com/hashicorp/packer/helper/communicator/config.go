@@ -43,23 +43,16 @@ type Config struct {
 	Type string `mapstructure:"communicator"`
 
 	// We recommend that you enable SSH or WinRM as the very last step in your
-	// guest's bootstrap script, but sometimes you may have a race condition where
-	// you need Packer to wait before attempting to connect to your guest.
+	// guest's bootstrap script, but sometimes you may have a race condition
+	// where you need Packer to wait before attempting to connect to your
+	// guest.
 	//
 	// If you end up in this situation, you can use the template option
-	// `pause_before_connecting`. By default, there is no pause. For example:
-	//
-	// ```json
-	// {
-	//   "communicator": "ssh",
-	//   "ssh_username": "myuser",
-	//   "pause_before_connecting": "10m"
-	// }
-	// ```
-	//
-	// In this example, Packer will check whether it can connect, as normal. But once
-	// a connection attempt is successful, it will disconnect and then wait 10 minutes
-	// before connecting to the guest and beginning provisioning.
+	// `pause_before_connecting`. By default, there is no pause. For example if
+	// you set `pause_before_connecting` to `10m` Packer will check whether it
+	// can connect, as normal. But once a connection attempt is successful, it
+	// will disconnect and then wait 10 minutes before connecting to the guest
+	// and beginning provisioning.
 	PauseBeforeConnect time.Duration `mapstructure:"pause_before_connecting"`
 
 	SSH   `mapstructure:",squash"`
@@ -83,11 +76,23 @@ type SSH struct {
 	// [`ssh_private_key_file`](#ssh_private_key_file) or
 	// [`ssh_agent_auth`](#ssh_agent_auth) must be specified when
 	// [`ssh_keypair_name`](#ssh_keypair_name) is utilized.
-	SSHKeyPairName string `mapstructure:"ssh_keypair_name"`
+	SSHKeyPairName string `mapstructure:"ssh_keypair_name" undocumented:"true"`
 	// The name of the temporary key pair to generate. By default, Packer
 	// generates a name that looks like `packer_<UUID>`, where &lt;UUID&gt; is
 	// a 36 character unique identifier.
-	SSHTemporaryKeyPairName string `mapstructure:"temporary_key_pair_name"`
+	SSHTemporaryKeyPairName string `mapstructure:"temporary_key_pair_name" undocumented:"true"`
+	// This overrides the value of ciphers supported by default by golang.
+	// The default value is [
+	//   "aes128-gcm@openssh.com",
+	//   "chacha20-poly1305@openssh.com",
+	//   "aes128-ctr", "aes192-ctr", "aes256-ctr",
+	// ]
+	//
+	// Valid options for ciphers include:
+	// "aes128-ctr", "aes192-ctr", "aes256-ctr", "aes128-gcm@openssh.com",
+	// "chacha20-poly1305@openssh.com",
+	// "arcfour256", "arcfour128", "arcfour", "aes128-cbc", "3des-cbc",
+	SSHCiphers []string `mapstructure:"ssh_ciphers"`
 	// If true, Packer will attempt to remove its temporary key from
 	// `~/.ssh/authorized_keys` and `/root/.ssh/authorized_keys`. This is a
 	// mostly cosmetic option, since Packer will delete the temporary private
@@ -95,10 +100,20 @@ type SSH struct {
 	// (unless the user has set the `-debug` flag). Defaults to "false";
 	// currently only works on guests with `sed` installed.
 	SSHClearAuthorizedKeys bool `mapstructure:"ssh_clear_authorized_keys"`
+	// If set, Packer will override the value of key exchange (kex) altorighms
+	// supported by default by golang. Acceptable values include:
+	// "curve25519-sha256@libssh.org", "ecdh-sha2-nistp256",
+	// "ecdh-sha2-nistp384", "ecdh-sha2-nistp521",
+	// "diffie-hellman-group14-sha1", and "diffie-hellman-group1-sha1".
+	SSHKEXAlgos []string `mapstructure:"ssh_key_exchange_algorithms"`
 	// Path to a PEM encoded private key file to use to authenticate with SSH.
 	// The `~` can be used in path and will be expanded to the home directory
 	// of current user.
-	SSHPrivateKeyFile string `mapstructure:"ssh_private_key_file"`
+	SSHPrivateKeyFile string `mapstructure:"ssh_private_key_file" undocumented:"true"`
+	// Path to user certificate used to authenticate with SSH.
+	// The `~` can be used in path and will be expanded to the
+	// home directory of current user.
+	SSHCertificateFile string `mapstructure:"ssh_certificate_file"`
 	// If `true`, a PTY will be requested for the SSH connection. This defaults
 	// to `false`.
 	SSHPty bool `mapstructure:"ssh_pty"`
@@ -113,7 +128,7 @@ type SSH struct {
 	// [`ssh_private_key_file`](#ssh_private_key_file) will be ignored. The
 	// environment variable `SSH_AUTH_SOCK` must be set for this option to work
 	// properly.
-	SSHAgentAuth bool `mapstructure:"ssh_agent_auth"`
+	SSHAgentAuth bool `mapstructure:"ssh_agent_auth" undocumented:"true"`
 	// If true, SSH agent forwarding will be disabled. Defaults to `false`.
 	SSHDisableAgentForwarding bool `mapstructure:"ssh_disable_agent_forwarding"`
 	// The number of handshakes to attempt with SSH once it can connect. This
@@ -136,6 +151,10 @@ type SSH struct {
 	// bastion host. The `~` can be used in path and will be expanded to the
 	// home directory of current user.
 	SSHBastionPrivateKeyFile string `mapstructure:"ssh_bastion_private_key_file"`
+	// Path to user certificate used to authenticate with bastion host.
+	// The `~` can be used in path and will be expanded to the
+	//home directory of current user.
+	SSHBastionCertificateFile string `mapstructure:"ssh_bastion_certificate_file"`
 	// `scp` or `sftp` - How to transfer files, Secure copy (default) or SSH
 	// File Transfer Protocol.
 	SSHFileTransferMethod string `mapstructure:"ssh_file_transfer_method"`
@@ -163,8 +182,8 @@ type SSH struct {
 	SSHLocalTunnels []string `mapstructure:"ssh_local_tunnels"`
 
 	// SSH Internals
-	SSHPublicKey  []byte `mapstructure:"ssh_public_key"`
-	SSHPrivateKey []byte `mapstructure:"ssh_private_key"`
+	SSHPublicKey  []byte `mapstructure:"ssh_public_key" undocumented:"true"`
+	SSHPrivateKey []byte `mapstructure:"ssh_private_key" undocumented:"true"`
 }
 
 type WinRM struct {
@@ -178,6 +197,11 @@ type WinRM struct {
 	// WinRM connects to via
 	// [`ssh_interface`](/docs/builders/amazon-ebs#ssh_interface)
 	WinRMHost string `mapstructure:"winrm_host"`
+	// Setting this to `true` adds the remote
+	// `host:port` to the `NO_PROXY` environment variable. This has the effect of
+	// bypassing any configured proxies when connecting to the remote host.
+	// Default to `false`.
+	WinRMNoProxy bool `mapstructure:"winrm_no_proxy"`
 	// The WinRM port to connect to. This defaults to `5985` for plain
 	// unencrypted connection and `5986` for SSL when `winrm_use_ssl` is set to
 	// true.
@@ -263,6 +287,13 @@ func (c *Config) SSHConfigFunc() func(multistep.StateBag) (*ssh.ClientConfig, er
 			User:            c.SSHUsername,
 			HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 		}
+		if len(c.SSHCiphers) != 0 {
+			sshConfig.Config.Ciphers = c.SSHCiphers
+		}
+
+		if len(c.SSHKEXAlgos) != 0 {
+			sshConfig.Config.KeyExchanges = c.SSHKEXAlgos
+		}
 
 		if c.SSHAgentAuth {
 			authSock := os.Getenv("SSH_AUTH_SOCK")
@@ -296,11 +327,29 @@ func (c *Config) SSHConfigFunc() func(multistep.StateBag) (*ssh.ClientConfig, er
 			privateKeys = append(privateKeys, c.SSHPrivateKey)
 		}
 
+		certPath := ""
+		if c.SSHCertificateFile != "" {
+			var err error
+			certPath, err = packer.ExpandUser(c.SSHCertificateFile)
+			if err != nil {
+				return nil, err
+			}
+		}
+
 		for _, key := range privateKeys {
+
 			signer, err := ssh.ParsePrivateKey(key)
 			if err != nil {
 				return nil, fmt.Errorf("Error on parsing SSH private key: %s", err)
 			}
+
+			if certPath != "" {
+				signer, err = helperssh.ReadCertificate(certPath, signer)
+				if err != nil {
+					return nil, err
+				}
+			}
+
 			sshConfig.Auth = append(sshConfig.Auth, ssh.PublicKeys(signer))
 		}
 
@@ -411,6 +460,11 @@ func (c *Config) prepareSSH(ctx *interpolate.Context) []error {
 		if c.SSHBastionPrivateKeyFile == "" && c.SSHPrivateKeyFile != "" {
 			c.SSHBastionPrivateKeyFile = c.SSHPrivateKeyFile
 		}
+
+		if c.SSHBastionCertificateFile == "" && c.SSHCertificateFile != "" {
+			c.SSHBastionCertificateFile = c.SSHCertificateFile
+		}
+
 	}
 
 	if c.SSHProxyHost != "" {
@@ -442,9 +496,23 @@ func (c *Config) prepareSSH(ctx *interpolate.Context) []error {
 		} else if _, err := os.Stat(path); err != nil {
 			errs = append(errs, fmt.Errorf(
 				"ssh_private_key_file is invalid: %s", err))
-		} else if _, err := helperssh.FileSigner(path); err != nil {
-			errs = append(errs, fmt.Errorf(
-				"ssh_private_key_file is invalid: %s", err))
+		} else {
+			if c.SSHCertificateFile != "" {
+				certPath, err := packer.ExpandUser(c.SSHCertificateFile)
+				if err != nil {
+					errs = append(errs, fmt.Errorf("invalid identity certificate: #{err}"))
+				}
+
+				if _, err := helperssh.FileSignerWithCert(path, certPath); err != nil {
+					errs = append(errs, fmt.Errorf(
+						"ssh_private_key_file is invalid: %s", err))
+				}
+			} else {
+				if _, err := helperssh.FileSigner(path); err != nil {
+					errs = append(errs, fmt.Errorf(
+						"ssh_private_key_file is invalid: %s", err))
+				}
+			}
 		}
 	}
 
@@ -460,9 +528,22 @@ func (c *Config) prepareSSH(ctx *interpolate.Context) []error {
 			} else if _, err := os.Stat(path); err != nil {
 				errs = append(errs, fmt.Errorf(
 					"ssh_bastion_private_key_file is invalid: %s", err))
-			} else if _, err := helperssh.FileSigner(path); err != nil {
-				errs = append(errs, fmt.Errorf(
-					"ssh_bastion_private_key_file is invalid: %s", err))
+			} else {
+				if c.SSHBastionCertificateFile != "" {
+					certPath, err := packer.ExpandUser(c.SSHBastionCertificateFile)
+					if err != nil {
+						errs = append(errs, fmt.Errorf("invalid identity certificate: #{err}"))
+					}
+					if _, err := helperssh.FileSignerWithCert(path, certPath); err != nil {
+						errs = append(errs, fmt.Errorf(
+							"ssh_bastion_private_key_file is invalid: %s", err))
+					}
+				} else {
+					if _, err := helperssh.FileSigner(path); err != nil {
+						errs = append(errs, fmt.Errorf(
+							"ssh_bastion_private_key_file is invalid: %s", err))
+					}
+				}
 			}
 		}
 	}

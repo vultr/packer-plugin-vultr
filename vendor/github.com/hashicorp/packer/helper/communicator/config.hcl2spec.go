@@ -15,14 +15,17 @@ type FlatConfig struct {
 	SSHPort                   *int     `mapstructure:"ssh_port" cty:"ssh_port" hcl:"ssh_port"`
 	SSHUsername               *string  `mapstructure:"ssh_username" cty:"ssh_username" hcl:"ssh_username"`
 	SSHPassword               *string  `mapstructure:"ssh_password" cty:"ssh_password" hcl:"ssh_password"`
-	SSHKeyPairName            *string  `mapstructure:"ssh_keypair_name" cty:"ssh_keypair_name" hcl:"ssh_keypair_name"`
-	SSHTemporaryKeyPairName   *string  `mapstructure:"temporary_key_pair_name" cty:"temporary_key_pair_name" hcl:"temporary_key_pair_name"`
+	SSHKeyPairName            *string  `mapstructure:"ssh_keypair_name" undocumented:"true" cty:"ssh_keypair_name" hcl:"ssh_keypair_name"`
+	SSHTemporaryKeyPairName   *string  `mapstructure:"temporary_key_pair_name" undocumented:"true" cty:"temporary_key_pair_name" hcl:"temporary_key_pair_name"`
+	SSHCiphers                []string `mapstructure:"ssh_ciphers" cty:"ssh_ciphers" hcl:"ssh_ciphers"`
 	SSHClearAuthorizedKeys    *bool    `mapstructure:"ssh_clear_authorized_keys" cty:"ssh_clear_authorized_keys" hcl:"ssh_clear_authorized_keys"`
-	SSHPrivateKeyFile         *string  `mapstructure:"ssh_private_key_file" cty:"ssh_private_key_file" hcl:"ssh_private_key_file"`
+	SSHKEXAlgos               []string `mapstructure:"ssh_key_exchange_algorithms" cty:"ssh_key_exchange_algorithms" hcl:"ssh_key_exchange_algorithms"`
+	SSHPrivateKeyFile         *string  `mapstructure:"ssh_private_key_file" undocumented:"true" cty:"ssh_private_key_file" hcl:"ssh_private_key_file"`
+	SSHCertificateFile        *string  `mapstructure:"ssh_certificate_file" cty:"ssh_certificate_file" hcl:"ssh_certificate_file"`
 	SSHPty                    *bool    `mapstructure:"ssh_pty" cty:"ssh_pty" hcl:"ssh_pty"`
 	SSHTimeout                *string  `mapstructure:"ssh_timeout" cty:"ssh_timeout" hcl:"ssh_timeout"`
 	SSHWaitTimeout            *string  `mapstructure:"ssh_wait_timeout" undocumented:"true" cty:"ssh_wait_timeout" hcl:"ssh_wait_timeout"`
-	SSHAgentAuth              *bool    `mapstructure:"ssh_agent_auth" cty:"ssh_agent_auth" hcl:"ssh_agent_auth"`
+	SSHAgentAuth              *bool    `mapstructure:"ssh_agent_auth" undocumented:"true" cty:"ssh_agent_auth" hcl:"ssh_agent_auth"`
 	SSHDisableAgentForwarding *bool    `mapstructure:"ssh_disable_agent_forwarding" cty:"ssh_disable_agent_forwarding" hcl:"ssh_disable_agent_forwarding"`
 	SSHHandshakeAttempts      *int     `mapstructure:"ssh_handshake_attempts" cty:"ssh_handshake_attempts" hcl:"ssh_handshake_attempts"`
 	SSHBastionHost            *string  `mapstructure:"ssh_bastion_host" cty:"ssh_bastion_host" hcl:"ssh_bastion_host"`
@@ -32,6 +35,7 @@ type FlatConfig struct {
 	SSHBastionPassword        *string  `mapstructure:"ssh_bastion_password" cty:"ssh_bastion_password" hcl:"ssh_bastion_password"`
 	SSHBastionInteractive     *bool    `mapstructure:"ssh_bastion_interactive" cty:"ssh_bastion_interactive" hcl:"ssh_bastion_interactive"`
 	SSHBastionPrivateKeyFile  *string  `mapstructure:"ssh_bastion_private_key_file" cty:"ssh_bastion_private_key_file" hcl:"ssh_bastion_private_key_file"`
+	SSHBastionCertificateFile *string  `mapstructure:"ssh_bastion_certificate_file" cty:"ssh_bastion_certificate_file" hcl:"ssh_bastion_certificate_file"`
 	SSHFileTransferMethod     *string  `mapstructure:"ssh_file_transfer_method" cty:"ssh_file_transfer_method" hcl:"ssh_file_transfer_method"`
 	SSHProxyHost              *string  `mapstructure:"ssh_proxy_host" cty:"ssh_proxy_host" hcl:"ssh_proxy_host"`
 	SSHProxyPort              *int     `mapstructure:"ssh_proxy_port" cty:"ssh_proxy_port" hcl:"ssh_proxy_port"`
@@ -41,11 +45,12 @@ type FlatConfig struct {
 	SSHReadWriteTimeout       *string  `mapstructure:"ssh_read_write_timeout" cty:"ssh_read_write_timeout" hcl:"ssh_read_write_timeout"`
 	SSHRemoteTunnels          []string `mapstructure:"ssh_remote_tunnels" cty:"ssh_remote_tunnels" hcl:"ssh_remote_tunnels"`
 	SSHLocalTunnels           []string `mapstructure:"ssh_local_tunnels" cty:"ssh_local_tunnels" hcl:"ssh_local_tunnels"`
-	SSHPublicKey              []byte   `mapstructure:"ssh_public_key" cty:"ssh_public_key" hcl:"ssh_public_key"`
-	SSHPrivateKey             []byte   `mapstructure:"ssh_private_key" cty:"ssh_private_key" hcl:"ssh_private_key"`
+	SSHPublicKey              []byte   `mapstructure:"ssh_public_key" undocumented:"true" cty:"ssh_public_key" hcl:"ssh_public_key"`
+	SSHPrivateKey             []byte   `mapstructure:"ssh_private_key" undocumented:"true" cty:"ssh_private_key" hcl:"ssh_private_key"`
 	WinRMUser                 *string  `mapstructure:"winrm_username" cty:"winrm_username" hcl:"winrm_username"`
 	WinRMPassword             *string  `mapstructure:"winrm_password" cty:"winrm_password" hcl:"winrm_password"`
 	WinRMHost                 *string  `mapstructure:"winrm_host" cty:"winrm_host" hcl:"winrm_host"`
+	WinRMNoProxy              *bool    `mapstructure:"winrm_no_proxy" cty:"winrm_no_proxy" hcl:"winrm_no_proxy"`
 	WinRMPort                 *int     `mapstructure:"winrm_port" cty:"winrm_port" hcl:"winrm_port"`
 	WinRMTimeout              *string  `mapstructure:"winrm_timeout" cty:"winrm_timeout" hcl:"winrm_timeout"`
 	WinRMUseSSL               *bool    `mapstructure:"winrm_use_ssl" cty:"winrm_use_ssl" hcl:"winrm_use_ssl"`
@@ -73,8 +78,11 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"ssh_password":                 &hcldec.AttrSpec{Name: "ssh_password", Type: cty.String, Required: false},
 		"ssh_keypair_name":             &hcldec.AttrSpec{Name: "ssh_keypair_name", Type: cty.String, Required: false},
 		"temporary_key_pair_name":      &hcldec.AttrSpec{Name: "temporary_key_pair_name", Type: cty.String, Required: false},
+		"ssh_ciphers":                  &hcldec.AttrSpec{Name: "ssh_ciphers", Type: cty.List(cty.String), Required: false},
 		"ssh_clear_authorized_keys":    &hcldec.AttrSpec{Name: "ssh_clear_authorized_keys", Type: cty.Bool, Required: false},
+		"ssh_key_exchange_algorithms":  &hcldec.AttrSpec{Name: "ssh_key_exchange_algorithms", Type: cty.List(cty.String), Required: false},
 		"ssh_private_key_file":         &hcldec.AttrSpec{Name: "ssh_private_key_file", Type: cty.String, Required: false},
+		"ssh_certificate_file":         &hcldec.AttrSpec{Name: "ssh_certificate_file", Type: cty.String, Required: false},
 		"ssh_pty":                      &hcldec.AttrSpec{Name: "ssh_pty", Type: cty.Bool, Required: false},
 		"ssh_timeout":                  &hcldec.AttrSpec{Name: "ssh_timeout", Type: cty.String, Required: false},
 		"ssh_wait_timeout":             &hcldec.AttrSpec{Name: "ssh_wait_timeout", Type: cty.String, Required: false},
@@ -88,6 +96,7 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"ssh_bastion_password":         &hcldec.AttrSpec{Name: "ssh_bastion_password", Type: cty.String, Required: false},
 		"ssh_bastion_interactive":      &hcldec.AttrSpec{Name: "ssh_bastion_interactive", Type: cty.Bool, Required: false},
 		"ssh_bastion_private_key_file": &hcldec.AttrSpec{Name: "ssh_bastion_private_key_file", Type: cty.String, Required: false},
+		"ssh_bastion_certificate_file": &hcldec.AttrSpec{Name: "ssh_bastion_certificate_file", Type: cty.String, Required: false},
 		"ssh_file_transfer_method":     &hcldec.AttrSpec{Name: "ssh_file_transfer_method", Type: cty.String, Required: false},
 		"ssh_proxy_host":               &hcldec.AttrSpec{Name: "ssh_proxy_host", Type: cty.String, Required: false},
 		"ssh_proxy_port":               &hcldec.AttrSpec{Name: "ssh_proxy_port", Type: cty.Number, Required: false},
@@ -102,6 +111,7 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"winrm_username":               &hcldec.AttrSpec{Name: "winrm_username", Type: cty.String, Required: false},
 		"winrm_password":               &hcldec.AttrSpec{Name: "winrm_password", Type: cty.String, Required: false},
 		"winrm_host":                   &hcldec.AttrSpec{Name: "winrm_host", Type: cty.String, Required: false},
+		"winrm_no_proxy":               &hcldec.AttrSpec{Name: "winrm_no_proxy", Type: cty.Bool, Required: false},
 		"winrm_port":                   &hcldec.AttrSpec{Name: "winrm_port", Type: cty.Number, Required: false},
 		"winrm_timeout":                &hcldec.AttrSpec{Name: "winrm_timeout", Type: cty.String, Required: false},
 		"winrm_use_ssl":                &hcldec.AttrSpec{Name: "winrm_use_ssl", Type: cty.Bool, Required: false},
@@ -118,14 +128,17 @@ type FlatSSH struct {
 	SSHPort                   *int     `mapstructure:"ssh_port" cty:"ssh_port" hcl:"ssh_port"`
 	SSHUsername               *string  `mapstructure:"ssh_username" cty:"ssh_username" hcl:"ssh_username"`
 	SSHPassword               *string  `mapstructure:"ssh_password" cty:"ssh_password" hcl:"ssh_password"`
-	SSHKeyPairName            *string  `mapstructure:"ssh_keypair_name" cty:"ssh_keypair_name" hcl:"ssh_keypair_name"`
-	SSHTemporaryKeyPairName   *string  `mapstructure:"temporary_key_pair_name" cty:"temporary_key_pair_name" hcl:"temporary_key_pair_name"`
+	SSHKeyPairName            *string  `mapstructure:"ssh_keypair_name" undocumented:"true" cty:"ssh_keypair_name" hcl:"ssh_keypair_name"`
+	SSHTemporaryKeyPairName   *string  `mapstructure:"temporary_key_pair_name" undocumented:"true" cty:"temporary_key_pair_name" hcl:"temporary_key_pair_name"`
+	SSHCiphers                []string `mapstructure:"ssh_ciphers" cty:"ssh_ciphers" hcl:"ssh_ciphers"`
 	SSHClearAuthorizedKeys    *bool    `mapstructure:"ssh_clear_authorized_keys" cty:"ssh_clear_authorized_keys" hcl:"ssh_clear_authorized_keys"`
-	SSHPrivateKeyFile         *string  `mapstructure:"ssh_private_key_file" cty:"ssh_private_key_file" hcl:"ssh_private_key_file"`
+	SSHKEXAlgos               []string `mapstructure:"ssh_key_exchange_algorithms" cty:"ssh_key_exchange_algorithms" hcl:"ssh_key_exchange_algorithms"`
+	SSHPrivateKeyFile         *string  `mapstructure:"ssh_private_key_file" undocumented:"true" cty:"ssh_private_key_file" hcl:"ssh_private_key_file"`
+	SSHCertificateFile        *string  `mapstructure:"ssh_certificate_file" cty:"ssh_certificate_file" hcl:"ssh_certificate_file"`
 	SSHPty                    *bool    `mapstructure:"ssh_pty" cty:"ssh_pty" hcl:"ssh_pty"`
 	SSHTimeout                *string  `mapstructure:"ssh_timeout" cty:"ssh_timeout" hcl:"ssh_timeout"`
 	SSHWaitTimeout            *string  `mapstructure:"ssh_wait_timeout" undocumented:"true" cty:"ssh_wait_timeout" hcl:"ssh_wait_timeout"`
-	SSHAgentAuth              *bool    `mapstructure:"ssh_agent_auth" cty:"ssh_agent_auth" hcl:"ssh_agent_auth"`
+	SSHAgentAuth              *bool    `mapstructure:"ssh_agent_auth" undocumented:"true" cty:"ssh_agent_auth" hcl:"ssh_agent_auth"`
 	SSHDisableAgentForwarding *bool    `mapstructure:"ssh_disable_agent_forwarding" cty:"ssh_disable_agent_forwarding" hcl:"ssh_disable_agent_forwarding"`
 	SSHHandshakeAttempts      *int     `mapstructure:"ssh_handshake_attempts" cty:"ssh_handshake_attempts" hcl:"ssh_handshake_attempts"`
 	SSHBastionHost            *string  `mapstructure:"ssh_bastion_host" cty:"ssh_bastion_host" hcl:"ssh_bastion_host"`
@@ -135,6 +148,7 @@ type FlatSSH struct {
 	SSHBastionPassword        *string  `mapstructure:"ssh_bastion_password" cty:"ssh_bastion_password" hcl:"ssh_bastion_password"`
 	SSHBastionInteractive     *bool    `mapstructure:"ssh_bastion_interactive" cty:"ssh_bastion_interactive" hcl:"ssh_bastion_interactive"`
 	SSHBastionPrivateKeyFile  *string  `mapstructure:"ssh_bastion_private_key_file" cty:"ssh_bastion_private_key_file" hcl:"ssh_bastion_private_key_file"`
+	SSHBastionCertificateFile *string  `mapstructure:"ssh_bastion_certificate_file" cty:"ssh_bastion_certificate_file" hcl:"ssh_bastion_certificate_file"`
 	SSHFileTransferMethod     *string  `mapstructure:"ssh_file_transfer_method" cty:"ssh_file_transfer_method" hcl:"ssh_file_transfer_method"`
 	SSHProxyHost              *string  `mapstructure:"ssh_proxy_host" cty:"ssh_proxy_host" hcl:"ssh_proxy_host"`
 	SSHProxyPort              *int     `mapstructure:"ssh_proxy_port" cty:"ssh_proxy_port" hcl:"ssh_proxy_port"`
@@ -144,8 +158,8 @@ type FlatSSH struct {
 	SSHReadWriteTimeout       *string  `mapstructure:"ssh_read_write_timeout" cty:"ssh_read_write_timeout" hcl:"ssh_read_write_timeout"`
 	SSHRemoteTunnels          []string `mapstructure:"ssh_remote_tunnels" cty:"ssh_remote_tunnels" hcl:"ssh_remote_tunnels"`
 	SSHLocalTunnels           []string `mapstructure:"ssh_local_tunnels" cty:"ssh_local_tunnels" hcl:"ssh_local_tunnels"`
-	SSHPublicKey              []byte   `mapstructure:"ssh_public_key" cty:"ssh_public_key" hcl:"ssh_public_key"`
-	SSHPrivateKey             []byte   `mapstructure:"ssh_private_key" cty:"ssh_private_key" hcl:"ssh_private_key"`
+	SSHPublicKey              []byte   `mapstructure:"ssh_public_key" undocumented:"true" cty:"ssh_public_key" hcl:"ssh_public_key"`
+	SSHPrivateKey             []byte   `mapstructure:"ssh_private_key" undocumented:"true" cty:"ssh_private_key" hcl:"ssh_private_key"`
 }
 
 // FlatMapstructure returns a new FlatSSH.
@@ -166,8 +180,11 @@ func (*FlatSSH) HCL2Spec() map[string]hcldec.Spec {
 		"ssh_password":                 &hcldec.AttrSpec{Name: "ssh_password", Type: cty.String, Required: false},
 		"ssh_keypair_name":             &hcldec.AttrSpec{Name: "ssh_keypair_name", Type: cty.String, Required: false},
 		"temporary_key_pair_name":      &hcldec.AttrSpec{Name: "temporary_key_pair_name", Type: cty.String, Required: false},
+		"ssh_ciphers":                  &hcldec.AttrSpec{Name: "ssh_ciphers", Type: cty.List(cty.String), Required: false},
 		"ssh_clear_authorized_keys":    &hcldec.AttrSpec{Name: "ssh_clear_authorized_keys", Type: cty.Bool, Required: false},
+		"ssh_key_exchange_algorithms":  &hcldec.AttrSpec{Name: "ssh_key_exchange_algorithms", Type: cty.List(cty.String), Required: false},
 		"ssh_private_key_file":         &hcldec.AttrSpec{Name: "ssh_private_key_file", Type: cty.String, Required: false},
+		"ssh_certificate_file":         &hcldec.AttrSpec{Name: "ssh_certificate_file", Type: cty.String, Required: false},
 		"ssh_pty":                      &hcldec.AttrSpec{Name: "ssh_pty", Type: cty.Bool, Required: false},
 		"ssh_timeout":                  &hcldec.AttrSpec{Name: "ssh_timeout", Type: cty.String, Required: false},
 		"ssh_wait_timeout":             &hcldec.AttrSpec{Name: "ssh_wait_timeout", Type: cty.String, Required: false},
@@ -181,6 +198,7 @@ func (*FlatSSH) HCL2Spec() map[string]hcldec.Spec {
 		"ssh_bastion_password":         &hcldec.AttrSpec{Name: "ssh_bastion_password", Type: cty.String, Required: false},
 		"ssh_bastion_interactive":      &hcldec.AttrSpec{Name: "ssh_bastion_interactive", Type: cty.Bool, Required: false},
 		"ssh_bastion_private_key_file": &hcldec.AttrSpec{Name: "ssh_bastion_private_key_file", Type: cty.String, Required: false},
+		"ssh_bastion_certificate_file": &hcldec.AttrSpec{Name: "ssh_bastion_certificate_file", Type: cty.String, Required: false},
 		"ssh_file_transfer_method":     &hcldec.AttrSpec{Name: "ssh_file_transfer_method", Type: cty.String, Required: false},
 		"ssh_proxy_host":               &hcldec.AttrSpec{Name: "ssh_proxy_host", Type: cty.String, Required: false},
 		"ssh_proxy_port":               &hcldec.AttrSpec{Name: "ssh_proxy_port", Type: cty.Number, Required: false},
@@ -202,6 +220,7 @@ type FlatWinRM struct {
 	WinRMUser     *string `mapstructure:"winrm_username" cty:"winrm_username" hcl:"winrm_username"`
 	WinRMPassword *string `mapstructure:"winrm_password" cty:"winrm_password" hcl:"winrm_password"`
 	WinRMHost     *string `mapstructure:"winrm_host" cty:"winrm_host" hcl:"winrm_host"`
+	WinRMNoProxy  *bool   `mapstructure:"winrm_no_proxy" cty:"winrm_no_proxy" hcl:"winrm_no_proxy"`
 	WinRMPort     *int    `mapstructure:"winrm_port" cty:"winrm_port" hcl:"winrm_port"`
 	WinRMTimeout  *string `mapstructure:"winrm_timeout" cty:"winrm_timeout" hcl:"winrm_timeout"`
 	WinRMUseSSL   *bool   `mapstructure:"winrm_use_ssl" cty:"winrm_use_ssl" hcl:"winrm_use_ssl"`
@@ -224,6 +243,7 @@ func (*FlatWinRM) HCL2Spec() map[string]hcldec.Spec {
 		"winrm_username": &hcldec.AttrSpec{Name: "winrm_username", Type: cty.String, Required: false},
 		"winrm_password": &hcldec.AttrSpec{Name: "winrm_password", Type: cty.String, Required: false},
 		"winrm_host":     &hcldec.AttrSpec{Name: "winrm_host", Type: cty.String, Required: false},
+		"winrm_no_proxy": &hcldec.AttrSpec{Name: "winrm_no_proxy", Type: cty.Bool, Required: false},
 		"winrm_port":     &hcldec.AttrSpec{Name: "winrm_port", Type: cty.Number, Required: false},
 		"winrm_timeout":  &hcldec.AttrSpec{Name: "winrm_timeout", Type: cty.String, Required: false},
 		"winrm_use_ssl":  &hcldec.AttrSpec{Name: "winrm_use_ssl", Type: cty.Bool, Required: false},
