@@ -1,5 +1,11 @@
 # Change Log
 
+## [v1.0.11](https://github.com/vultr/packer-builder-vultr/compare/v1.0.10..v1.0.11) (2020-09-01)
+### Dependencies
+- packer 1.6.1 -> 1.6.2 [#59](https://github.com/vultr/packer-builder-vultr/pull/59)
+- zclconf/go-cty 1.5.1 -> 1.6.0 [#58](https://github.com/vultr/packer-builder-vultr/pull/58)
+- GoVultr v0.4.2 -> v0.5.0 [#56](https://github.com/vultr/packer-builder-vultr/pull/56)
+
 ## [v1.0.10](https://github.com/vultr/packer-builder-vultr/compare/v1.0.9..v1.0.10) (2020-07-31)
 ### Dependencies 
 - packer 1.5.6 -> 1.6.1 [#54](https://github.com/vultr/packer-builder-vultr/pull/54)
