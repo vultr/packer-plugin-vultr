@@ -5,6 +5,7 @@ package secretsmanager
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -31,14 +32,15 @@ func New(config *AWSConfig) *Client {
 
 func (c *Client) newSession(config *AWSConfig) *session.Session {
 	// Initialize config with error verbosity
-	sess := aws.NewConfig().WithCredentialsChainVerboseErrors(true)
+	sessConfig := aws.NewConfig().WithCredentialsChainVerboseErrors(true)
 
 	if config.Region != "" {
-		sess = sess.WithRegion(config.Region)
+		sessConfig = sessConfig.WithRegion(config.Region)
 	}
 
 	opts := session.Options{
-		Config: *sess,
+		SharedConfigState: session.SharedConfigEnable,
+		Config:            *sessConfig,
 	}
 
 	return session.Must(session.NewSessionWithOptions(opts))
@@ -75,8 +77,12 @@ func (c *Client) GetSecret(spec *SecretSpec) (string, error) {
 
 func getSecretValue(s *SecretString, spec *SecretSpec) (string, error) {
 	var secretValue map[string]string
-
 	blob := []byte(s.SecretString)
+
+	//For those plaintext secrets just return the value
+	if json.Valid(blob) != true {
+		return s.SecretString, nil
+	}
 
 	err := json.Unmarshal(blob, &secretValue)
 	if err != nil {
@@ -98,5 +104,5 @@ func getSecretValue(s *SecretString, spec *SecretSpec) (string, error) {
 		return v, nil
 	}
 
-	return "", errors.New("No secret found")
+	return "", fmt.Errorf("No secret found for key %q", spec.Key)
 }
