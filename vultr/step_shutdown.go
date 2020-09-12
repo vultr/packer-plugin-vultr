@@ -2,11 +2,11 @@ package vultr
 
 import (
 	"context"
-	"github.com/vultr/govultr"
 	"time"
 
 	"github.com/hashicorp/packer/helper/multistep"
 	"github.com/hashicorp/packer/packer"
+	"github.com/vultr/govultr/v2"
 )
 
 // shutdown delays

@@ -11,9 +11,9 @@ func testConfig() map[string]interface{} {
 	return map[string]interface{}{
 		"api_key":              "test-api-key",
 		"snapshot_description": "packer-test-snapshot",
-		"region_id":            "1",
+		"region_id":            "ewr",
 		"os_id":                "352",
-		"plan_id":              "403",
+		"plan_id":              "vc2-1c-1gb",
 		"ssh_username":         "root",
 	}
 }
@@ -70,7 +70,7 @@ func TestBuilderPrepare_RegionID(t *testing.T) {
 		t.Fatalf("should error")
 	}
 
-	expected := 1
+	expected := "ewr"
 
 	// Test set
 	config["region_id"] = expected
@@ -84,7 +84,7 @@ func TestBuilderPrepare_RegionID(t *testing.T) {
 	}
 
 	if b.config.RegionID != expected {
-		t.Errorf("found %d, expected %d", b.config.RegionID, expected)
+		t.Errorf("found %s, expected %s", b.config.RegionID, expected)
 	}
 }
 
@@ -134,7 +134,7 @@ func TestBuilderPrepare_PlanID(t *testing.T) {
 		t.Fatalf("should error")
 	}
 
-	expected := 403
+	expected := "vc2-1c-1gb"
 
 	// Test set
 	config["plan_id"] = expected
@@ -148,7 +148,7 @@ func TestBuilderPrepare_PlanID(t *testing.T) {
 	}
 
 	if b.config.PlanID != expected {
-		t.Errorf("found %d, expected %d", b.config.PlanID, expected)
+		t.Errorf("found %s, expected %s", b.config.PlanID, expected)
 	}
 }
 

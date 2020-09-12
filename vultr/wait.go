@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/vultr/govultr"
+	"github.com/vultr/govultr/v2"
 )
 
 // waitForState simply blocks until the server is in a state we expect,
@@ -20,7 +20,7 @@ func waitForServerState(state string, power string, serverID string, client *gov
 		for {
 			attempts++
 			log.Printf("Checking server status... (attempt: %d)", attempts)
-			serverInfo, err := client.Server.GetServer(context.Background(), serverID)
+			serverInfo, err := client.Instance.Get(context.Background(), serverID)
 			if err != nil {
 				result <- err
 				return
@@ -47,7 +47,7 @@ func waitForServerState(state string, power string, serverID string, client *gov
 	case err := <-result:
 		return err
 	case <-time.After(timeout):
-		return fmt.Errorf("Timeout while waiting to for server")
+		return fmt.Errorf("timeout while waiting to for server")
 	}
 }
 
@@ -89,6 +89,6 @@ func waitForSnapshotState(state string, snapshotID string, client *govultr.Clien
 	case err := <-result:
 		return err
 	case <-time.After(timeout):
-		return fmt.Errorf("Timeout while waiting to for snapshot")
+		return fmt.Errorf("timeout while waiting to for snapshot")
 	}
 }

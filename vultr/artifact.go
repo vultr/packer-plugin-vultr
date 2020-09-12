@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/vultr/govultr"
+	"github.com/vultr/govultr/v2"
 )
 
 type Artifact struct {
