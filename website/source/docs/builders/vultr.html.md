@@ -39,11 +39,11 @@ builder.
 
 -   `os_id` (int) - The id of the os to use. This will be the OS that will be used to launch a new instance and provision it. See <a href="https://www.vultr.com/api/#os_os_lists" class="uri">https://www.vultr.com/api/#os_os_list</a>.
 
--   `region_id` (int) - The id of the region to launch the instance in. See
-    <a href="https://www.vultr.com/api/#regions_region_availability" class="uri">https://www.vultr.com/api/#regions_region_availability</a>
+-   `region_id` (string) - The id of the region to launch the instance in. See
+    <a href="https://www.vultr.com/api/v2/#operation/list-available-compute-region" class="uri">https://www.vultr.com/api/v2/#operation/list-available-compute-region</a>
     
--   `plan_id` (int) - The id of the plan you wish to use. See
-    <a href="https://www.vultr.com/api/#plans_plan_list" class="uri">https://www.vultr.com/api/#plans_plan_list</a>
+-   `plan_id` (string) - The id of the plan you wish to use. See
+    <a href="https://www.vultr.com/api/v2/#tag/plans" class="uri">https://www.vultr.com/api/v2/#tag/plans</a>
 
 ### Optional:
 
@@ -53,9 +53,9 @@ builder.
 
 -   `iso_id` (int) - If you've selected the 'custom' (OS 159) operating system, this is the ID of a specific ISO to mount during the deployment.
 
--   `app_id` (string) - If launching an application (OSID 186), this is the APPID to launch.
+-   `app_id` (int) - If launching an application (OSID 186), this is the APPID to launch.
 
--   `enable_ipv6` (boolean) - IPv6 subnet will be assigned to the machine.
+-   `enable_ipv6` (bool) - IPv6 subnet will be assigned to the machine.
 
 -   `enable_private_network` (bool) - Enables private networking support to the new server.
 
@@ -78,7 +78,8 @@ builder.
 Here is a Vultr builder example. The vultr_api_key should be replaced with an actual Vultr API Key
 
 ``` json
-    "variables": {
+{
+ "variables": {
         "vultr_api_key": "{{ env `VULTR_API_KEY` }}"
     },
     "builders": [{
@@ -90,5 +91,6 @@ Here is a Vultr builder example. The vultr_api_key should be replaced with an ac
         "os_id": 127,
         "ssh_username": "root",
         "state_timeout": "15m"
-    }],
+    }]
+}
 ```
