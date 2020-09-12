@@ -3,7 +3,7 @@ description: |
     The vultr Packer builder is able to create new images for use with
     Vultr. The builder takes a source image, runs any provisioning necessary
     on the image after launching it, then snapshots it into a reusable image. This
-    reusable image can then be used as the foundation of new servers that are
+    reusable image can be then used as the foundation of new servers that are
     launched within Vultr.
 layout: docs
 page_title: 'Vultr - Builders'
@@ -17,7 +17,7 @@ Type: `vultr`
 The `vultr` Packer builder is able to create new images for use with
 [Vultr](https://www.vultr.com). The builder takes a source image,
 runs any provisioning necessary on the image after launching it, then snapshots
-it into a reusable image. This reusable image can then be used as the
+it into a reusable image. This reusable image can be then used as the
 foundation of new servers that are launched within Vultr.
 
 The builder does *not* manage images. Once it creates an image, it is up to you
@@ -35,7 +35,7 @@ builder.
 
 ### Required:
 
--   `api_key` (string) - The Vultr API Key to use to access your account.
+-   `api_key` (string) - The Vultr API Key to access your account.
 
 -   `os_id` (int) - The id of the os to use. This will be the OS that will be used to launch a new instance and provision it. See <a href="https://www.vultr.com/api/#os_os_lists" class="uri">https://www.vultr.com/api/#os_os_list</a>.
 
@@ -71,7 +71,7 @@ builder.
 
 -   `tag` (string) - The tag to assign to this server.
 
--   `state_timeout` (string) - A duration to wait for the instance to boot or a snapshot to be taken. Must be a string in [golang Duration-parsable format](https://golang.org/pkg/time/#ParseDuration), like "10m" or "30s". 
+-   `state_timeout` (string) - A duration to wait for the instance to boot, or a snapshot to be taken. Must be a string in [golang Duration-parsable format](https://golang.org/pkg/time/#ParseDuration), like "10m" or "30s". 
 
 ## Basic Example
 
