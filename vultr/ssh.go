@@ -26,7 +26,7 @@ func keyboardInteractive(password string) ssh.KeyboardInteractiveChallenge {
 func sshConfig(state multistep.StateBag) (*ssh.ClientConfig, error) {
 	b := state.Get("config").(*Config)
 	c := b.Comm
-	server := state.Get("server").(*govultr.Instance)
+	defaultPassword := state.Get("default_password").(string)
 
 	config := &ssh.ClientConfig{
 		User: "root",
@@ -39,7 +39,7 @@ func sshConfig(state multistep.StateBag) (*ssh.ClientConfig, error) {
 	if b.OSID == SnapshotOSID || b.OSID == CustomOSID {
 		config.Auth = append(config.Auth, ssh.Password(c.SSHPassword), keyboardInteractive(c.SSHPassword))
 	} else {
-		config.Auth = append(config.Auth, ssh.Password(server.DefaultPassword), keyboardInteractive(server.DefaultPassword))
+		config.Auth = append(config.Auth, ssh.Password(defaultPassword), keyboardInteractive(defaultPassword))
 	}
 
 	// Please note that here the private ssh key is completely independent

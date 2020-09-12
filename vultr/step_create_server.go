@@ -49,6 +49,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		ui.Error(err.Error())
 		return multistep.ActionHalt
 	}
+	state.Put("default_password", instance.DefaultPassword)
 
 	// wait until server is running
 	ui.Say(fmt.Sprintf("Waiting %ds for server %s to power on...",
