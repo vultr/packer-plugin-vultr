@@ -257,7 +257,7 @@ github.com/ulikunitz/xz/internal/xlog
 github.com/ulikunitz/xz/lzma
 # github.com/vultr/govultr v0.5.0
 github.com/vultr/govultr
-# github.com/zclconf/go-cty v1.6.0
+# github.com/zclconf/go-cty v1.6.1
 github.com/zclconf/go-cty/cty
 github.com/zclconf/go-cty/cty/convert
 github.com/zclconf/go-cty/cty/function
