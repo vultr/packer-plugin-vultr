@@ -33,7 +33,7 @@ github.com/agext/levenshtein
 github.com/apparentlymart/go-textseg/v12/textseg
 # github.com/armon/go-metrics v0.0.0-20190430140413-ec5e00d3c878
 github.com/armon/go-metrics
-# github.com/aws/aws-sdk-go v1.30.8
+# github.com/aws/aws-sdk-go v1.34.26
 github.com/aws/aws-sdk-go/aws
 github.com/aws/aws-sdk-go/aws/arn
 github.com/aws/aws-sdk-go/aws/awserr
@@ -63,6 +63,7 @@ github.com/aws/aws-sdk-go/internal/sdkuri
 github.com/aws/aws-sdk-go/internal/shareddefaults
 github.com/aws/aws-sdk-go/internal/strings
 github.com/aws/aws-sdk-go/internal/sync/singleflight
+github.com/aws/aws-sdk-go/private/checksum
 github.com/aws/aws-sdk-go/private/protocol
 github.com/aws/aws-sdk-go/private/protocol/eventstream
 github.com/aws/aws-sdk-go/private/protocol/eventstream/eventstreamapi
@@ -163,9 +164,10 @@ github.com/hashicorp/hcl/json/token
 github.com/hashicorp/hcl/v2
 github.com/hashicorp/hcl/v2/ext/customdecode
 github.com/hashicorp/hcl/v2/hcldec
-# github.com/hashicorp/packer v1.6.2
+# github.com/hashicorp/packer v1.6.4
 github.com/hashicorp/packer/common
 github.com/hashicorp/packer/common/filelock
+github.com/hashicorp/packer/common/iochan
 github.com/hashicorp/packer/common/net
 github.com/hashicorp/packer/common/random
 github.com/hashicorp/packer/common/retry
@@ -174,6 +176,7 @@ github.com/hashicorp/packer/common/uuid
 github.com/hashicorp/packer/communicator/none
 github.com/hashicorp/packer/communicator/ssh
 github.com/hashicorp/packer/communicator/winrm
+github.com/hashicorp/packer/helper/builder/localexec
 github.com/hashicorp/packer/helper/builder/testing
 github.com/hashicorp/packer/helper/common
 github.com/hashicorp/packer/helper/communicator
