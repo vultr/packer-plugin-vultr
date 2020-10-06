@@ -1,5 +1,9 @@
 # Change Log
 
+## [v1.0.13](https://github.com/vultr/packer-builder-vultr/compare/v1.0.12..v1.0.13) (2020-10-06)
+### Dependencies
+- packer 1.6.2 -> 1.6.4 [#70](https://github.com/vultr/packer-builder-vultr/pull/70)
+
 ## [v1.0.12](https://github.com/vultr/packer-builder-vultr/compare/v1.0.11..v1.0.12) (2020-09-25)
 ### Changes
 - Vultr-packer-builder now uses the core ssh communicator instead of the one that was written [66](https://github.com/vultr/packer-builder-vultr/pull/66)
