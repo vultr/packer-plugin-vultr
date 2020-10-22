@@ -40,7 +40,7 @@ builder.
 -   `os_id` (int) - The id of the os to use. This will be the OS that will be used to launch a new instance and provision it. See <a href="https://www.vultr.com/api/#os_os_lists" class="uri">https://www.vultr.com/api/#os_os_list</a>.
 
 -   `region_id` (int) - The id of the region to launch the instance in. See
-    <a href="https://www.vultr.com/api/#regions_region_availability" class="uri">https://www.vultr.com/api/#regions_region_availability</a>
+    <a href="https://www.vultr.com/api/#regions_region_list" class="uri">https://www.vultr.com/api/#regions_region_list</a>
     
 -   `plan_id` (int) - The id of the plan you wish to use. See
     <a href="https://www.vultr.com/api/#plans_plan_list" class="uri">https://www.vultr.com/api/#plans_plan_list</a>
