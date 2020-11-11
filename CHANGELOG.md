@@ -1,5 +1,9 @@
 # Change Log
 
+## [v1.0.15](https://github.com/vultr/packer-builder-vultr/compare/v1.0.14..v1.0.15) (2020-11-11)
+### Bug Fix
+- missing defer on f.close in ssh debug [#78](https://github.com/vultr/packer-builder-vultr/pull/78)
+
 ## [v1.0.14](https://github.com/vultr/packer-builder-vultr/compare/v1.0.13..v1.0.14) (2020-10-19)
 ### Dependencies
 - hcl 2.6.0 -> 2.7.0 [#72](https://github.com/vultr/packer-builder-vultr/pull/72)
