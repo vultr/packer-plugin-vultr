@@ -1,5 +1,15 @@
 # Change Log
 
+## [v2.0.0](https://github.com/vultr/packer-builder-vultr/compare/v1.0.15..v2.0.0) (2020-11-23)
+### Changes
+GoVultr was updated to v2.0.0 which is running on API v2.
+
+### Dependencies 
+- hcl 2.7.0 -> 2.7.1 [#82](https://github.com/vultr/packer-builder-vultr/pull/82)
+- packer 1.6.4 -> 1.6.5 [#82](https://github.com/vultr/packer-builder-vultr/pull/82)
+- zclconf/go-cty 1.6.1 -> 1.7.0 [#82](https://github.com/vultr/packer-builder-vultr/pull/82)
+- GoVultr v0.5.0 -> v2.0.0 [#81](https://github.com/vultr/packer-builder-vultr/pull/81)
+
 ## [v1.0.15](https://github.com/vultr/packer-builder-vultr/compare/v1.0.14..v1.0.15) (2020-11-11)
 ### Bug Fix
 - missing defer on f.close in ssh debug [#78](https://github.com/vultr/packer-builder-vultr/pull/78)

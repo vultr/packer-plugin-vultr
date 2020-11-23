@@ -1,7 +1,7 @@
 BINARY = packer-builder-vultr
 PLUGIN_DIR = ~/.packer.d/plugins
 GOBIN = $(shell go env GOPATH)/bin
-GORELEASER_VER = 0.110.0
+GORELEASER_VER = 0.147.2
 GOLANGCI_LINT_VER = 1.17.1
 
 .PHONY: default
