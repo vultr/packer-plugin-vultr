@@ -1,5 +1,20 @@
 # Change Log
 
+## [v1.0.14](https://github.com/vultr/packer-builder-vultr/compare/v1.0.13..v1.0.14) (2020-10-19)
+### Dependencies
+- hcl 2.6.0 -> 2.7.0 [#72](https://github.com/vultr/packer-builder-vultr/pull/72)
+
+## [v1.0.13](https://github.com/vultr/packer-builder-vultr/compare/v1.0.12..v1.0.13) (2020-10-06)
+### Dependencies
+- packer 1.6.2 -> 1.6.4 [#70](https://github.com/vultr/packer-builder-vultr/pull/70)
+
+## [v1.0.12](https://github.com/vultr/packer-builder-vultr/compare/v1.0.11..v1.0.12) (2020-09-25)
+### Changes
+- Vultr-packer-builder now uses the core ssh communicator instead of the one that was written [66](https://github.com/vultr/packer-builder-vultr/pull/66)
+
+### Dependencies
+- zclconf/go-cty 1.6.0 -> 1.6.1 [#61](https://github.com/vultr/packer-builder-vultr/pull/61)
+
 ## [v1.0.11](https://github.com/vultr/packer-builder-vultr/compare/v1.0.10..v1.0.11) (2020-09-01)
 ### Dependencies
 - packer 1.6.1 -> 1.6.2 [#59](https://github.com/vultr/packer-builder-vultr/pull/59)
