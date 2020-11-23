@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/packer/helper/communicator"
 	"github.com/hashicorp/packer/helper/multistep"
 	"github.com/hashicorp/packer/packer"
-	"github.com/vultr/govultr"
+	"github.com/vultr/govultr/v2"
 )
 
 // Special OS IDs
@@ -90,7 +90,7 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (ret 
 
 	snapshot := state.Get("snapshot").(*govultr.Snapshot)
 	artifact := &Artifact{
-		SnapshotID:  snapshot.SnapshotID,
+		SnapshotID:  snapshot.ID,
 		Description: snapshot.Description,
 		client:      client,
 	}

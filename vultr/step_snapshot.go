@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"time"
 
+	"golang.org/x/oauth2"
+
 	"github.com/hashicorp/packer/helper/multistep"
 	"github.com/hashicorp/packer/packer"
-	"github.com/vultr/govultr"
+	"github.com/vultr/govultr/v2"
 )
 
 type stepCreateSnapshot struct {
@@ -17,11 +19,17 @@ type stepCreateSnapshot struct {
 func (s *stepCreateSnapshot) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	c := state.Get("config").(*Config)
 	ui := state.Get("ui").(packer.Ui)
-	server := state.Get("server").(*govultr.Server)
+	instance := state.Get("server").(*govultr.Instance)
 
-	s.client = govultr.NewClient(nil, c.APIKey)
+	config := &oauth2.Config{}
+	ts := config.TokenSource(ctx, &oauth2.Token{AccessToken: c.APIKey})
+	s.client = govultr.NewClient(oauth2.NewClient(ctx, ts))
 
-	snapshot, err := s.client.Snapshot.Create(ctx, server.InstanceID, c.Description)
+	snapshotReq := &govultr.SnapshotReq{
+		InstanceID:  instance.ID,
+		Description: c.Description,
+	}
+	snapshot, err := s.client.Snapshot.Create(ctx, snapshotReq)
 	if err != nil {
 		err := fmt.Errorf("Error creating snapshot: %s", err)
 		state.Put("error", err)
@@ -30,9 +38,9 @@ func (s *stepCreateSnapshot) Run(ctx context.Context, state multistep.StateBag) 
 	}
 
 	ui.Say(fmt.Sprintf("Waiting %ds for snapshot %s to complete...",
-		int(c.stateTimeout/time.Second), snapshot.SnapshotID))
+		int(c.stateTimeout/time.Second), snapshot.ID))
 
-	err = waitForSnapshotState("complete", snapshot.SnapshotID, s.client, c.stateTimeout)
+	err = waitForSnapshotState("complete", snapshot.ID, s.client, c.stateTimeout)
 	if err != nil {
 		err := fmt.Errorf("Error waiting for snapshot: %s", err)
 		state.Put("error", err)

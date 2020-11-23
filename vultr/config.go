@@ -21,12 +21,12 @@ type Config struct {
 	APIKey string `mapstructure:"api_key"`
 
 	Description string `mapstructure:"snapshot_description"`
-	RegionID    int    `mapstructure:"region_id"`
-	PlanID      int    `mapstructure:"plan_id"`
+	RegionID    string `mapstructure:"region_id"`
+	PlanID      string `mapstructure:"plan_id"`
 	OSID        int    `mapstructure:"os_id"`
 	SnapshotID  string `mapstructure:"snapshot_id"`
-	ISOID       int    `mapstructure:"iso_id"`
-	AppID       string `mapstructure:"app_id"`
+	ISOID       string `mapstructure:"iso_id"`
+	AppID       int    `mapstructure:"app_id"`
 
 	EnableIPV6           bool     `mapstructure:"enable_ipv6"`
 	EnablePrivateNetwork bool     `mapstructure:"enable_private_network"`
@@ -85,25 +85,25 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 		}
 	}
 
-	if c.RegionID == 0 {
+	if c.RegionID == "" {
 		errs = packer.MultiErrorAppend(errs, errors.New("region_id is required"))
 	}
 
-	if c.PlanID == 0 {
+	if c.PlanID == "" {
 		errs = packer.MultiErrorAppend(errs, errors.New("plan_id is required"))
 	}
 
-	if (c.AppID != "" && c.SnapshotID != "") || (c.AppID != "" && c.ISOID != 0) || (c.SnapshotID != "" && c.ISOID != 0) {
+	if (c.AppID != 0 && c.SnapshotID != "") || (c.AppID != 0 && c.ISOID != "") || (c.SnapshotID != "" && c.ISOID != "") {
 		errs = packer.MultiErrorAppend(errs, errors.New("you can only set one of the following: `app_id`, `snapshot_id`, `iso_id`"))
 	}
 
-	if c.AppID != "" {
+	if c.AppID != 0 {
 		c.OSID = AppOSID
 	}
 	if c.SnapshotID != "" {
 		c.OSID = SnapshotOSID
 	}
-	if c.ISOID != 0 {
+	if c.ISOID != "" {
 		c.OSID = CustomOSID
 	}
 

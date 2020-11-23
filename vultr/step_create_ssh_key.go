@@ -13,9 +13,8 @@ import (
 	"github.com/hashicorp/packer/common/uuid"
 	"github.com/hashicorp/packer/helper/multistep"
 	"github.com/hashicorp/packer/packer"
+	"github.com/vultr/govultr/v2"
 	"golang.org/x/crypto/ssh"
-
-	"github.com/vultr/govultr"
 )
 
 type stepCreateSSHKey struct {
@@ -59,7 +58,11 @@ func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) mult
 
 	name := fmt.Sprintf("packer-%s", uuid.TimeOrderedUUID())
 
-	key, err := s.client.SSHKey.Create(context.TODO(), name, string(config.Comm.SSHPublicKey))
+	sshKeyReq := &govultr.SSHKeyReq{
+		Name:   name,
+		SSHKey: string(config.Comm.SSHPublicKey),
+	}
+	key, err := s.client.SSHKey.Create(context.Background(), sshKeyReq)
 	if err != nil {
 		err := fmt.Errorf("Error creating temporary SSH key: %s", err)
 		state.Put("error", err)
@@ -67,16 +70,16 @@ func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) mult
 		return multistep.ActionHalt
 	}
 
-	s.SSHKeyID = key.SSHKeyID
+	s.SSHKeyID = key.ID
 
-	state.Put("temp_ssh_key_id", key.SSHKeyID)
+	state.Put("temp_ssh_key_id", key.ID)
 
 	// If we're in debug mode, output the private key to the working directory.
 	if s.Debug {
-		ui.Message(fmt.Sprintf("Saving key for debug purposes: %s", s.DebugKeyPath))
+		ui.Message(fmt.Sprintf("saving key for debug purposes: %s", s.DebugKeyPath))
 		f, err := os.Create(s.DebugKeyPath)
 		if err != nil {
-			state.Put("error", fmt.Errorf("Error saving debug key: %s", err))
+			state.Put("error", fmt.Errorf("error saving debug key: %s", err))
 			return multistep.ActionHalt
 		}
 
@@ -84,14 +87,14 @@ func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) mult
 		err = pem.Encode(f, &privBlk)
 		defer f.Close()
 		if err != nil {
-			state.Put("error", fmt.Errorf("Error saving debug key: %s", err))
+			state.Put("error", fmt.Errorf("error saving debug key: %s", err))
 			return multistep.ActionHalt
 		}
 
 		// Chmod it so that it is SSH ready
 		if runtime.GOOS != "windows" {
 			if err := f.Chmod(0600); err != nil {
-				state.Put("error", fmt.Errorf("Error setting permissions of debug key: %s", err))
+				state.Put("error", fmt.Errorf("error setting permissions of debug key: %s", err))
 				return multistep.ActionHalt
 			}
 		}
@@ -109,6 +112,6 @@ func (s *stepCreateSSHKey) Cleanup(state multistep.StateBag) {
 
 	err := s.client.SSHKey.Delete(context.TODO(), s.SSHKeyID)
 	if err != nil {
-		ui.Error(fmt.Sprintf("Error deleting temporary SSH key (%s). Please delete the key manually: %s", s.SSHKeyID, err))
+		ui.Error(fmt.Sprintf("error deleting temporary SSH key (%s) - please delete the key manually: %s", s.SSHKeyID, err))
 	}
 }
