@@ -85,7 +85,7 @@ func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) mult
 
 		// Write out the key
 		err = pem.Encode(f, &privBlk)
-		f.Close()
+		defer f.Close()
 		if err != nil {
 			state.Put("error", fmt.Errorf("error saving debug key: %s", err))
 			return multistep.ActionHalt

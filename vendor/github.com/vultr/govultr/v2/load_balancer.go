@@ -84,8 +84,7 @@ type GenericInfo struct {
 
 // StickySessions represents cookie for your load balancer
 type StickySessions struct {
-	StickySessionsEnabled string `json:"sticky_sessions,omitempty"`
-	CookieName            string `json:"cookie_name,omitempty"`
+	CookieName string `json:"cookie_name,omitempty"`
 }
 
 // ForwardingRules represent a list of forwarding rules
@@ -166,11 +165,7 @@ func (l *LoadBalancerHandler) Update(ctx context.Context, ID string, updateReq *
 		return err
 	}
 
-	if err = l.client.DoWithContext(ctx, req, nil); err != nil {
-		return err
-	}
-
-	return nil
+	return l.client.DoWithContext(ctx, req, nil)
 }
 
 // Delete a load balancer subscription.
@@ -181,11 +176,7 @@ func (l *LoadBalancerHandler) Delete(ctx context.Context, ID string) error {
 		return err
 	}
 
-	if err = l.client.DoWithContext(ctx, req, nil); err != nil {
-		return err
-	}
-
-	return nil
+	return l.client.DoWithContext(ctx, req, nil)
 }
 
 // List all load balancer subscriptions on the current account.
@@ -274,9 +265,5 @@ func (l *LoadBalancerHandler) DeleteForwardingRule(ctx context.Context, ID strin
 		return err
 	}
 
-	if err = l.client.DoWithContext(ctx, req, nil); err != nil {
-		return err
-	}
-
-	return nil
+	return l.client.DoWithContext(ctx, req, nil)
 }

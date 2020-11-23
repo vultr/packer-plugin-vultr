@@ -17,8 +17,8 @@ type ReservedIPService interface {
 	Delete(ctx context.Context, id string) error
 	List(ctx context.Context, options *ListOptions) ([]ReservedIP, *Meta, error)
 
-	Convert(ctx context.Context, ripConvert *ReservedIPReq) (*ReservedIP, error)
-	Attach(ctx context.Context, id string, ripAttach *ReservedIPReq) error
+	Convert(ctx context.Context, ripConvert *ReservedIPConvertReq) (*ReservedIP, error)
+	Attach(ctx context.Context, id, instance string) error
 	Detach(ctx context.Context, id string) error
 }
 
@@ -54,6 +54,12 @@ type reservedIPsBase struct {
 
 type reservedIPBase struct {
 	ReservedIP *ReservedIP `json:"reserved_ip"`
+}
+
+// ReservedIPConvertReq is the struct used for create and update calls.
+type ReservedIPConvertReq struct {
+	IPAddress string `json:"ip_address,omitempty"`
+	Label     string `json:"label,omitempty"`
 }
 
 // Create adds the specified reserved IP to your Vultr account
@@ -95,11 +101,7 @@ func (r *ReservedIPServiceHandler) Delete(ctx context.Context, id string) error 
 		return err
 	}
 
-	if err = r.client.DoWithContext(ctx, req, nil); err != nil {
-		return err
-	}
-
-	return nil
+	return r.client.DoWithContext(ctx, req, nil)
 }
 
 // List lists all the reserved IPs associated with your Vultr account
@@ -125,7 +127,7 @@ func (r *ReservedIPServiceHandler) List(ctx context.Context, options *ListOption
 }
 
 // Convert an existing IP on a subscription to a reserved IP.
-func (r *ReservedIPServiceHandler) Convert(ctx context.Context, ripConvert *ReservedIPReq) (*ReservedIP, error) {
+func (r *ReservedIPServiceHandler) Convert(ctx context.Context, ripConvert *ReservedIPConvertReq) (*ReservedIP, error) {
 	uri := fmt.Sprintf("%s/convert", ripPath)
 	req, err := r.client.NewRequest(ctx, http.MethodPost, uri, ripConvert)
 
@@ -142,18 +144,14 @@ func (r *ReservedIPServiceHandler) Convert(ctx context.Context, ripConvert *Rese
 }
 
 // Attach a reserved IP to an existing subscription
-func (r *ReservedIPServiceHandler) Attach(ctx context.Context, id string, ripAttach *ReservedIPReq) error {
+func (r *ReservedIPServiceHandler) Attach(ctx context.Context, id, instance string) error {
 	uri := fmt.Sprintf("%s/%s/attach", ripPath, id)
-	req, err := r.client.NewRequest(ctx, http.MethodPost, uri, ripAttach)
+	req, err := r.client.NewRequest(ctx, http.MethodPost, uri, instance)
 	if err != nil {
 		return err
 	}
 
-	if err = r.client.DoWithContext(ctx, req, nil); err != nil {
-		return err
-	}
-
-	return nil
+	return r.client.DoWithContext(ctx, req, nil)
 }
 
 // Detach a reserved IP from an existing subscription.
@@ -164,9 +162,5 @@ func (r *ReservedIPServiceHandler) Detach(ctx context.Context, id string) error 
 		return err
 	}
 
-	if err = r.client.DoWithContext(ctx, req, nil); err != nil {
-		return err
-	}
-
-	return nil
+	return r.client.DoWithContext(ctx, req, nil)
 }

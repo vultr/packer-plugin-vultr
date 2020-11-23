@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	version     = "2.0.0-beta.1"
+	version     = "2.0.0"
 	defaultBase = "https://api.vultr.com"
 	userAgent   = "govultr/" + version
 	rateLimit   = 500 * time.Millisecond
@@ -28,6 +28,9 @@ type APIKey struct {
 	// API Key
 	key string
 }
+
+// RequestBody is used to create JSON bodies for one off calls
+type RequestBody map[string]interface{}
 
 // Client manages interaction with the Vultr V1 API
 type Client struct {

@@ -24,7 +24,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 	tempKey := state.Get("temp_ssh_key_id").(string)
 	keys := append(c.SSHKeyIDs, tempKey)
 
-	instanceReq := &govultr.InstanceReq{
+	instanceReq := &govultr.InstanceCreateReq{
 		ISOID:                c.ISOID,
 		SnapshotID:           c.SnapshotID,
 		OsID:                 c.OSID,
@@ -35,7 +35,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		EnableIPv6:           c.EnableIPV6,
 		EnablePrivateNetwork: c.EnablePrivateNetwork,
 		Label:                c.Label,
-		SSHKey:               keys,
+		SSHKeys:              keys,
 		UserData:             c.UserData,
 		ActivationEmail:      false,
 		Hostname:             c.Hostname,
