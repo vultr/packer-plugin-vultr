@@ -89,7 +89,6 @@ Here is a Vultr builder example. The vultr_api_key should be replaced with an ac
         "region_id": 4,
         "plan_id": 402,
         "os_id": 127,
-        "ssh_username": "root",
         "state_timeout": "15m"
     }]
 }
