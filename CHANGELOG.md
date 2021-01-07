@@ -1,5 +1,12 @@
 # Change Log
 
+## [v2.0.1](https://github.com/vultr/packer-builder-vultr/compare/v2.0.0..v2.0.1) (2021-01-07)
+### Dependencies
+- hcl 2.7.1 -> 2.8.1 [#98](https://github.com/vultr/packer-builder-vultr/pull/98)
+- zclconf/go-cty 1.7.0 -> 1.7.1 [#96](https://github.com/vultr/packer-builder-vultr/pull/96)
+- GoVultr v2.0.0 -> v2.3.2 [#98](https://github.com/vultr/packer-builder-vultr/pull/98)
+
+
 ## [v2.0.0](https://github.com/vultr/packer-builder-vultr/compare/v1.0.15..v2.0.0) (2020-11-23)
 ### Changes
 GoVultr was updated to v2.0.0 which is running on API v2.
