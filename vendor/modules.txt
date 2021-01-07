@@ -159,7 +159,7 @@ github.com/hashicorp/hcl/hcl/token
 github.com/hashicorp/hcl/json/parser
 github.com/hashicorp/hcl/json/scanner
 github.com/hashicorp/hcl/json/token
-# github.com/hashicorp/hcl/v2 v2.8.1
+# github.com/hashicorp/hcl/v2 v2.8.2
 ## explicit
 github.com/hashicorp/hcl/v2
 github.com/hashicorp/hcl/v2/ext/customdecode
@@ -260,7 +260,7 @@ github.com/ulikunitz/xz
 github.com/ulikunitz/xz/internal/hash
 github.com/ulikunitz/xz/internal/xlog
 github.com/ulikunitz/xz/lzma
-# github.com/vultr/govultr/v2 v2.3.1
+# github.com/vultr/govultr/v2 v2.3.2
 ## explicit
 github.com/vultr/govultr/v2
 # github.com/zclconf/go-cty v1.7.1
