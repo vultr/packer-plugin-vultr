@@ -23,6 +23,8 @@ foundation of new servers that are launched within Vultr.
 The builder does *not* manage images. Once it creates an image, it is up to you
 to use it or delete it.
 
+**NOTE** Packer-Builder-Vultr [v2+](https://github.com/vultr/packer-builder-vultr/blob/master/CHANGELOG.md#v200-2020-11-23) uses [API V2](https://www.vultr.com/api/v2)
+
 ## Configuration Reference
 
 There are many configuration options available for the builder. They are
@@ -37,31 +39,29 @@ builder.
 
 -   `api_key` (string) - The Vultr API Key to access your account.
 
--   `os_id` (int) - The id of the os to use. This will be the OS that will be used to launch a new instance and provision it. See <a href="https://www.vultr.com/api/#os_os_lists" class="uri">https://www.vultr.com/api/#os_os_list</a>.
+-   `os_id` (int) - The id of the os to use. This will be the OS that will be used to launch a new instance and provision it. See [List Operating Systems](https://www.vultr.com/api/v2/#operation/list-os)
 
--   `region_id` (int) - The id of the region to launch the instance in. See
-    <a href="https://www.vultr.com/api/#regions_region_list" class="uri">https://www.vultr.com/api/#regions_region_list</a>
+-   `region_id` (string) - The id of the region to launch the instance in. See [List Regions](https://www.vultr.com/api/v2/#operation/list-regions)
     
--   `plan_id` (string) - The id of the plan you wish to use. See
-    <a href="https://www.vultr.com/api/v2/#tag/plans" class="uri">https://www.vultr.com/api/v2/#tag/plans</a>
+-   `plan_id` (string) - The id of the plan you wish to use. See [List Plans](https://www.vultr.com/api/v2/#tag/plans)
 
 ### Optional:
 
 -   `snapshot_description` (string) - Description of the snapshot.
 
--   `snapshot_id` (string) -   If you've selected the 'snapshot' (OS 164) operating system, this should be the SNAPSHOTID.
+-   `snapshot_id` (string) -   If you've selected the 'snapshot' (OS 164) operating system, this should be the ID of the snapshot [Snapshot reference](https://www.vultr.com/api/v2/#operation/list-snapshots)
 
--   `iso_id` (int) - If you've selected the 'custom' (OS 159) operating system, this is the ID of a specific ISO to mount during the deployment.
+-   `iso_id` (string) - If you've selected the 'custom' (OS 159) operating system, this is the ID of a specific ISO to mount during the deployment. [ISO reference](https://www.vultr.com/api/v2/#operation/list-isos)
 
--   `app_id` (int) - If launching an application (OSID 186), this is the APPID to launch.
+-   `app_id` (int) - If launching an application (OSID 186), this is the ID to launch. [App reference](https://www.vultr.com/api/v2/#operation/list-applications)
 
 -   `enable_ipv6` (bool) - IPv6 subnet will be assigned to the machine.
 
 -   `enable_private_network` (bool) - Enables private networking support to the new server.
 
--   `script_id` (string) - If you've not selected a 'custom' (OS 159) operating system, this can be the SCRIPTID of a startup script to execute on boot. 
+-   `script_id` (string) - If you've not selected a 'custom' (OS 159) operating system, this can be the `id` of a startup script to execute on boot. [Startup Script reference](https://www.vultr.com/api/v2/#operation/list-startup-scripts)
 
--   `ssh_key_ids` (array of string) - List of SSH keys to apply to this server on install. Separate keys with commas.
+-   `ssh_key_ids` (array of string) - List of SSH keys to apply to this server on install. Separate keys with commas. [SSH Key reference](https://www.vultr.com/api/v2/#operation/list-ssh-keys)
 
 -   `instance_label` (string) - This is a text label that will be shown in the control panel.
 
@@ -86,8 +86,8 @@ Here is a Vultr builder example. The vultr_api_key should be replaced with an ac
         "type": "vultr",
         "api_key": "{{ user `vultr_api_key` }}",
         "snapshot_description": "Packer-test-with updates",
-        "region_id": 4,
-        "plan_id": 402,
+        "region_id": "ewr",
+        "plan_id": "vc2-1c-1gb",
         "os_id": 127,
         "state_timeout": "15m"
     }]
