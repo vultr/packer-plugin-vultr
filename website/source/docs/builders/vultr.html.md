@@ -23,7 +23,7 @@ foundation of new servers that are launched within Vultr.
 The builder does *not* manage images. Once it creates an image, it is up to you
 to use it or delete it.
 
-**NOTE** Packer-Builder-Vultr [v2+](https://github.com/vultr/packer-builder-vultr/blob/master/CHANGELOG.md#v200-2020-11-23) uses [API V2](https://www.vultr.com/api/v2)
+**NOTE**: Packer-Builder-Vultr [v2+](https://github.com/vultr/packer-builder-vultr/blob/master/CHANGELOG.md#v200-2020-11-23) uses [API V2](https://www.vultr.com/api/v2)
 
 ## Configuration Reference
 
@@ -32,36 +32,36 @@ segmented below into two categories: required and optional parameters. Within
 each category, the available configuration keys are alphabetized.
 
 In addition to the options listed here, a
-[communicator](/docs/templates/communicator.html) can be configured for this
+[communicator](https://www.packer.io/docs/communicators) can be configured for this
 builder.
 
 ### Required:
 
 -   `api_key` (string) - The Vultr API Key to access your account.
 
--   `os_id` (int) - The id of the os to use. This will be the OS that will be used to launch a new instance and provision it. See [List Operating Systems](https://www.vultr.com/api/v2/#operation/list-os)
+-   `os_id` (int) - The id of the os to use. This will be the OS that will be used to launch a new instance and provision it. See [List Operating Systems](https://www.vultr.com/api/v2/#operation/list-os).
 
--   `region_id` (string) - The id of the region to launch the instance in. See [List Regions](https://www.vultr.com/api/v2/#operation/list-regions)
+-   `region_id` (string) - The id of the region to launch the instance in. See [List Regions](https://www.vultr.com/api/v2/#operation/list-regions).
     
--   `plan_id` (string) - The id of the plan you wish to use. See [List Plans](https://www.vultr.com/api/v2/#tag/plans)
+-   `plan_id` (string) - The id of the plan you wish to use. See [List Plans](https://www.vultr.com/api/v2/#tag/plans).
 
 ### Optional:
 
 -   `snapshot_description` (string) - Description of the snapshot.
 
--   `snapshot_id` (string) -   If you've selected the 'snapshot' (OS 164) operating system, this should be the ID of the snapshot [Snapshot reference](https://www.vultr.com/api/v2/#operation/list-snapshots)
+-   `snapshot_id` (string) -   If you've selected the 'snapshot' (OS 164) operating system, this should be the ID of the snapshot. See [Snapshot](https://www.vultr.com/api/v2/#operation/list-snapshots).
 
--   `iso_id` (string) - If you've selected the 'custom' (OS 159) operating system, this is the ID of a specific ISO to mount during the deployment. [ISO reference](https://www.vultr.com/api/v2/#operation/list-isos)
+-   `iso_id` (string) - If you've selected the 'custom' (OS 159) operating system, this is the ID of a specific ISO to mount during the deployment. See [ISO](https://www.vultr.com/api/v2/#operation/list-isos).
 
--   `app_id` (int) - If launching an application (OSID 186), this is the ID to launch. [App reference](https://www.vultr.com/api/v2/#operation/list-applications)
+-   `app_id` (int) - If launching an application (OSID 186), this is the ID to launch. See [App](https://www.vultr.com/api/v2/#operation/list-applications).
 
 -   `enable_ipv6` (bool) - IPv6 subnet will be assigned to the machine.
 
 -   `enable_private_network` (bool) - Enables private networking support to the new server.
 
--   `script_id` (string) - If you've not selected a 'custom' (OS 159) operating system, this can be the `id` of a startup script to execute on boot. [Startup Script reference](https://www.vultr.com/api/v2/#operation/list-startup-scripts)
+-   `script_id` (string) - If you've not selected a 'custom' (OS 159) operating system, this can be the `id` of a startup script to execute on boot. See [Startup Script](https://www.vultr.com/api/v2/#operation/list-startup-scripts).
 
--   `ssh_key_ids` (array of string) - List of SSH keys to apply to this server on install. Separate keys with commas. [SSH Key reference](https://www.vultr.com/api/v2/#operation/list-ssh-keys)
+-   `ssh_key_ids` (array of string) - List of SSH keys to apply to this server on install. Separate keys with commas. See [SSH Key](https://www.vultr.com/api/v2/#operation/list-ssh-keys).
 
 -   `instance_label` (string) - This is a text label that will be shown in the control panel.
 
