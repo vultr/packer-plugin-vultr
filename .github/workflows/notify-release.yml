@@ -10,7 +10,7 @@ jobs:
     name: Release Notification
     steps:
       - run: |
-          echo "{\"text\":\"Vultr-CLI : Release https://github.com/vultr/packer-builder-vultr/releases/tag/${{ GITHUB_REF#refs/*/ }} \"}" > mattermost.json
+          echo "{\"text\":\"Packer : Release https://github.com/vultr/packer-builder-vultr/releases/tag/${{ GITHUB_REF#refs/*/ }} \"}" > mattermost.json
       - uses: mattermost/action-mattermost-notify@master
         env:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK_URL }}

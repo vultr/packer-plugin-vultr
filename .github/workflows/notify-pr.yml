@@ -8,7 +8,7 @@ jobs:
     name: Pull Request Notification
     steps:
       - run: |
-          echo "{\"text\":\"Vultr-CLI : PR https://github.com/vultr/packer-builder-vultr/pull/${{ github.event.number }} \"}" > mattermost.json
+          echo "{\"text\":\"Packer: PR https://github.com/vultr/packer-builder-vultr/pull/${{ github.event.number }} \"}" > mattermost.json
       - uses: mattermost/action-mattermost-notify@master
         env:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
