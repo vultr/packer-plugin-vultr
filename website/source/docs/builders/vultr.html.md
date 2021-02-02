@@ -23,7 +23,7 @@ foundation of new servers that are launched within Vultr.
 The builder does *not* manage images. Once it creates an image, it is up to you
 to use it or delete it.
 
-**NOTE**: Packer-Builder-Vultr [v2+](https://github.com/vultr/packer-builder-vultr/blob/master/CHANGELOG.md#v200-2020-11-23) uses [API V2](https://www.vultr.com/api/v2)
+**NOTE**: Packer-Builder-Vultr [v2+](https://github.com/vultr/packer-builder-vultr/blob/master/CHANGELOG.md#v200-2020-11-23) uses [API V2](https://www.vultr.com/api/)
 
 ## Configuration Reference
 
