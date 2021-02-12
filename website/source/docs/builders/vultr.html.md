@@ -35,11 +35,10 @@ In addition to the options listed here, a
 [communicator](https://www.packer.io/docs/communicators) can be configured for this
 builder.
 
+**NOTE**: that  `os_id`, `app_id`, `snapshot_id`, or `iso_id` are not required and are optional. You **must** supply at least one for instance creation.
 ### Required:
 
 -   `api_key` (string) - The Vultr API Key to access your account.
-
--   `os_id` (int) - The id of the os to use. This will be the OS that will be used to launch a new instance and provision it. See [List Operating Systems](https://www.vultr.com/api/v2/#operation/list-os).
 
 -   `region_id` (string) - The id of the region to launch the instance in. See [List Regions](https://www.vultr.com/api/v2/#operation/list-regions).
     
@@ -47,13 +46,15 @@ builder.
 
 ### Optional:
 
+-   `os_id` (int) - The id of the os to use. This will be the OS that will be used to launch a new instance and provision it. See [List Operating Systems](https://www.vultr.com/api/v2/#operation/list-os).
+
 -   `snapshot_description` (string) - Description of the snapshot.
 
--   `snapshot_id` (string) -   If you've selected the 'snapshot' (OS 164) operating system, this should be the ID of the snapshot. See [Snapshot](https://www.vultr.com/api/v2/#operation/list-snapshots).
+-   `snapshot_id` (string) -   If you've selected the 'snapshot' operating system, this should be the ID of the snapshot. See [Snapshot](https://www.vultr.com/api/v2/#operation/list-snapshots).
 
--   `iso_id` (string) - If you've selected the 'custom' (OS 159) operating system, this is the ID of a specific ISO to mount during the deployment. See [ISO](https://www.vultr.com/api/v2/#operation/list-isos).
+-   `iso_id` (string) - If you've selected the 'custom' operating system, this is the ID of a specific ISO to mount during the deployment. See [ISO](https://www.vultr.com/api/v2/#operation/list-isos).
 
--   `app_id` (int) - If launching an application (OSID 186), this is the ID to launch. See [App](https://www.vultr.com/api/v2/#operation/list-applications).
+-   `app_id` (int) - If launching an application, this is the ID to launch. See [App](https://www.vultr.com/api/v2/#operation/list-applications).
 
 -   `enable_ipv6` (bool) - IPv6 subnet will be assigned to the machine.
 
