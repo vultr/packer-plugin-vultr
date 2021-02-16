@@ -1,5 +1,12 @@
 # Change Log
 
+## [v2.1.0](https://github.com/vultr/packer-builder-vultr/compare/v2.0.1..v2.1.0) (2021-02-16)
+### Bug
+- Remove the requirement to pass in `os_id` with other installation types. This is no longer required in API v2. [#105](https://github.com/vultr/packer-builder-vultr/pull/105)
+
+### Dependencies
+- GoVultr v2.3.2 -> v2.4.0 [#108](https://github.com/vultr/packer-builder-vultr/pull/108)
+
 ## [v2.0.1](https://github.com/vultr/packer-builder-vultr/compare/v2.0.0..v2.0.1) (2021-01-07)
 ### Dependencies
 - hcl 2.7.1 -> 2.8.1 [#98](https://github.com/vultr/packer-builder-vultr/pull/98)
