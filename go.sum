@@ -518,8 +518,8 @@ github.com/vmihailenco/msgpack/v4 v4.3.12/go.mod h1:gborTTJjAo/GWTqqRjrLCn9pgNN+
 github.com/vmihailenco/tagparser v0.1.1/go.mod h1:OeAg3pn3UbLjkWt+rN9oFYB6u/cQgqMEUPoW2WPyhdI=
 github.com/vmware/govmomi v0.23.1/go.mod h1:Y+Wq4lst78L85Ge/F8+ORXIWiKYqaro1vhAulACy9Lc=
 github.com/vmware/vmw-guestinfo v0.0.0-20170707015358-25eff159a728/go.mod h1:x9oS4Wk2s2u4tS29nEaDLdzvuHdB19CvSGJjPgkZJNk=
-github.com/vultr/govultr/v2 v2.3.2 h1:xT/eTyR9jfQlAlOLhb1ZEK3obLyIq/dEhAtdDVfTcNc=
-github.com/vultr/govultr/v2 v2.3.2/go.mod h1:U+dZLAmyGD62IGykgC9JYU/zQIOkIhf93nw6dJL/47M=
+github.com/vultr/govultr/v2 v2.4.0 h1:6ySGGAsoOann0lmVNkS8grLvbAT2iYWnO4R1RVYFg0A=
+github.com/vultr/govultr/v2 v2.4.0/go.mod h1:U+dZLAmyGD62IGykgC9JYU/zQIOkIhf93nw6dJL/47M=
 github.com/xanzy/go-cloudstack v0.0.0-20190526095453-42f262b63ed0/go.mod h1:sBh287mCRwCz6zyXHMmw7sSZGPohVpnx+o+OY4M+i3A=
 github.com/yandex-cloud/go-genproto v0.0.0-20200915125933-33de72a328bd/go.mod h1:HEUYX/p8966tMUHHT+TsS0hF/Ca/NYwqprC5WXSDMfE=
 github.com/yandex-cloud/go-sdk v0.0.0-20200921111412-ef15ded2014c/go.mod h1:Zn/U9YKH0w8n83ezLps5eB6Jftc4gSoZWxVR8hgXgoY=
