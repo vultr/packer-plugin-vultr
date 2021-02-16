@@ -41,7 +41,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		Hostname:             c.Hostname,
 		Tag:                  c.Tag,
 	}
-	ui.Say(fmt.Sprintf("%v", instanceReq))
+
 	instance, err := s.client.Instance.Create(ctx, instanceReq)
 	if err != nil {
 		err = errors.New("Error creating server: " + err.Error())

@@ -98,7 +98,7 @@ func TestBuilderPrepare_OSID(t *testing.T) {
 	if len(warnings) > 0 {
 		t.Fatalf("bad: %#v", warnings)
 	}
-	if err == nil {
+	if err != nil {
 		t.Fatalf("should error")
 	}
 

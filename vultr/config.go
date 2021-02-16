@@ -97,21 +97,7 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 		errs = packer.MultiErrorAppend(errs, errors.New("you can only set one of the following: `app_id`, `snapshot_id`, `iso_id`"))
 	}
 
-	if c.AppID != 0 {
-		c.OSID = AppOSID
-	}
-	if c.SnapshotID != "" {
-		c.OSID = SnapshotOSID
-	}
-	if c.ISOID != "" {
-		c.OSID = CustomOSID
-	}
-
-	if c.OSID == 0 {
-		errs = packer.MultiErrorAppend(errs, errors.New("os_id is required"))
-	}
-
-	if (c.OSID == SnapshotOSID || c.OSID == CustomOSID) && c.Comm.SSHPassword == "" && c.Comm.SSHPrivateKeyFile == "" {
+	if (c.SnapshotID != "" || c.ISOID != "") && c.Comm.SSHPassword == "" && c.Comm.SSHPrivateKeyFile == "" {
 		errs = packer.MultiErrorAppend(errs, errors.New("either `ssh_password` or `ssh_private_key_file` must be defined for snapshot or custom OS"))
 	}
 
