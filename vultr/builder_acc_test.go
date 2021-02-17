@@ -4,11 +4,11 @@ import (
 	"os"
 	"testing"
 
-	builderT "github.com/hashicorp/packer/helper/builder/testing"
+	"github.com/hashicorp/packer-plugin-sdk/acctest"
 )
 
 func TestBuilderAcc_basic(t *testing.T) {
-	builderT.Test(t, builderT.TestCase{
+	acctest.Test(t, acctest.TestCase{
 		PreCheck: func() { testAccPreCheck(t) },
 		Builder:  &Builder{},
 		Template: testBuilderAccBasic,

@@ -10,9 +10,9 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/hashicorp/packer/common/uuid"
-	"github.com/hashicorp/packer/helper/multistep"
-	"github.com/hashicorp/packer/packer"
+	"github.com/hashicorp/packer-plugin-sdk/multistep"
+	"github.com/hashicorp/packer-plugin-sdk/packer"
+	"github.com/hashicorp/packer-plugin-sdk/uuid"
 	"github.com/vultr/govultr/v2"
 	"golang.org/x/crypto/ssh"
 )

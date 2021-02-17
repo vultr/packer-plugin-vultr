@@ -1,35 +1,25 @@
 package version
 
 import (
-	"bytes"
-	"fmt"
-
 	"github.com/hashicorp/go-version"
+	pluginVersion "github.com/hashicorp/packer-plugin-sdk/version"
 )
 
 // The git commit that was compiled. This will be filled in by the compiler.
 var GitCommit string
 
 // The main version number that is being run at the moment.
-const Version = "1.6.5"
+const Version = "1.7.0"
 
 // A pre-release marker for the version. If this is "" (empty string)
 // then it means that it is a final release. Otherwise, this is a pre-release
 // such as "dev" (in development), "beta", "rc1", etc.
-const VersionPrerelease = ""
+const VersionPrerelease = "dev"
+
+var PackerVersion *pluginVersion.PluginVersion
 
 func FormattedVersion() string {
-	var versionString bytes.Buffer
-	fmt.Fprintf(&versionString, "%s", Version)
-	if VersionPrerelease != "" {
-		fmt.Fprintf(&versionString, "-%s", VersionPrerelease)
-
-		if GitCommit != "" {
-			fmt.Fprintf(&versionString, " (%s)", GitCommit)
-		}
-	}
-
-	return versionString.String()
+	return PackerVersion.FormattedVersion()
 }
 
 // SemVer is an instance of version.Version. This has the secondary
@@ -38,13 +28,11 @@ func FormattedVersion() string {
 var SemVer *version.Version
 
 func init() {
-	SemVer = version.Must(version.NewVersion(Version))
+	PackerVersion = pluginVersion.InitializePluginVersion(Version, VersionPrerelease)
+	SemVer = PackerVersion.SemVer()
 }
 
 // String returns the complete version string, including prerelease
 func String() string {
-	if VersionPrerelease != "" {
-		return fmt.Sprintf("%s-%s", Version, VersionPrerelease)
-	}
-	return Version
+	return PackerVersion.String()
 }
