@@ -3,7 +3,7 @@ package vultr
 import (
 	"testing"
 
-	"github.com/hashicorp/packer/packer"
+	"github.com/hashicorp/packer-plugin-sdk/packer"
 )
 
 func TestArtifact_Impl(t *testing.T) {
