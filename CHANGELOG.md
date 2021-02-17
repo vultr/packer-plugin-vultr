@@ -1,5 +1,9 @@
 # Change Log
 
+## [v2.2.0](https://github.com/vultr/packer-builder-vultr/compare/v2.1.0..v2.2.0) (2021-02-17)
+### Enhancements
+- Updated plugin to support Packer v1.7.0. This release does not support `packer init` this will be released in `v2.3.0` [#110](https://github.com/vultr/packer-builder-vultr/pull/110)
+
 ## [v2.1.0](https://github.com/vultr/packer-builder-vultr/compare/v2.0.1..v2.1.0) (2021-02-16)
 ### Bug
 - Remove the requirement to pass in `os_id` with other installation types. This is no longer required in API v2. [#105](https://github.com/vultr/packer-builder-vultr/pull/105)
