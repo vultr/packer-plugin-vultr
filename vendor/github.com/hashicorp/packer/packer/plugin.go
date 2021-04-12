@@ -24,6 +24,23 @@ type PluginConfig struct {
 	Provisioners       ProvisionerSet
 	PostProcessors     PostProcessorSet
 	DataSources        DatasourceSet
+
+	// Redirects are only set when a plugin was completely moved out; they allow
+	// telling where a plugin has moved by checking if a known component of this
+	// plugin is used. For example implicitly require the
+	// github.com/hashicorp/amazon plugin if it was moved out and the
+	// "amazon-ebs" plugin is used, but not found.
+	//
+	// Redirects will be bypassed if the redirected components are already found
+	// in their corresponding sets (Builders, Provisioners, PostProcessors,
+	// DataSources). That is, for example, if you manually put a single
+	// component plugin in the plugins folder.
+	//
+	// Example BuilderRedirects: "amazon-ebs" => "github.com/hashicorp/amazon"
+	BuilderRedirects       map[string]string
+	DatasourceRedirects    map[string]string
+	ProvisionerRedirects   map[string]string
+	PostProcessorRedirects map[string]string
 }
 
 // PACKERSPACE is used to represent the spaces that separate args for a command
@@ -106,6 +123,7 @@ func (c *PluginConfig) Discover() error {
 
 func (c *PluginConfig) discoverExternalComponents(path string) error {
 	var err error
+	log.Printf("[TRACE] discovering plugins in %s", path)
 
 	if !filepath.IsAbs(path) {
 		path, err = filepath.Abs(path)
@@ -237,8 +255,8 @@ func (c *PluginConfig) discoverSingle(glob string) (map[string]string, error) {
 	return res, nil
 }
 
-// DiscoverMultiPlugin takes the description from a multiplugin binary and
-// makes the plugins available to use in Packer. Each plugin found in the
+// DiscoverMultiPlugin takes the description from a multi-component plugin
+// binary and makes the plugins available to use in Packer. Each plugin found in the
 // binary will be addressable using `${pluginName}-${builderName}` for example.
 // pluginName could be manually set. It usually is a cloud name like amazon.
 // pluginName can be extrapolated from the filename of the binary; so

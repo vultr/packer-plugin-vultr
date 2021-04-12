@@ -1,6 +1,6 @@
 language: go
 go:
-  - 1.15.x
+  - 1.16.x
 env:
   - GO111MODULE=on
 matrix:
@@ -8,10 +8,3 @@ matrix:
     - go: tip
 script:
   - go test -v -mod=vendor ./vultr/...
-deploy:
-  - provider: script
-    skip_cleanup: true
-    script: curl -sL https://git.io/goreleaser | bash
-    on:
-      tags: true
-      condition: $TRAVIS_OS_NAME = linux
