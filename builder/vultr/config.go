@@ -103,7 +103,7 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 	}
 
 	if c.RawStateTimeout == "" {
-		c.stateTimeout = 5 * time.Minute
+		c.stateTimeout = 10 * time.Minute
 	} else {
 		if stateTimeout, err := time.ParseDuration(c.RawStateTimeout); err == nil {
 			c.stateTimeout = stateTimeout

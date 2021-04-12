@@ -24,9 +24,7 @@ to use it or delete it.
 
 **NOTE**: Packer-Builder-Vultr [v2+](https://github.com/vultr/packer-builder-vultr/blob/master/CHANGELOG.md#v200-2020-11-23) uses [API V2](https://www.vultr.com/api/)
 
-<!-- Builder Configuration Fields -->
 
-**NOTE**: that  `os_id`, `app_id`, `snapshot_id`, or `iso_id` are not required and are optional. You **must** supply at least one for instance creation.
 ### Required:
 
 -   `api_key` (string) - The Vultr API Key to access your account.
@@ -35,6 +33,7 @@ to use it or delete it.
 
 -   `plan_id` (string) - The id of the plan you wish to use. See [List Plans](https://www.vultr.com/api/v2/#tag/plans).
 
+**NOTE**: that  `os_id`, `app_id`, `snapshot_id`, or `iso_id` are not required and are optional. You **must** supply at least one for instance creation.
 ### Optional
 
 -   `os_id` (int) - The id of the os to use. This will be the OS that will be used to launch a new instance and provision it. See [List Operating Systems](https://www.vultr.com/api/v2/#operation/list-os).
@@ -47,9 +46,9 @@ to use it or delete it.
 
 -   `app_id` (int) - If launching an application, this is the ID to launch. See [App](https://www.vultr.com/api/v2/#operation/list-applications).
 
--   `enable_ipv6` (bool) - IPv6 subnet will be assigned to the machine.
+-   `enable_ipv6` (bool) - IPv6 subnet will be assigned to the machine. Defaults to `false`
 
--   `enable_private_network` (bool) - Enables private networking support to the new server.
+-   `enable_private_network` (bool) - Enables private networking support to the new server. Defaults to `false`
 
 -   `script_id` (string) - If you've not selected a 'custom' (OS 159) operating system, this can be the `id` of a startup script to execute on boot. See [Startup Script](https://www.vultr.com/api/v2/#operation/list-startup-scripts).
 
@@ -63,26 +62,30 @@ to use it or delete it.
 
 -   `tag` (string) - The tag to assign to this server.
 
--   `state_timeout` (string) - A duration to wait for the instance to boot, or a snapshot to be taken. Must be a string in [golang Duration-parsable format](https://golang.org/pkg/time/#ParseDuration), like "10m" or "30s".
+-   `state_timeout` (string) - A duration to wait for the instance to boot, or a snapshot to be taken. Must be a string in [golang Duration-parsable format](https://golang.org/pkg/time/#ParseDuration), like "10m" or "30s". Defaults to `10m`
 
-<!--
-  A basic example on the usage of the builder. Multiple examples
-  can be provided to highlight various build configurations.
-
--->
+You may also adjust the [SSH communicator settings](https://www.packer.io/docs/communicators/ssh) to configure how Packer will log into Vultr Instances.
 ### Example Usage
 
 
 ```hcl
-variable "api_key" { default = "" }
+variable "vultr_api_key" {
+  type    = string
+  default = "${env("VULTR_API_KEY")}"
+}
 
-source "vultr" "app" {
-  api_key = var.api_key
-
+source "vultr" "ubuntu-20" {
+  api_key              = "${var.vultr_api_key}"
+  os_id                = "413"
+  plan_id              = "vhf-1c-1gb"
+  region_id            = "atl"
+  snapshot_description = "testing"
+  state_timeout        = "10m"
+  ssh_username         = "root"
 }
 
 build {
-  sources = ["source.vultr.app"]
+  sources = ["source.vultr.ubuntu-20"]
 }
 ```
 

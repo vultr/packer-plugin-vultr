@@ -11,40 +11,25 @@ This is a [HashiCorp Packer](https://www.packer.io/) plugin for creating [Vultr]
 
 ## Requirements
 * [Packer](https://www.packer.io/intro/getting-started/install.html)
-* [Go 1.13+](https://golang.org/doc/install)
+* [Go 1.16+](https://golang.org/doc/install)
 
 ## Build & Installation
 
+### Packer init
+Starting from version 1.7, Packer supports a new packer init command allowing automatic installation of Packer plugins. Read the [Packer documentation](https://www.packer.io/docs/commands/init) for more information
+
 ### Install from source:
 
-Clone repository to `$GOPATH/src/github.com/vultr/packer-builder-vultr`
-
-```sh
-$ mkdir -p $GOPATH/src/github.com/vultr; cd $GOPATH/src/github.com/vultr
-$ git clone git@github.com:vultr/packer-builder-vultr.git
-```
-
-Enter the provider directory and build the provider
-
-```sh
-$ cd $GOPATH/src/github.com/vultr/packer-builder-vultr
-$ make build
-```
-
-Link the build to Packer
-
-```sh
-$ln -s $GOPATH/bin/packer-builder-vultr ~/.packer.d/plugins/packer-builder-vultr 
-```
+To install the plugin from source you will have to clone this Github repository locally. Once cloned run `make build` which will put the plugin in your GO's bin folder.
+Then please read the documentation on [Installing plugins](https://www.packer.io/docs/plugins#installing-plugins).
 
 ### Install from release:
 
 * Download binaries from the [releases page](https://github.com/vultr/packer-builder-vultr/releases).
-* [Install](https://www.packer.io/docs/extending/plugins.html#installing-plugins) the plugin, or simply put it into the same directory with JSON templates.
-* Move the downloaded binary to `~/.packer.d/plugins/`
+* To install the plugin please read the documentation on [Installing plugins](https://www.packer.io/docs/plugins#installing-plugins)
 
 ## Using the plugin
-See the Vultr Provider [documentation](website/source/docs/builders/vultr.html.md) to get started using the Vultr provider.
+See the Vultr Provider [documentation](docs/builders/vultr.mdx) to get started using the Vultr provider.
 
 ## Contributing
 Feel free to send pull requests our way! Please see the [contributing](CONTRIBUTING.md) guidelines.
