@@ -8,16 +8,9 @@ import (
 	"github.com/hashicorp/hcl/v2/hcldec"
 	"github.com/hashicorp/packer-plugin-sdk/communicator"
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
-	commonsteps "github.com/hashicorp/packer-plugin-sdk/multistep/commonsteps"
+	"github.com/hashicorp/packer-plugin-sdk/multistep/commonsteps"
 	"github.com/hashicorp/packer-plugin-sdk/packer"
 	"github.com/vultr/govultr/v2"
-)
-
-// Special OS IDs
-const (
-	AppOSID      = 186
-	CustomOSID   = 159
-	SnapshotOSID = 164
 )
 
 // BuilderID is the unique ID for the builder
