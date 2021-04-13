@@ -1,5 +1,9 @@
 # Change Log
 
+## [v2.3.0](https://github.com/vultr/packer-builder-vultr/compare/v2.2.1..v2.3.0) (2021-04-13)
+### Enhancements
+- Update plugin to support `packer init` [#120](https://github.com/vultr/packer-builder-vultr/pull/120)
+
 ## [v2.2.1](https://github.com/vultr/packer-builder-vultr/compare/v2.2.0..v2.2.1) (2021-02-24)
 ### Bug fixes
 - Updated HCL config to support API v2 type attributes [#116](https://github.com/vultr/packer-builder-vultr/pull/116)
