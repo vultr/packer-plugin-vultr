@@ -27,7 +27,7 @@ type Requirements []*Requirement
 type Requirement struct {
 	// Plugin accessor as defined in the config file.
 	// For Packer, using :
-	//  required_plugins { amazon = ">= v0" }
+	//  required_plugins { amazon = {...} }
 	// Will set Accessor to `amazon`.
 	Accessor string
 
@@ -38,6 +38,9 @@ type Requirement struct {
 	// VersionConstraints as defined by user. Empty ( to be avoided ) means
 	// highest found version.
 	VersionConstraints version.Constraints
+
+	// was this require implicitly guessed ?
+	Implicit bool
 }
 
 type BinaryInstallationOptions struct {
@@ -81,7 +84,7 @@ func (pr Requirement) ListInstallations(opts ListInstallationsOptions) (InstallL
 	res := InstallList{}
 	FilenamePrefix := pr.FilenamePrefix()
 	filenameSuffix := opts.filenameSuffix()
-	log.Printf("[TRACE] listing potential installations for %q that match %q. %#v", pr.Identifier.ForDisplay(), pr.VersionConstraints, opts)
+	log.Printf("[TRACE] listing potential installations for %q that match %q. %#v", pr.Identifier, pr.VersionConstraints, opts)
 	for _, knownFolder := range opts.FromFolders {
 		glob := filepath.Join(knownFolder, pr.Identifier.Hostname, pr.Identifier.Namespace, pr.Identifier.Type, FilenamePrefix+"*"+filenameSuffix)
 
@@ -305,12 +308,12 @@ func (e ChecksumFileEntry) Arch() string        { return e.arch }
 //
 func (e *ChecksumFileEntry) init(req *Requirement) (err error) {
 	filename := e.Filename
-	res := strings.TrimLeft(filename, req.FilenamePrefix())
+	res := strings.TrimPrefix(filename, req.FilenamePrefix())
 	// res now looks like v0.2.12_x5.0_freebsd_amd64.zip
 
 	e.ext = filepath.Ext(res)
 
-	res = strings.TrimRight(res, e.ext)
+	res = strings.TrimSuffix(res, e.ext)
 	// res now looks like v0.2.12_x5.0_freebsd_amd64
 
 	parts := strings.Split(res, "_")
@@ -326,7 +329,7 @@ func (e *ChecksumFileEntry) init(req *Requirement) (err error) {
 
 func (e *ChecksumFileEntry) validate(expectedVersion string, installOpts BinaryInstallationOptions) error {
 	if e.binVersion != expectedVersion {
-		return fmt.Errorf("wrong version, expected %s ", expectedVersion)
+		return fmt.Errorf("wrong version: '%s' does not match expected %s ", e.binVersion, expectedVersion)
 	}
 	if e.os != installOpts.OS || e.arch != installOpts.ARCH {
 		return fmt.Errorf("wrong system, expected %s_%s ", installOpts.OS, installOpts.ARCH)
@@ -345,7 +348,7 @@ func (pr *Requirement) InstallLatest(opts InstallOptions) (*Installation, error)
 	getters := opts.Getters
 	fail := fmt.Errorf("could not find a local nor a remote checksum for plugin %q %q", pr.Identifier, pr.VersionConstraints)
 
-	log.Printf("[TRACE] getting available versions for the the %s plugin", pr.Identifier.ForDisplay())
+	log.Printf("[TRACE] getting available versions for the %s plugin", pr.Identifier)
 	versions := version.Collection{}
 	for _, getter := range getters {
 
@@ -397,7 +400,7 @@ func (pr *Requirement) InstallLatest(opts InstallOptions) (*Installation, error)
 	log.Printf("[DEBUG] will try to install: %s", versions)
 
 	if len(versions) == 0 {
-		err := fmt.Errorf("no release version found for the %s plugin matching the constraint(s): %q", pr.Identifier.ForDisplay(), pr.VersionConstraints.String())
+		err := fmt.Errorf("no release version found for the %s plugin matching the constraint(s): %q", pr.Identifier, pr.VersionConstraints.String())
 		return nil, err
 	}
 
@@ -411,7 +414,7 @@ func (pr *Requirement) InstallLatest(opts InstallOptions) (*Installation, error)
 			filepath.Join(pr.Identifier.Parts()...),
 		)
 
-		log.Printf("[TRACE] fetching checksums file for the %q version of the %s plugin in %q...", version, pr.Identifier.ForDisplay(), outputFolder)
+		log.Printf("[TRACE] fetching checksums file for the %q version of the %s plugin in %q...", version, pr.Identifier, outputFolder)
 
 		var checksum *FileChecksum
 		for _, getter := range getters {
@@ -428,7 +431,7 @@ func (pr *Requirement) InstallLatest(opts InstallOptions) (*Installation, error)
 					version:                   version,
 				})
 				if err != nil {
-					err := fmt.Errorf("could not get %s checksum file for %s version %s. Is the file present on the release and correctly named ? %s", checksummer.Type, pr.Identifier.ForDisplay(), version, err)
+					err := fmt.Errorf("could not get %s checksum file for %s version %s. Is the file present on the release and correctly named ? %s", checksummer.Type, pr.Identifier, version, err)
 					log.Printf("[TRACE] %s", err.Error())
 					return nil, err
 				}
@@ -486,7 +489,7 @@ func (pr *Requirement) InstallLatest(opts InstallOptions) (*Installation, error)
 								log.Printf("[TRACE] found a pre-exising %q checksum file", potentialChecksumer.Type)
 								// if outputFile is there and matches the checksum: do nothing more.
 								if err := localChecksum.ChecksumFile(localChecksum.Expected, potentialOutputFilename); err == nil {
-									log.Printf("[INFO] %s v%s plugin is already correctly installed in %q", pr.Identifier.ForDisplay(), version, potentialOutputFilename)
+									log.Printf("[INFO] %s v%s plugin is already correctly installed in %q", pr.Identifier, version, potentialOutputFilename)
 									return nil, nil
 								}
 							}
@@ -519,7 +522,7 @@ func (pr *Requirement) InstallLatest(opts InstallOptions) (*Installation, error)
 							expectedZipFilename:       expectedZipFilename,
 						})
 						if err != nil {
-							err := fmt.Errorf("could not get binary for %s version %s. Is the file present on the release and correctly named ? %s", pr.Identifier.ForDisplay(), version, err)
+							err := fmt.Errorf("could not get binary for %s version %s. Is the file present on the release and correctly named ? %s", pr.Identifier, version, err)
 							log.Printf("[TRACE] %v", err)
 							continue
 						}

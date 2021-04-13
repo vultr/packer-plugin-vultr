@@ -1,12 +1,12 @@
-module github.com/vultr/packer-builder-vultr
+module github.com/vultr/packer-plugin-vultr
 
-go 1.15
+go 1.16
 
 require (
-	github.com/hashicorp/hcl/v2 v2.8.2
-	github.com/hashicorp/packer-plugin-sdk v0.0.13
+	github.com/hashicorp/hcl/v2 v2.9.1
+	github.com/hashicorp/packer-plugin-sdk v0.1.2
 	github.com/vultr/govultr/v2 v2.4.0
-	github.com/zclconf/go-cty v1.7.1
-	golang.org/x/crypto v0.0.0-20201208171446-5f87f3452ae9
+	github.com/zclconf/go-cty v1.8.1
+	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad
 	golang.org/x/oauth2 v0.0.0-20200902213428-5d25da1a8d43
 )
