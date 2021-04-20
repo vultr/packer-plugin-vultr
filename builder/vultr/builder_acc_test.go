@@ -30,7 +30,7 @@ const testBuilderAccBasic = `
         "plan_id": "vc2-1c-1gb",
         "os_id": 167,
         "ssh_username": "root",
-		"state_timeout": "20m"
+		"state_timeout": "60m"
 	}]
 }
 `
