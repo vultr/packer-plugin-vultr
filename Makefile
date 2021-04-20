@@ -16,7 +16,7 @@ install: build
 
 .PHONY: test
 test:
-	go test -v . ./builder/vultr
+	go test -v . ./builder/vultr -timeout 60m
 
 .PHONY: lint
 lint:
