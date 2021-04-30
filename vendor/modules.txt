@@ -85,8 +85,6 @@ github.com/aws/aws-sdk-go/service/sts
 github.com/aws/aws-sdk-go/service/sts/stsiface
 # github.com/bgentry/go-netrc v0.0.0-20140422174119-9fd32a8b3d3d
 github.com/bgentry/go-netrc/netrc
-# github.com/cheggaaa/pb v1.0.27
-github.com/cheggaaa/pb
 # github.com/dylanmei/iso8601 v0.1.0
 github.com/dylanmei/iso8601
 # github.com/fatih/color v1.9.0
@@ -107,12 +105,6 @@ github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/timestamp
 # github.com/golang/snappy v0.0.1
 github.com/golang/snappy
-# github.com/google/go-cmp v0.5.5
-github.com/google/go-cmp/cmp
-github.com/google/go-cmp/cmp/internal/diff
-github.com/google/go-cmp/cmp/internal/flags
-github.com/google/go-cmp/cmp/internal/function
-github.com/google/go-cmp/cmp/internal/value
 # github.com/google/go-querystring v1.0.0
 github.com/google/go-querystring/query
 # github.com/google/uuid v1.1.2
@@ -123,8 +115,6 @@ github.com/googleapis/gax-go/v2
 github.com/hashicorp/consul/api
 # github.com/hashicorp/errwrap v1.0.0
 github.com/hashicorp/errwrap
-# github.com/hashicorp/go-checkpoint v0.0.0-20171009173528-1545e56e46de
-github.com/hashicorp/go-checkpoint
 # github.com/hashicorp/go-cleanhttp v0.5.2
 github.com/hashicorp/go-cleanhttp
 # github.com/hashicorp/go-getter/gcs/v2 v2.0.0-20200604122502-a6995fa1edad
@@ -148,8 +138,6 @@ github.com/hashicorp/go-rootcerts
 github.com/hashicorp/go-safetemp
 # github.com/hashicorp/go-sockaddr v1.0.2
 github.com/hashicorp/go-sockaddr
-# github.com/hashicorp/go-uuid v1.0.2
-github.com/hashicorp/go-uuid
 # github.com/hashicorp/go-version v1.2.0
 github.com/hashicorp/go-version
 # github.com/hashicorp/golang-lru v0.5.3
@@ -169,14 +157,7 @@ github.com/hashicorp/hcl/json/token
 github.com/hashicorp/hcl/v2
 github.com/hashicorp/hcl/v2/ext/customdecode
 github.com/hashicorp/hcl/v2/hcldec
-# github.com/hashicorp/packer v1.7.1
-github.com/hashicorp/packer/hcl2template/addrs
-github.com/hashicorp/packer/packer
-github.com/hashicorp/packer/packer/plugin-getter
-github.com/hashicorp/packer/provisioner/file
-github.com/hashicorp/packer/provisioner/shell
-github.com/hashicorp/packer/version
-# github.com/hashicorp/packer-plugin-sdk v0.1.2
+# github.com/hashicorp/packer-plugin-sdk v0.2.0
 ## explicit
 github.com/hashicorp/packer-plugin-sdk/acctest
 github.com/hashicorp/packer-plugin-sdk/common
@@ -198,7 +179,6 @@ github.com/hashicorp/packer-plugin-sdk/rpc
 github.com/hashicorp/packer-plugin-sdk/sdk-internals/communicator/none
 github.com/hashicorp/packer-plugin-sdk/sdk-internals/communicator/ssh
 github.com/hashicorp/packer-plugin-sdk/sdk-internals/communicator/winrm
-github.com/hashicorp/packer-plugin-sdk/shell
 github.com/hashicorp/packer-plugin-sdk/shell-local/localexec
 github.com/hashicorp/packer-plugin-sdk/template
 github.com/hashicorp/packer-plugin-sdk/template/config
@@ -239,8 +219,6 @@ github.com/masterzen/winrm/soap
 github.com/mattn/go-colorable
 # github.com/mattn/go-isatty v0.0.12
 github.com/mattn/go-isatty
-# github.com/mattn/go-runewidth v0.0.10
-github.com/mattn/go-runewidth
 # github.com/mitchellh/go-fs v0.0.0-20180402234041-7b48fa161ea7
 github.com/mitchellh/go-fs
 github.com/mitchellh/go-fs/fat
@@ -265,8 +243,6 @@ github.com/pierrec/lz4
 github.com/pierrec/lz4/internal/xxh32
 # github.com/pkg/sftp v0.0.0-20160118190721-e84cc8c755ca
 github.com/pkg/sftp
-# github.com/rivo/uniseg v0.1.0
-github.com/rivo/uniseg
 # github.com/ryanuber/go-glob v1.0.0
 github.com/ryanuber/go-glob
 # github.com/ugorji/go/codec v1.2.4
