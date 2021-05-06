@@ -1,6 +1,7 @@
 package vultr
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
@@ -8,23 +9,35 @@ import (
 )
 
 func TestBuilderAcc_basic(t *testing.T) {
-	acctest.Test(t, acctest.TestCase{
-		PreCheck: func() { testAccPreCheck(t) },
-		Builder:  &Builder{},
+	if skip := testAccPreCheck(t); skip == true {
+		return
+	}
+
+	acctest.TestPlugin(t, &acctest.PluginTestCase{
+		Name:     "test-vultr-builder-basic",
 		Template: testBuilderAccBasic,
 	})
 }
 
-func testAccPreCheck(t *testing.T) {
+func testAccPreCheck(t *testing.T) bool {
+	if os.Getenv(acctest.TestEnvVar) == "" {
+		t.Skip(fmt.Sprintf(
+			"Acceptance tests skipped unless env '%s' set",
+			acctest.TestEnvVar))
+		return true
+	}
+
 	if v := os.Getenv("VULTR_API_KEY"); v == "" {
 		t.Fatal("VULTR_API_KEY must be set for acceptance tests")
+		return true
 	}
+	return false
 }
 
 const testBuilderAccBasic = `
 {
 	"builders": [{
-		"type": "test",
+		"type": "vultr",
 		"snapshot_description": "packer-test-snapshot",
         "region_id": "ewr",
         "plan_id": "vc2-1c-1gb",
