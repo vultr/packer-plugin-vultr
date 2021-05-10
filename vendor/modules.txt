@@ -121,7 +121,7 @@ github.com/hashicorp/go-cleanhttp
 github.com/hashicorp/go-getter/gcs/v2
 # github.com/hashicorp/go-getter/s3/v2 v2.0.0-20200604122502-a6995fa1edad
 github.com/hashicorp/go-getter/s3/v2
-# github.com/hashicorp/go-getter/v2 v2.0.0-20200604122502-a6995fa1edad
+# github.com/hashicorp/go-getter/v2 v2.0.0
 github.com/hashicorp/go-getter/v2
 github.com/hashicorp/go-getter/v2/helper/url
 # github.com/hashicorp/go-hclog v0.12.0
@@ -157,7 +157,7 @@ github.com/hashicorp/hcl/json/token
 github.com/hashicorp/hcl/v2
 github.com/hashicorp/hcl/v2/ext/customdecode
 github.com/hashicorp/hcl/v2/hcldec
-# github.com/hashicorp/packer-plugin-sdk v0.2.0
+# github.com/hashicorp/packer-plugin-sdk v0.2.1
 ## explicit
 github.com/hashicorp/packer-plugin-sdk/acctest
 github.com/hashicorp/packer-plugin-sdk/common
@@ -247,7 +247,7 @@ github.com/pkg/sftp
 github.com/ryanuber/go-glob
 # github.com/ugorji/go/codec v1.2.4
 github.com/ugorji/go/codec
-# github.com/ulikunitz/xz v0.5.5
+# github.com/ulikunitz/xz v0.5.8
 github.com/ulikunitz/xz
 github.com/ulikunitz/xz/internal/hash
 github.com/ulikunitz/xz/internal/xlog
