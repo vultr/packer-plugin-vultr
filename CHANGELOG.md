@@ -1,5 +1,12 @@
 # Change Log
 
+## [v2.3.1](https://github.com/vultr/packer-builder-vultr/compare/v2.3.0..v2.3.1) (2021-05-10)
+### Dependencies
+- GoVultr v2.4.20 -> v2.5.1 [#132](https://github.com/vultr/packer-builder-vultr/pull/132)
+- Hcl v2.9.1 -> v2.10.0 [#128](https://github.com/vultr/packer-builder-vultr/pull/128)
+- Packer-plugin-sdk v0.1.2 -> v0.2.1 [#131](https://github.com/vultr/packer-builder-vultr/pull/131) [#127](https://github.com/vultr/packer-builder-vultr/pull/127)
+- Go-cty v1.8.1 -> v1.8.3 [#129](https://github.com/vultr/packer-builder-vultr/pull/129)
+
 ## [v2.3.0](https://github.com/vultr/packer-builder-vultr/compare/v2.2.1..v2.3.0) (2021-04-13)
 ### Enhancements
 - Update plugin to support `packer init` [#120](https://github.com/vultr/packer-builder-vultr/pull/120)
