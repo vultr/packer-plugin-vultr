@@ -1,5 +1,12 @@
 # Change Log
 
+## [v2.3.2](https://github.com/vultr/packer-builder-vultr/compare/v2.3.1..v2.3.2) (2021-06-07)
+### Dependencies
+- Packer-plugin-sdk v0.2.1 -> v0.2.3 [#135](https://github.com/vultr/packer-builder-vultr/pull/135) 
+
+### Documentation
+- Updated documentation README.md (from .mdx) [#136](https://github.com/vultr/packer-builder-vultr/pull/136)
+
 ## [v2.3.1](https://github.com/vultr/packer-builder-vultr/compare/v2.3.0..v2.3.1) (2021-05-10)
 ### Dependencies
 - GoVultr v2.4.20 -> v2.5.1 [#132](https://github.com/vultr/packer-builder-vultr/pull/132)
