@@ -32,6 +32,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		Plan:                 c.PlanID,
 		AppID:                c.AppID,
 		ScriptID:             c.ScriptID,
+		ImageID:              c.ImageID,
 		EnableIPv6:           govultr.BoolToBoolPtr(c.EnableIPV6),
 		EnablePrivateNetwork: govultr.BoolToBoolPtr(c.EnablePrivateNetwork),
 		Label:                c.Label,

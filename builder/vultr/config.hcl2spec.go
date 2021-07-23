@@ -75,6 +75,7 @@ type FlatConfig struct {
 	SnapshotID                *string           `mapstructure:"snapshot_id" cty:"snapshot_id" hcl:"snapshot_id"`
 	ISOID                     *string           `mapstructure:"iso_id" cty:"iso_id" hcl:"iso_id"`
 	AppID                     *int              `mapstructure:"app_id" cty:"app_id" hcl:"app_id"`
+	ImageID                   *string           `mapstructure:"image_id" cty:"image_id" hcl:"image_id"`
 	EnableIPV6                *bool             `mapstructure:"enable_ipv6" cty:"enable_ipv6" hcl:"enable_ipv6"`
 	EnablePrivateNetwork      *bool             `mapstructure:"enable_private_network" cty:"enable_private_network" hcl:"enable_private_network"`
 	ScriptID                  *string           `mapstructure:"script_id" cty:"script_id" hcl:"script_id"`
@@ -163,6 +164,7 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"snapshot_id":                  &hcldec.AttrSpec{Name: "snapshot_id", Type: cty.String, Required: false},
 		"iso_id":                       &hcldec.AttrSpec{Name: "iso_id", Type: cty.String, Required: false},
 		"app_id":                       &hcldec.AttrSpec{Name: "app_id", Type: cty.Number, Required: false},
+		"image_id":                     &hcldec.AttrSpec{Name: "image_id", Type: cty.String, Required: false},
 		"enable_ipv6":                  &hcldec.AttrSpec{Name: "enable_ipv6", Type: cty.Bool, Required: false},
 		"enable_private_network":       &hcldec.AttrSpec{Name: "enable_private_network", Type: cty.Bool, Required: false},
 		"script_id":                    &hcldec.AttrSpec{Name: "script_id", Type: cty.String, Required: false},
