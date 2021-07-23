@@ -1,6 +1,6 @@
 # Change Log
 
-## [v2.3.2](https://github.com/vultr/packer-builder-vultr/compare/v2.3.2..v2.4.0) (2021-06-07)
+## [v2.4.0](https://github.com/vultr/packer-builder-vultr/compare/v2.3.2..v2.4.0) (2021-07-23)
 ### Enhancements
 - Added marketplace support with usage of field `image_id` [#141](https://github.com/vultr/packer-builder-vultr/pull/141)
 
