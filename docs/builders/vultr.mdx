@@ -46,6 +46,8 @@ to use it or delete it.
 
 -   `app_id` (int) - If launching an application, this is the ID to launch. See [App](https://www.vultr.com/api/v2/#operation/list-applications).
 
+-   `image_id` (string) If launching a marketplace application. See [App](https://www.vultr.com/api/v2/#operation/list-applications). Note marketplace applications are denoted by `type: marketplace` and you must use the `image_id` not the `id`.
+
 -   `enable_ipv6` (bool) - IPv6 subnet will be assigned to the machine. Defaults to `false`
 
 -   `enable_private_network` (bool) - Enables private networking support to the new server. Defaults to `false`

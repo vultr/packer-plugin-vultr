@@ -28,6 +28,7 @@ type Config struct {
 	SnapshotID  string `mapstructure:"snapshot_id"`
 	ISOID       string `mapstructure:"iso_id"`
 	AppID       int    `mapstructure:"app_id"`
+	ImageID     string `mapstructure:"image_id"`
 
 	EnableIPV6           bool     `mapstructure:"enable_ipv6"`
 	EnablePrivateNetwork bool     `mapstructure:"enable_private_network"`
