@@ -1,5 +1,14 @@
 # Change Log
 
+## [v2.4.0](https://github.com/vultr/packer-builder-vultr/compare/v2.3.2..v2.4.0) (2021-07-23)
+### Enhancements
+- Added marketplace support with usage of field `image_id` [#141](https://github.com/vultr/packer-builder-vultr/pull/141)
+
+### Dependencies
+- Go-cty v1.8.3 -> v1.9.0 [#140](https://github.com/vultr/packer-builder-vultr/pull/140)
+- Hcl v2.10.0 -> v2.10.1 [#142](https://github.com/vultr/packer-builder-vultr/pull/142)
+- GoVultr v2.5.1 -> v2.7.1 [#141](https://github.com/vultr/packer-builder-vultr/pull/141)
+
 ## [v2.3.2](https://github.com/vultr/packer-builder-vultr/compare/v2.3.1..v2.3.2) (2021-06-07)
 ### Dependencies
 - Packer-plugin-sdk v0.2.1 -> v0.2.3 [#135](https://github.com/vultr/packer-builder-vultr/pull/135) 
