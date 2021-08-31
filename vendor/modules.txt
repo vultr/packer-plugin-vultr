@@ -157,7 +157,7 @@ github.com/hashicorp/hcl/json/token
 github.com/hashicorp/hcl/v2
 github.com/hashicorp/hcl/v2/ext/customdecode
 github.com/hashicorp/hcl/v2/hcldec
-# github.com/hashicorp/packer-plugin-sdk v0.2.3
+# github.com/hashicorp/packer-plugin-sdk v0.2.4
 ## explicit
 github.com/hashicorp/packer-plugin-sdk/acctest
 github.com/hashicorp/packer-plugin-sdk/common
@@ -255,7 +255,7 @@ github.com/ulikunitz/xz/lzma
 # github.com/vultr/govultr/v2 v2.7.1
 ## explicit
 github.com/vultr/govultr/v2
-# github.com/zclconf/go-cty v1.9.0
+# github.com/zclconf/go-cty v1.9.1
 ## explicit
 github.com/zclconf/go-cty/cty
 github.com/zclconf/go-cty/cty/convert
