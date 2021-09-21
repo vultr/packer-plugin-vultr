@@ -1,5 +1,11 @@
 # Change Log
 
+## [v2.4.1](https://github.com/vultr/packer-builder-vultr/compare/v2.4.0..v2.4.1) (2021-09-21)
+
+### Dependencies
+- Packer-plugin-sdk v0.2.3 -> v0.2.5 [#148](https://github.com/vultr/packer-builder-vultr/pull/148)
+- GoVultr v2.7.1 -> v2.8.1 [#147](https://github.com/vultr/packer-builder-vultr/pull/147)
+
 ## [v2.4.0](https://github.com/vultr/packer-builder-vultr/compare/v2.3.2..v2.4.0) (2021-07-23)
 ### Enhancements
 - Added marketplace support with usage of field `image_id` [#141](https://github.com/vultr/packer-builder-vultr/pull/141)
