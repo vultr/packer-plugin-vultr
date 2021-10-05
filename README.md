@@ -11,7 +11,7 @@ This is a [HashiCorp Packer](https://www.packer.io/) plugin for creating [Vultr]
 
 ## Requirements
 * [Packer](https://www.packer.io/intro/getting-started/install.html)
-* [Go 1.16+](https://golang.org/doc/install)
+* [Go 1.17+](https://golang.org/doc/install)
 
 ## Build & Installation
 
