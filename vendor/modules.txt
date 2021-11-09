@@ -203,7 +203,7 @@ github.com/hashicorp/hcl/json/token
 github.com/hashicorp/hcl/v2
 github.com/hashicorp/hcl/v2/ext/customdecode
 github.com/hashicorp/hcl/v2/hcldec
-# github.com/hashicorp/packer-plugin-sdk v0.2.5
+# github.com/hashicorp/packer-plugin-sdk v0.2.7
 ## explicit; go 1.17
 github.com/hashicorp/packer-plugin-sdk/acctest
 github.com/hashicorp/packer-plugin-sdk/common
@@ -319,7 +319,7 @@ github.com/ulikunitz/xz
 github.com/ulikunitz/xz/internal/hash
 github.com/ulikunitz/xz/internal/xlog
 github.com/ulikunitz/xz/lzma
-# github.com/vultr/govultr/v2 v2.8.1
+# github.com/vultr/govultr/v2 v2.10.0
 ## explicit; go 1.16
 github.com/vultr/govultr/v2
 # github.com/zclconf/go-cty v1.9.1
@@ -566,3 +566,5 @@ gopkg.in/square/go-jose.v2
 gopkg.in/square/go-jose.v2/cipher
 gopkg.in/square/go-jose.v2/json
 gopkg.in/square/go-jose.v2/jwt
+# gopkg.in/yaml.v2 v2.3.0
+## explicit

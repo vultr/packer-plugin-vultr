@@ -2,6 +2,28 @@
 
 ## GoVultr v1 changelog is located [here](https://github.com/vultr/govultr/blob/v1/CHANGELOG.md)
 
+## [v2.10.0](https://github.com/vultr/govultr/compare/v2.9.2..v2.10.0) (2021-11-03)
+### Enhancement
+* Billing : Added support for billing [178](https://github.com/vultr/govultr/pull/178)
+
+## [v2.9.2](https://github.com/vultr/govultr/compare/v2.9.1..v2.9.2) (2021-10-20)
+### Change
+* Iso : Changed `client` field to be unexported [168](https://github.com/vultr/govultr/pull/168)
+* Snapshot : Changed `client` field to be unexported  [168](https://github.com/vultr/govultr/pull/168)
+* Plans : Changed `client` field to be unexported  [168](https://github.com/vultr/govultr/pull/168)
+* Regions : Changed `client` field to be unexported  [168](https://github.com/vultr/govultr/pull/168)
+
+## [v2.9.1](https://github.com/vultr/govultr/compare/v2.9.0..v2.9.1) (2021-10-18)
+### Enhancement
+* Kubernetes : Added `Tag` support for nodepools [164](https://github.com/vultr/govultr/pull/164)
+
+## [v2.9.0](https://github.com/vultr/govultr/compare/v2.8.1..v2.9.0) (2021-09-27)
+### Breaking Change
+* Kubernetes : PlanID is now Plan and Count is now NodeQuantity to follow API pattern [161](https://github.com/vultr/govultr/pull/161)
+
+### Enhancement
+* Snapshots : Add compressed size field [162](https://github.com/vultr/govultr/pull/162)
+
 ## [v2.8.1](https://github.com/vultr/govultr/compare/v2.8.0..v2.8.1) (2021-08-31)
 ### Enhancement
 * Kubernetes : Add support for deletion with resources [159](https://github.com/vultr/govultr/pull/159)
