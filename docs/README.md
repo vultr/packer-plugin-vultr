@@ -20,7 +20,7 @@ Then, run [`packer init`](https://www.packer.io/docs/commands/init).
 packer {
   required_plugins {
     vultr = {
-      version = ">= 2.4.1"
+      version = ">= 2.4.2"
       source  = "github.com/vultr/vultr"
     }
   }
