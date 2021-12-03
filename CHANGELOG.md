@@ -1,5 +1,13 @@
 # Change Log
 
+## [v2.4.3](https://github.com/vultr/packer-builder-vultr/compare/v2.4.2..v2.4.3) (2021-12-03)
+
+### Dependencies
+- HCL v2 from 2.10.1 to 2.11.1 [#165](https://github.com/vultr/packer-builder-vultr/pull/165)
+- GoVultr from 2.10.0 to 2.12.0 [#164](https://github.com/vultr/packer-builder-vultr/pull/164)
+- Packer-plugin-sdk from 0.2.7 to 0.2.9 [#160](https://github.com/vultr/packer-builder-vultr/pull/160)
+
+
 ## [v2.4.2](https://github.com/vultr/packer-builder-vultr/compare/v2.4.1..v2.4.2) (2021-11-10)
 
 ### Dependencies
