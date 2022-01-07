@@ -1,7 +1,6 @@
 # Packer Builder for Vultr
 
 [![Automatic Releaser](https://github.com/vultr/packer-plugin-vultr/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/vultr/packer-plugin-vultr/actions/workflows/release.yml)
-[![Unit Tests](https://github.com/vultr/packer-plugin-vultr/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/vultr/packer-plugin-vultr/actions/workflows/unit-tests.yml)
 [![GoDoc](https://godoc.org/github.com/vultr/packer-builder-vultr?status.svg)](https://godoc.org/github.com/vultr/packer-builder-vultr/vultr)
 [![GitHub latest release](https://img.shields.io/github/release/vultr/packer-builder-vultr.svg)](https://github.com/vultr/packer-builder-vultr/releases)
 [![Go Report Card](https://goreportcard.com/badge/github.com/vultr/packer-builder-vultr)](https://goreportcard.com/report/github.com/vultr/packer-builder-vultr)
