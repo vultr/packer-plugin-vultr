@@ -1,5 +1,11 @@
 # Change Log
 
+## [v2.4.4](https://github.com/vultr/packer-builder-vultr/compare/v2.4.3..v2.4.4) (2022-01-27)
+
+### Dependencies
+- GoVultr from 2.12.0 to 2.14.0 [#174](https://github.com/vultr/packer-builder-vultr/pull/174)
+- Packer-plugin-sdk from 0.2.9 to 0.2.11 [#170](https://github.com/vultr/packer-builder-vultr/pull/170)
+
 ## [v2.4.3](https://github.com/vultr/packer-builder-vultr/compare/v2.4.2..v2.4.3) (2021-12-03)
 
 ### Dependencies
