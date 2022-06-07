@@ -1,6 +1,7 @@
 BINARY = packer-plugin-vultr
 PLUGIN_DIR = ~/.packer.d/plugins
 GOBIN = $(shell go env GOPATH)/bin
+HASHICORP_PACKER_PLUGIN_SDK_VERSION?=$(shell go list -m github.com/hashicorp/packer-plugin-sdk | cut -d " " -f2)
 
 .PHONY: default
 default: build test install
@@ -26,3 +27,13 @@ lint:
 .PHONY: clean
 clean:
 	rm -rf dist $(BINARY)
+
+install-packer-sdc: ## Install packer sofware development command
+	@go install github.com/hashicorp/packer-plugin-sdk/cmd/packer-sdc@${HASHICORP_PACKER_PLUGIN_SDK_VERSION}
+
+ci-release-docs: install-packer-sdc
+	@packer-sdc renderdocs -src docs -partials docs-partials/ -dst docs/
+	@/bin/sh -c "[ -d docs ] && zip -r docs.zip docs/"
+
+plugin-check: install-packer-sdc build
+	@packer-sdc plugin-check ${BINARY}
