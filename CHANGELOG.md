@@ -1,5 +1,19 @@
 # Change Log
 
+## [v2.4.5](https://github.com/vultr/packer-plugin-vultr/compare/v2.4.4...v2.4.5) (2022-06-07)
+
+### Dependencies
+- GoVultr from 2.16.0 to 2.17.1 [#188](https://github.com/vultr/packer-plugin-vultr/pull/188)
+- GoVultr from 2.14.0 to 2.16.0 [#184](https://github.com/vultr/packer-plugin-vultr/pull/184)
+- Packer-Plugin-SDK from 0.2.11 to 0.2.13 [#185](https://github.com/vultr/packer-plugin-vultr/pull/185)
+
+### Enhancements
+- Add artifact support for HCP Packer registry [#190](https://github.com/vultr/packer-plugin-vultr/pull/190)
+- Updated goreleaser packer plugin check [#191](https://github.com/vultr/packer-plugin-vultr/pull/191)
+
+### New Contributors
+- @optik-aper made their first contribution in https://github.com/vultr/packer-plugin-vultr/pull/190
+
 ## [v2.4.4](https://github.com/vultr/packer-builder-vultr/compare/v2.4.3..v2.4.4) (2022-01-27)
 
 ### Dependencies
