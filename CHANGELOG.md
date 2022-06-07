@@ -11,8 +11,8 @@
 - Add artifact support for HCP Packer registry [#190](https://github.com/vultr/packer-plugin-vultr/pull/190)
 - Updated goreleaser packer plugin check [#191](https://github.com/vultr/packer-plugin-vultr/pull/191)
 
-## New Contributors
-* @optik-aper made their first contribution in https://github.com/vultr/packer-plugin-vultr/pull/190
+### New Contributors
+- @optik-aper made their first contribution in https://github.com/vultr/packer-plugin-vultr/pull/190
 
 ## [v2.4.4](https://github.com/vultr/packer-builder-vultr/compare/v2.4.3..v2.4.4) (2022-01-27)
 
