@@ -15,7 +15,7 @@ func TestArtifact_Impl(t *testing.T) {
 }
 
 func TestArtifactId(t *testing.T) {
-	a := &Artifact{"d455d0246e8e6", "packer-test", nil}
+	a := &Artifact{"d455d0246e8e6", "packer-test", nil, nil, nil}
 	expected := "d455d0246e8e6"
 
 	if a.Id() != expected {
@@ -24,7 +24,7 @@ func TestArtifactId(t *testing.T) {
 }
 
 func TestArtifactString(t *testing.T) {
-	a := &Artifact{"d455d0246e8e6", "packer-test", nil}
+	a := &Artifact{"d455d0246e8e6", "packer-test", nil, nil, nil}
 	expected := "Vultr Snapshot: packer-test (d455d0246e8e6)"
 
 	if a.String() != expected {

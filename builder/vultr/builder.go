@@ -85,6 +85,7 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (ret 
 	artifact := &Artifact{
 		SnapshotID:  snapshot.ID,
 		Description: snapshot.Description,
+		config:      &b.config,
 		client:      client,
 	}
 

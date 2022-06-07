@@ -216,6 +216,7 @@ github.com/hashicorp/packer-plugin-sdk/multistep
 github.com/hashicorp/packer-plugin-sdk/multistep/commonsteps
 github.com/hashicorp/packer-plugin-sdk/net
 github.com/hashicorp/packer-plugin-sdk/packer
+github.com/hashicorp/packer-plugin-sdk/packer/registry/image
 github.com/hashicorp/packer-plugin-sdk/packerbuilderdata
 github.com/hashicorp/packer-plugin-sdk/pathing
 github.com/hashicorp/packer-plugin-sdk/plugin

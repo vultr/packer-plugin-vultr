@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 
+	registryimage "github.com/hashicorp/packer-plugin-sdk/packer/registry/image"
+
 	"github.com/vultr/govultr/v2"
 )
 
@@ -15,8 +17,14 @@ type Artifact struct {
 	// The Description of the snapshot
 	Description string
 
-	// The client for making
+	// The client for making changes
 	client *govultr.Client
+
+	// config definition from the builder
+	config *Config
+
+	// State data used by HCP container registry
+	StateData map[string]interface{}
 }
 
 func (a *Artifact) BuilderId() string {
@@ -36,7 +44,20 @@ func (a *Artifact) String() string {
 }
 
 func (a *Artifact) State(name string) interface{} {
-	return nil
+	if name == registryimage.ArtifactStateURI {
+		img, err := registryimage.FromArtifact(a,
+			registryimage.WithID(a.SnapshotID),
+			registryimage.WithProvider("Vultr"),
+			registryimage.WithRegion(a.config.RegionID),
+		)
+
+		if err != nil {
+			log.Printf("[DEBUG] error encountered when creating a registry image %v", err)
+			return nil
+		}
+		return img
+	}
+	return a.StateData[name]
 }
 
 func (a *Artifact) Destroy() error {
