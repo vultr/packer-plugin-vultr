@@ -320,7 +320,7 @@ github.com/ulikunitz/xz
 github.com/ulikunitz/xz/internal/hash
 github.com/ulikunitz/xz/internal/xlog
 github.com/ulikunitz/xz/lzma
-# github.com/vultr/govultr/v2 v2.17.1
+# github.com/vultr/govultr/v2 v2.17.2
 ## explicit; go 1.17
 github.com/vultr/govultr/v2
 # github.com/zclconf/go-cty v1.10.0
