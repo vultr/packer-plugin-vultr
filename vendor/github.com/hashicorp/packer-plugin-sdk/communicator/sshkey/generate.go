@@ -62,12 +62,14 @@ func NewPair(public, private interface{}) (*Pair, error) {
 	}, nil
 }
 
-// PairFromED25519 marshalls a valid pair of openssh pem for ED25519 keypairs.
-// NewPair can handle ed25519 pairs but generates the wrong format apparently:
-// `Load key "id_ed25519": invalid format` is the error that happens when I try
-// to ssh with such a key.
+// PairFromED25519 marshals a valid pair of openssh pem for ED25519 keypairs.
 func PairFromED25519(public ed25519.PublicKey, private ed25519.PrivateKey) (*Pair, error) {
 	// see https://github.com/golang/crypto/blob/7f63de1d35b0f77fa2b9faea3e7deb402a2383c8/ssh/keys.go#L1273-L1443
+	// and https://github.com/openssh/openssh-portable/blob/master/PROTOCOL.key
+	// Also the right cipher block size for padding could be found here
+	// https://github.com/openssh/openssh-portable/blob/eba523f0a130f1cce829e6aecdcefa841f526a1a/cipher.c#L112
+	const noneCipherBlockSize = 8
+
 	key := struct {
 		Pub     []byte
 		Priv    []byte
@@ -90,6 +92,20 @@ func PairFromED25519(public ed25519.PublicKey, private ed25519.PrivateKey) (*Pai
 	}
 	pk1Bytes := ssh.Marshal(pk1)
 
+	pubk1 := struct {
+		Keytype string
+		Key     []byte
+	}{
+		Keytype: ssh.KeyAlgoED25519,
+		Key:     public,
+	}
+	pubk1Bytes := ssh.Marshal(pubk1)
+
+	padLen := noneCipherBlockSize - (len(pk1Bytes) % noneCipherBlockSize)
+	for i := 1; i <= padLen; i++ {
+		pk1Bytes = append(pk1Bytes, byte(i))
+	}
+
 	k := struct {
 		CipherName   string
 		KdfName      string
@@ -102,6 +118,7 @@ func PairFromED25519(public ed25519.PublicKey, private ed25519.PrivateKey) (*Pai
 		KdfName:      "none",
 		KdfOpts:      "",
 		NumKeys:      1,
+		PubKey:       pubk1Bytes,
 		PrivKeyBlock: pk1Bytes,
 	}
 

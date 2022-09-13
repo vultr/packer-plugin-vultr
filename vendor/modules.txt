@@ -203,8 +203,8 @@ github.com/hashicorp/hcl/json/token
 github.com/hashicorp/hcl/v2
 github.com/hashicorp/hcl/v2/ext/customdecode
 github.com/hashicorp/hcl/v2/hcldec
-# github.com/hashicorp/packer-plugin-sdk v0.3.1
-## explicit; go 1.17
+# github.com/hashicorp/packer-plugin-sdk v0.3.2
+## explicit; go 1.18
 github.com/hashicorp/packer-plugin-sdk/acctest
 github.com/hashicorp/packer-plugin-sdk/common
 github.com/hashicorp/packer-plugin-sdk/communicator

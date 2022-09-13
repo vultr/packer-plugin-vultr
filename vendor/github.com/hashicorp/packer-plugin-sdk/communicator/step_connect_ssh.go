@@ -165,6 +165,8 @@ func (s *StepConnectSSH) waitForSSH(state multistep.StateBag, ctx context.Contex
 		var connFunc func() (net.Conn, error)
 		address := fmt.Sprintf("%s:%d", host, port)
 		if bAddr != "" {
+			log.Printf("[INFO] connecting with SSH to host %s through bastion at %s",
+				address, bAddr)
 			// We're using a bastion host, so use the bastion connfunc
 			connFunc = ssh.BastionConnectFunc(
 				bProto, bAddr, bConf, "tcp", address)

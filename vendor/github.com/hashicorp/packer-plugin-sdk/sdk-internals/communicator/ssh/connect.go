@@ -2,6 +2,7 @@ package ssh
 
 import (
 	"fmt"
+	"log"
 	"net"
 	"time"
 
@@ -61,6 +62,9 @@ func BastionConnectFunc(
 		if err != nil {
 			return nil, fmt.Errorf("Error connecting to bastion: %s", err)
 		}
+
+		log.Println("[DEBUG] connected to bastion host")
+		log.Println("[DEBUG] attempting connection to destination host")
 
 		// Connect through to the end host
 		conn, err := bastion.Dial(proto, addr)

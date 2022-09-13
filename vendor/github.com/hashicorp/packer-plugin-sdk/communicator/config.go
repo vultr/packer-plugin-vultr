@@ -103,7 +103,7 @@ type SSH struct {
 	// (unless the user has set the `-debug` flag). Defaults to "false";
 	// currently only works on guests with `sed` installed.
 	SSHClearAuthorizedKeys bool `mapstructure:"ssh_clear_authorized_keys"`
-	// If set, Packer will override the value of key exchange (kex) altorighms
+	// If set, Packer will override the value of key exchange (kex) algorithms
 	// supported by default by golang. Acceptable values include:
 	// "curve25519-sha256@libssh.org", "ecdh-sha2-nistp256",
 	// "ecdh-sha2-nistp384", "ecdh-sha2-nistp521",
@@ -547,10 +547,10 @@ func (c *Config) prepareSSH(ctx *interpolate.Context) []error {
 		}
 	}
 
-	if c.SSHBastionHost != "" && !c.SSHBastionAgentAuth {
-		if c.SSHBastionPassword == "" && c.SSHBastionPrivateKeyFile == "" {
+	if c.SSHBastionHost != "" {
+		if c.SSHBastionPassword == "" && c.SSHBastionPrivateKeyFile == "" && !c.SSHBastionAgentAuth {
 			errs = append(errs, errors.New(
-				"ssh_bastion_password or ssh_bastion_private_key_file must be specified"))
+				"ssh_bastion_password, ssh_bastion_private_key_file or ssh_bastion_agent_auth must be specified"))
 		} else if c.SSHBastionPrivateKeyFile != "" {
 			path, err := pathing.ExpandUser(c.SSHBastionPrivateKeyFile)
 			if err != nil {
