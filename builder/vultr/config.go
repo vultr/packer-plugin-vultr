@@ -42,6 +42,8 @@ type Config struct {
 
 	RawStateTimeout string `mapstructure:"state_timeout"`
 
+	create_temp_ssh_pair bool
+
 	stateTimeout time.Duration
 	interCtx     interpolate.Context
 }
@@ -100,8 +102,13 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 		errs = packer.MultiErrorAppend(errs, errors.New("you can only set one of the following: `app_id`, `snapshot_id`, `iso_id`"))
 	}
 
-	if (c.SnapshotID != "" || c.ISOID != "") && c.Comm.SSHPassword == "" && c.Comm.SSHPrivateKeyFile == "" {
-		errs = packer.MultiErrorAppend(errs, errors.New("either `ssh_password` or `ssh_private_key_file` must be defined for snapshot or custom OS"))
+	if c.SnapshotID != "" || c.ISOID != "" || c.ISOURL != "" {
+		c.create_temp_ssh_pair = false
+		if c.Comm.SSHPassword == "" && c.Comm.SSHPrivateKeyFile == "" {
+			errs = packer.MultiErrorAppend(errs, errors.New("either `ssh_password` or `ssh_private_key_file` must be defined for snapshot or custom OS"))
+		}
+	} else {
+		c.create_temp_ssh_pair = true
 	}
 
 	if c.ISOURL != "" && c.ISOID != "" {

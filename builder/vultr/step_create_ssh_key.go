@@ -30,6 +30,10 @@ func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) mult
 	ui := state.Get("ui").(packer.Ui)
 	config := state.Get("config").(*Config)
 
+	if !config.create_temp_ssh_pair {
+		return multistep.ActionContinue
+	}
+
 	ui.Say("Creating temporary SSH key...")
 
 	priv, err := rsa.GenerateKey(rand.Reader, 2048)

@@ -21,12 +21,14 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 
 	ui.Say("Creating Vultr instance...")
 
-	tempKey := state.Get("temp_ssh_key_id").(string)
-	keys := append(c.SSHKeyIDs, tempKey)
+	ssh_keys := c.SSHKeyIDs
+	key, key_ok := state.GetOk("temp_ssh_key_id")
+	if key_ok {
+		ssh_keys = append(ssh_keys, key.(string))
+	}
 
 	// check if ISO ID should be populated by the result of creating an ISO in step_create_iso via 'iso_url'
 	iso_id := c.ISOID
-
 	iso, iso_ok := state.GetOk("iso")
 	if iso_ok {
 		iso_id = iso.(*govultr.ISO).ID
@@ -44,7 +46,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		EnableIPv6:           govultr.BoolToBoolPtr(c.EnableIPV6),
 		EnablePrivateNetwork: govultr.BoolToBoolPtr(c.EnablePrivateNetwork),
 		Label:                c.Label,
-		SSHKeys:              keys,
+		SSHKeys:              ssh_keys,
 		UserData:             c.UserData,
 		ActivationEmail:      govultr.BoolToBoolPtr(false),
 		Hostname:             c.Hostname,
