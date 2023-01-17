@@ -48,6 +48,7 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (ret 
 			Debug:        b.config.PackerDebug,
 			DebugKeyPath: fmt.Sprintf("vultr_%s.pem", b.config.PackerBuildName),
 		},
+		&stepCreateISO{client},
 		&stepCreateServer{client},
 		&communicator.StepConnect{
 			Config:    &b.config.Comm,

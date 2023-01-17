@@ -9,6 +9,45 @@ import (
 	"github.com/vultr/govultr/v2"
 )
 
+func waitForISOState(state string, isoID string, client *govultr.Client, timeout time.Duration) error {
+	done := make(chan struct{})
+	defer close(done)
+	result := make(chan error, 1)
+	go func() {
+		attempts := 0
+		for {
+			attempts++
+			log.Printf("Checking ISO status... (attempt: %d)", attempts)
+
+			iso, err := client.ISO.Get(context.Background(), isoID)
+			if err != nil {
+				result <- err
+				return
+			}
+
+			if iso.Status == state {
+				result <- nil
+				return
+			}
+
+			time.Sleep(3 * time.Second)
+
+			select {
+			case <-done:
+				return
+			default:
+			}
+		}
+	}()
+	log.Printf("Waiting for up to %d seconds for ISO", timeout/time.Second)
+	select {
+	case err := <-result:
+		return err
+	case <-time.After(timeout):
+		return fmt.Errorf("timeout while waiting for ISO")
+	}
+}
+
 // waitForState simply blocks until the server is in a state we expect,
 // while eventually timing out.
 func waitForServerState(state string, power string, serverID string, client *govultr.Client, timeout time.Duration) error {
@@ -47,7 +86,7 @@ func waitForServerState(state string, power string, serverID string, client *gov
 	case err := <-result:
 		return err
 	case <-time.After(timeout):
-		return fmt.Errorf("timeout while waiting to for server")
+		return fmt.Errorf("timeout while waiting for server")
 	}
 }
 
@@ -89,6 +128,6 @@ func waitForSnapshotState(state string, snapshotID string, client *govultr.Clien
 	case err := <-result:
 		return err
 	case <-time.After(timeout):
-		return fmt.Errorf("timeout while waiting to for snapshot")
+		return fmt.Errorf("timeout while waiting for snapshot")
 	}
 }

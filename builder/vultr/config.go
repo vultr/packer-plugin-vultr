@@ -1,4 +1,4 @@
-//go:generate mapstructure-to-hcl2 -type Config
+//go:generate packer-sdc mapstructure-to-hcl2 -type Config
 package vultr
 
 import (
@@ -27,6 +27,7 @@ type Config struct {
 	OSID        int    `mapstructure:"os_id"`
 	SnapshotID  string `mapstructure:"snapshot_id"`
 	ISOID       string `mapstructure:"iso_id"`
+	ISOURL      string `mapstructure:"iso_url"`
 	AppID       int    `mapstructure:"app_id"`
 	ImageID     string `mapstructure:"image_id"`
 
@@ -101,6 +102,10 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 
 	if (c.SnapshotID != "" || c.ISOID != "") && c.Comm.SSHPassword == "" && c.Comm.SSHPrivateKeyFile == "" {
 		errs = packer.MultiErrorAppend(errs, errors.New("either `ssh_password` or `ssh_private_key_file` must be defined for snapshot or custom OS"))
+	}
+
+	if c.ISOURL != "" && c.ISOID != "" {
+		errs = packer.MultiErrorAppend(errs, errors.New("either `iso_url` or `iso_id` can be defined, but not both"))
 	}
 
 	if c.RawStateTimeout == "" {
