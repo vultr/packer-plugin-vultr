@@ -98,8 +98,10 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 		errs = packer.MultiErrorAppend(errs, errors.New("plan_id is required"))
 	}
 
-	if (c.AppID != 0 && c.SnapshotID != "") || (c.AppID != 0 && c.ISOID != "") || (c.SnapshotID != "" && c.ISOID != "") {
-		errs = packer.MultiErrorAppend(errs, errors.New("you can only set one of the following: `app_id`, `snapshot_id`, `iso_id`"))
+	if (c.AppID != 0 && c.SnapshotID != "") || (c.AppID != 0 && c.ISOID != "") || (c.AppID != 0 && c.ISOURL != "") ||
+		(c.SnapshotID != "" && c.ISOID != "") || (c.SnapshotID != "" && c.ISOURL != "") ||
+		(c.ISOID != "" && c.ISOURL != "") {
+		errs = packer.MultiErrorAppend(errs, errors.New("you can only set one of the following: `app_id`, `snapshot_id`, `iso_id`, `iso_url`"))
 	}
 
 	if c.SnapshotID != "" || c.ISOID != "" || c.ISOURL != "" {
@@ -109,10 +111,6 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 		}
 	} else {
 		c.create_temp_ssh_pair = true
-	}
-
-	if c.ISOURL != "" && c.ISOID != "" {
-		errs = packer.MultiErrorAppend(errs, errors.New("either `iso_url` or `iso_id` can be defined, but not both"))
 	}
 
 	if c.RawStateTimeout == "" {
