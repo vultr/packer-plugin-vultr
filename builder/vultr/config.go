@@ -98,10 +98,16 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 		errs = packer.MultiErrorAppend(errs, errors.New("plan_id is required"))
 	}
 
-	if (c.AppID != 0 && c.SnapshotID != "") || (c.AppID != 0 && c.ISOID != "") || (c.AppID != 0 && c.ISOURL != "") ||
-		(c.SnapshotID != "" && c.ISOID != "") || (c.SnapshotID != "" && c.ISOURL != "") ||
-		(c.ISOID != "" && c.ISOURL != "") {
-		errs = packer.MultiErrorAppend(errs, errors.New("you can only set one of the following: `app_id`, `snapshot_id`, `iso_id`, `iso_url`"))
+	imageConfig := []bool{(c.AppID != 0), (c.ISOID != ""), (c.ISOURL != ""), (c.OSID != 0), (c.SnapshotID != "")}
+	imageDefined := false
+	for _, isDefined := range imageConfig {
+		if isDefined {
+			if imageDefined {
+				errs = packer.MultiErrorAppend(errs, errors.New("you can only set one of the following: `app_id`, `iso_id`, `iso_url`, `os_id`, `snapshot_id`"))
+				break
+			}
+			imageDefined = true
+		}
 	}
 
 	if c.SnapshotID != "" || c.ISOID != "" || c.ISOURL != "" {
