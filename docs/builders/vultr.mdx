@@ -44,6 +44,8 @@ to use it or delete it.
 
 -   `iso_id` (string) - If you've selected the 'custom' operating system, this is the ID of a specific ISO to mount during the deployment. See [ISO](https://www.vultr.com/api/v2/#operation/list-isos).
 
+-   `iso_url` (string) - Upload a new ISO from this url that is publicly accessible. See [Create ISO](https://www.vultr.com/api/#operation/create-iso). This ISO will be deleted upon successful provisioning, or if the build is cancelled.
+
 -   `app_id` (int) - If launching an application, this is the ID to launch. See [App](https://www.vultr.com/api/v2/#operation/list-applications).
 
 -   `image_id` (string) If launching a marketplace application. See [App](https://www.vultr.com/api/v2/#operation/list-applications). Note marketplace applications are denoted by `type: marketplace` and you must use the `image_id` not the `id`.
@@ -90,5 +92,3 @@ build {
   sources = ["source.vultr.ubuntu-20"]
 }
 ```
-
-

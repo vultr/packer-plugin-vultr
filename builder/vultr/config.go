@@ -1,4 +1,4 @@
-//go:generate mapstructure-to-hcl2 -type Config
+//go:generate packer-sdc mapstructure-to-hcl2 -type Config
 package vultr
 
 import (
@@ -27,6 +27,7 @@ type Config struct {
 	OSID        int    `mapstructure:"os_id"`
 	SnapshotID  string `mapstructure:"snapshot_id"`
 	ISOID       string `mapstructure:"iso_id"`
+	ISOURL      string `mapstructure:"iso_url"`
 	AppID       int    `mapstructure:"app_id"`
 	ImageID     string `mapstructure:"image_id"`
 
@@ -40,6 +41,8 @@ type Config struct {
 	Tag                  string   `mapstructure:"tag"`
 
 	RawStateTimeout string `mapstructure:"state_timeout"`
+
+	create_temp_ssh_pair bool
 
 	stateTimeout time.Duration
 	interCtx     interpolate.Context
@@ -95,12 +98,25 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 		errs = packer.MultiErrorAppend(errs, errors.New("plan_id is required"))
 	}
 
-	if (c.AppID != 0 && c.SnapshotID != "") || (c.AppID != 0 && c.ISOID != "") || (c.SnapshotID != "" && c.ISOID != "") {
-		errs = packer.MultiErrorAppend(errs, errors.New("you can only set one of the following: `app_id`, `snapshot_id`, `iso_id`"))
+	imageConfig := []bool{(c.AppID != 0), (c.ISOID != ""), (c.ISOURL != ""), (c.OSID != 0), (c.SnapshotID != "")}
+	imageDefined := false
+	for _, isDefined := range imageConfig {
+		if isDefined {
+			if imageDefined {
+				errs = packer.MultiErrorAppend(errs, errors.New("you can only set one of the following: `app_id`, `iso_id`, `iso_url`, `os_id`, `snapshot_id`"))
+				break
+			}
+			imageDefined = true
+		}
 	}
 
-	if (c.SnapshotID != "" || c.ISOID != "") && c.Comm.SSHPassword == "" && c.Comm.SSHPrivateKeyFile == "" {
-		errs = packer.MultiErrorAppend(errs, errors.New("either `ssh_password` or `ssh_private_key_file` must be defined for snapshot or custom OS"))
+	if c.SnapshotID != "" || c.ISOID != "" || c.ISOURL != "" {
+		c.create_temp_ssh_pair = false
+		if c.Comm.SSHPassword == "" && c.Comm.SSHPrivateKeyFile == "" {
+			errs = packer.MultiErrorAppend(errs, errors.New("either `ssh_password` or `ssh_private_key_file` must be defined for snapshot or custom OS"))
+		}
+	} else {
+		c.create_temp_ssh_pair = true
 	}
 
 	if c.RawStateTimeout == "" {

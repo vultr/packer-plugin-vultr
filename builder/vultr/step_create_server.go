@@ -21,11 +21,21 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 
 	ui.Say("Creating Vultr instance...")
 
-	tempKey := state.Get("temp_ssh_key_id").(string)
-	keys := append(c.SSHKeyIDs, tempKey)
+	ssh_keys := c.SSHKeyIDs
+	key, key_ok := state.GetOk("temp_ssh_key_id")
+	if key_ok {
+		ssh_keys = append(ssh_keys, key.(string))
+	}
+
+	// check if ISO ID should be populated by the result of creating an ISO in step_create_iso via 'iso_url'
+	iso_id := c.ISOID
+	iso, iso_ok := state.GetOk("iso")
+	if iso_ok {
+		iso_id = iso.(*govultr.ISO).ID
+	}
 
 	instanceReq := &govultr.InstanceCreateReq{
-		ISOID:                c.ISOID,
+		ISOID:                iso_id,
 		SnapshotID:           c.SnapshotID,
 		OsID:                 c.OSID,
 		Region:               c.RegionID,
@@ -36,7 +46,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		EnableIPv6:           govultr.BoolToBoolPtr(c.EnableIPV6),
 		EnablePrivateNetwork: govultr.BoolToBoolPtr(c.EnablePrivateNetwork),
 		Label:                c.Label,
-		SSHKeys:              keys,
+		SSHKeys:              ssh_keys,
 		UserData:             c.UserData,
 		ActivationEmail:      govultr.BoolToBoolPtr(false),
 		Hostname:             c.Hostname,
@@ -83,10 +93,24 @@ func (s *stepCreateServer) Cleanup(state multistep.StateBag) {
 	}
 
 	ui := state.Get("ui").(packer.Ui)
-	instanceID := server.(*govultr.Instance).ID
+	instance := server.(*govultr.Instance)
 
-	ui.Say("Destroying server " + instanceID)
-	if err := s.client.Instance.Delete(context.Background(), instanceID); err != nil {
+	// If an ISO was uploaded as part of this build, detach from the instance before destroying
+	if iso, ok := state.GetOk("iso"); ok {
+		iso_status, iso_status_err := s.client.Instance.ISOStatus(context.Background(), instance.ID)
+		if iso_status_err != nil {
+			state.Put("error", iso_status_err)
+		}
+
+		if iso_status.State == "isomounted" && iso_status.IsoID == iso.(*govultr.ISO).ID {
+			if detach_err := s.client.Instance.DetachISO(context.Background(), instance.ID); detach_err != nil {
+				state.Put("error", detach_err)
+			}
+		}
+	}
+
+	ui.Say("Destroying server " + instance.ID)
+	if err := s.client.Instance.Delete(context.Background(), instance.ID); err != nil {
 		state.Put("error", err)
 	}
 }
