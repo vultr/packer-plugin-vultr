@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 /*
 Package acctest provides an acceptance testing framework for testing builders
 and provisioners.

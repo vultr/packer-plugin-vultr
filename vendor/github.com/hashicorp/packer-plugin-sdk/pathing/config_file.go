@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // Package pathing determines where to put the Packer config directory based on
 // host OS architecture and user environment variables.
 package pathing

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // Package version helps plugin creators set and track the plugin version using
 // the same convenience functions used by the Packer core.
 package version
@@ -13,7 +16,7 @@ import (
 var GitCommit string
 
 // Package version helps plugin creators set and track the sdk version using
-var Version = "0.3.1"
+var Version = "0.3.3"
 
 // A pre-release marker for the version. If this is "" (empty string)
 // then it means that it is a final release. Otherwise, this is a pre-release

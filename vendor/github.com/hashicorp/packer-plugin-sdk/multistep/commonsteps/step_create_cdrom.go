@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package commonsteps
 
 import (
@@ -260,7 +263,9 @@ func (s *StepCreateCD) AddFile(dst, src string) error {
 		// Clean up pathing so that we preserve the base directory provided by
 		// the user but not the local pathing to that directory.
 		allDirs, base := filepath.Split(pathname)
-		intermediaryDirs := strings.Replace(allDirs, discardPath, "", 1)
+		allDirsSlashSafe := filepath.ToSlash(allDirs)
+		discardPathSlashSafe := filepath.ToSlash(discardPath)
+		intermediaryDirs := strings.Replace(allDirsSlashSafe, discardPathSlashSafe, "", 1)
 
 		dstPath := filepath.Join(dst, base)
 		if intermediaryDirs != "" {

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // Package uuid provides helper functions for creating time-ordered UUIDs.
 package uuid
 

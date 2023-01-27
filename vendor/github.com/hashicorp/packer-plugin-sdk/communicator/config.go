@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 //go:generate packer-sdc struct-markdown
 //go:generate packer-sdc mapstructure-to-hcl2 -type Config,SSH,WinRM,SSHTemporaryKeyPair
 
@@ -84,7 +87,7 @@ type SSH struct {
 	// a 36 character unique identifier.
 	SSHTemporaryKeyPairName string `mapstructure:"temporary_key_pair_name" undocumented:"true"`
 	SSHTemporaryKeyPair     `mapstructure:",squash"`
-	// This overrides the value of ciphers supported by default by golang.
+	// This overrides the value of ciphers supported by default by Golang.
 	// The default value is [
 	//   "aes128-gcm@openssh.com",
 	//   "chacha20-poly1305@openssh.com",
@@ -103,8 +106,8 @@ type SSH struct {
 	// (unless the user has set the `-debug` flag). Defaults to "false";
 	// currently only works on guests with `sed` installed.
 	SSHClearAuthorizedKeys bool `mapstructure:"ssh_clear_authorized_keys"`
-	// If set, Packer will override the value of key exchange (kex) altorighms
-	// supported by default by golang. Acceptable values include:
+	// If set, Packer will override the value of key exchange (kex) algorithms
+	// supported by default by Golang. Acceptable values include:
 	// "curve25519-sha256@libssh.org", "ecdh-sha2-nistp256",
 	// "ecdh-sha2-nistp384", "ecdh-sha2-nistp521",
 	// "diffie-hellman-group14-sha1", and "diffie-hellman-group1-sha1".
@@ -162,6 +165,11 @@ type SSH struct {
 	SSHBastionCertificateFile string `mapstructure:"ssh_bastion_certificate_file"`
 	// `scp` or `sftp` - How to transfer files, Secure copy (default) or SSH
 	// File Transfer Protocol.
+	//
+	// **NOTE**: Guests using Windows with Win32-OpenSSH v9.1.0.0p1-Beta, scp
+	// (the default protocol for copying data) returns a a non-zero error code since the MOTW
+	// cannot be set, which cause any file transfer to fail. As a workaround you can override the transfer protocol
+	// with SFTP instead `ssh_file_transfer_protocol = "sftp"`.
 	SSHFileTransferMethod string `mapstructure:"ssh_file_transfer_method"`
 	// A SOCKS proxy host to use for SSH connection
 	SSHProxyHost string `mapstructure:"ssh_proxy_host"`
@@ -221,7 +229,7 @@ type WinRM struct {
 	//
 	// NOTE: If using an Amazon EBS builder, you can specify the interface
 	// WinRM connects to via
-	// [`ssh_interface`](/docs/builders/amazon-ebs#ssh_interface)
+	// [`ssh_interface`](/packer/plugins/builders/amazon/ebs#ssh_interface)
 	WinRMHost string `mapstructure:"winrm_host"`
 	// Setting this to `true` adds the remote
 	// `host:port` to the `NO_PROXY` environment variable. This has the effect of
@@ -547,10 +555,10 @@ func (c *Config) prepareSSH(ctx *interpolate.Context) []error {
 		}
 	}
 
-	if c.SSHBastionHost != "" && !c.SSHBastionAgentAuth {
-		if c.SSHBastionPassword == "" && c.SSHBastionPrivateKeyFile == "" {
+	if c.SSHBastionHost != "" {
+		if c.SSHBastionPassword == "" && c.SSHBastionPrivateKeyFile == "" && !c.SSHBastionAgentAuth {
 			errs = append(errs, errors.New(
-				"ssh_bastion_password or ssh_bastion_private_key_file must be specified"))
+				"ssh_bastion_password, ssh_bastion_private_key_file or ssh_bastion_agent_auth must be specified"))
 		} else if c.SSHBastionPrivateKeyFile != "" {
 			path, err := pathing.ExpandUser(c.SSHBastionPrivateKeyFile)
 			if err != nil {
@@ -619,7 +627,7 @@ func (c *Config) prepareWinRM(ctx *interpolate.Context) (errs []error) {
 		c.WinRMTimeout = 30 * time.Minute
 	}
 
-	if c.WinRMUseNTLM == true {
+	if c.WinRMUseNTLM {
 		c.WinRMTransportDecorator = func() winrm.Transporter { return &winrm.ClientNTLM{} }
 	}
 
