@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // Package common provides the PackerConfig structure that gets passed to every
 // plugin and contains information populated by the Packer core. This config
 // contains data about command line flags that were used, as well as template

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // Package packerbuilderdata provides tooling for setting and getting special
 // builder-generated data that will be passed to the provisioners. This data
 // should be limited to runtime data like instance id, ip address, and other

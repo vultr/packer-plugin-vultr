@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // Package SSH provides tooling for generating a temporary SSH keypair, and
 // provides tooling for connecting to an instance via a tunnel.
 package ssh

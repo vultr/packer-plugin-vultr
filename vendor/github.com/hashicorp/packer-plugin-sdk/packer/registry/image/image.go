@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 /* Package image allows for the management of image metadata that can be stored in a HCP Packer registry.
  */
 package image
