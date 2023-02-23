@@ -6,7 +6,7 @@ require (
 	github.com/hashicorp/hcl/v2 v2.14.0
 	github.com/hashicorp/packer-plugin-sdk v0.3.1
 	github.com/vultr/govultr/v2 v2.17.2
-	github.com/zclconf/go-cty v1.10.0
+	github.com/zclconf/go-cty v1.12.1
 	golang.org/x/crypto v0.0.0-20220517005047-85d78b3ac167
 	golang.org/x/oauth2 v0.0.0-20210819190943-2bc19b11175f
 )
