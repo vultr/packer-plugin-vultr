@@ -74,7 +74,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 	}
 
 	if instance, err = s.client.Instance.Get(context.Background(), instance.ID); err != nil {
-		err := fmt.Errorf("Error getting server: %s", err)
+		err := fmt.Errorf("error getting server: %s", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt

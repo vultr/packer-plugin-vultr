@@ -38,7 +38,7 @@ func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) mult
 
 	priv, err := rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {
-		err := fmt.Errorf("Error creating temporary SSH key: %s", err)
+		err := fmt.Errorf("error creating temporary SSH key: %s", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
@@ -52,7 +52,7 @@ func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) mult
 
 	pub, err := ssh.NewPublicKey(&priv.PublicKey)
 	if err != nil {
-		err := fmt.Errorf("Error creating temporary SSH key: %s", err)
+		err := fmt.Errorf("error creating temporary SSH key: %s", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
@@ -68,7 +68,7 @@ func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) mult
 	}
 	key, err := s.client.SSHKey.Create(context.Background(), sshKeyReq)
 	if err != nil {
-		err := fmt.Errorf("Error creating temporary SSH key: %s", err)
+		err := fmt.Errorf("error creating temporary SSH key: %s", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt

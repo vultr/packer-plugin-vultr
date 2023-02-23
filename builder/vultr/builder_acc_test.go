@@ -2,7 +2,7 @@ package vultr
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"os/exec"
 	"regexp"
@@ -39,7 +39,7 @@ func TestBuilderAcc(t *testing.T) {
 			}
 			defer logs.Close()
 
-			logsBytes, err := ioutil.ReadAll(logs)
+			logsBytes, err := io.ReadAll(logs)
 			if err != nil {
 				return fmt.Errorf("Unable to read %s", logfile)
 			}
@@ -53,18 +53,11 @@ func TestBuilderAcc(t *testing.T) {
 		},
 	}
 	acctest.TestPlugin(t, basicTestCase)
-
-	// isoTestCase := basicTestCase
-	// isoTestCase.Name = "test-vultr-builder-iso"
-	// isoTestCase.Template = testBuilderAccISO
-	// acctest.TestPlugin(t, isoTestCase)
 }
 
 func testAccPreCheck(t *testing.T) bool {
 	if os.Getenv(acctest.TestEnvVar) == "" {
-		t.Skip(fmt.Sprintf(
-			"Acceptance tests skipped unless env '%s' set",
-			acctest.TestEnvVar))
+		t.Skipf("Acceptance tests skipped unless env '%s' set", acctest.TestEnvVar)
 		return true
 	}
 
@@ -85,22 +78,6 @@ const testBuilderAccBasic = `
 		"os_id": 477,
 		"ssh_timeout": "10m",
 		"ssh_username": "root",
-		"state_timeout": "60m"
-	}]
-}
-`
-
-// Requires a specially modified ISO that has been crafted to configure SSH access + relevant configuration options
-const testBuilderAccISO = `
-{
-	"builders": [{
-		"type": "vultr",
-		"snapshot_description": "packer-test-snapshot-from-iso",
-		"region_id": "ewr",
-		"plan_id": "vc2-1c-1gb",
-		"ssh_timeout": "10m",
-		"ssh_username": "root",
-		"iso_url": "https://example.com/customized.iso",
 		"state_timeout": "60m"
 	}]
 }

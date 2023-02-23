@@ -46,8 +46,8 @@ func (s *stepCreateISO) Run(ctx context.Context, state multistep.StateBag) multi
 			return multistep.ActionHalt
 		}
 
-		if iso, err = s.client.ISO.Get(context.Background(), iso.ID); err != nil {
-			err := fmt.Errorf("Error getting ISO: %s", err)
+		if _, err = s.client.ISO.Get(context.Background(), iso.ID); err != nil {
+			err := fmt.Errorf("error getting ISO: %s", err)
 			state.Put("error", err)
 			ui.Error(err.Error())
 			return multistep.ActionHalt

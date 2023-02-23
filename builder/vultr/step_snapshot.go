@@ -31,7 +31,7 @@ func (s *stepCreateSnapshot) Run(ctx context.Context, state multistep.StateBag) 
 	}
 	snapshot, err := s.client.Snapshot.Create(ctx, snapshotReq)
 	if err != nil {
-		err := fmt.Errorf("Error creating snapshot: %s", err)
+		err := fmt.Errorf("error creating snapshot: %s", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
@@ -42,7 +42,7 @@ func (s *stepCreateSnapshot) Run(ctx context.Context, state multistep.StateBag) 
 
 	err = waitForSnapshotState("complete", snapshot.ID, s.client, c.stateTimeout)
 	if err != nil {
-		err := fmt.Errorf("Error waiting for snapshot: %s", err)
+		err := fmt.Errorf("error waiting for snapshot: %s", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
