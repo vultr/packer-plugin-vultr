@@ -7,8 +7,7 @@ import (
 )
 
 func TestArtifact_Impl(t *testing.T) {
-	var raw interface{}
-	raw = &Artifact{}
+	var raw interface{} = &Artifact{}
 	if _, ok := raw.(packer.Artifact); !ok {
 		t.Fatalf("Artifact should be artifact")
 	}
