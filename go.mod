@@ -3,10 +3,10 @@ module github.com/vultr/packer-plugin-vultr
 go 1.17
 
 require (
-	github.com/hashicorp/hcl/v2 v2.14.0
+	github.com/hashicorp/hcl/v2 v2.16.1
 	github.com/hashicorp/packer-plugin-sdk v0.3.1
 	github.com/vultr/govultr/v2 v2.17.2
-	github.com/zclconf/go-cty v1.10.0
+	github.com/zclconf/go-cty v1.12.1
 	golang.org/x/crypto v0.6.0
 	golang.org/x/oauth2 v0.5.0
 )
