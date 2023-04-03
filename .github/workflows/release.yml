@@ -51,7 +51,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.17
+          go-version: "1.20"
       - name: Describe plugin
         id: plugin_describe
         run: echo "::set-output name=api_version::$(go run . describe | jq -r '.api_version')"
@@ -76,4 +76,4 @@ jobs:
         env:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
           MATTERMOST_USERNAME: ${{ secrets.MATTERMOST_USERNAME}}
-          MATTERMOST_ICON: ${{ secrets.MATTERMOST_ICON }}   
+          MATTERMOST_ICON: ${{ secrets.MATTERMOST_ICON }}
