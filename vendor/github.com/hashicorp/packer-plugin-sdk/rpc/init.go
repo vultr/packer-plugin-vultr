@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 /*
 Package rpc contains the implementation of the remote procedure call code that
 the Packer core uses to communicate with packer plugins. As a plugin maintainer,

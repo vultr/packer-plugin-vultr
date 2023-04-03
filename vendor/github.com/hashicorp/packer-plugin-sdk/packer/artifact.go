@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package packer
 
 // An Artifact is the result of a build, and is the metadata that documents

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package communicator
 
 import (
@@ -31,7 +34,13 @@ func (s *StepSSHKeyGen) Run(ctx context.Context, state multistep.StateBag) multi
 		}
 
 		comm.SSHPrivateKey = privateKeyBytes
-		comm.SSHPublicKey = nil
+
+		publicKeyBytes, err := sshkey.PublicKeyFromPrivate(privateKeyBytes)
+		if err != nil {
+			state.Put("error", err)
+			return multistep.ActionHalt
+		}
+		comm.SSHPublicKey = publicKeyBytes
 
 		return multistep.ActionContinue
 	}

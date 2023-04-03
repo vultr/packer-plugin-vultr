@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 //go:generate packer-sdc struct-markdown
 
 package commonsteps
@@ -35,47 +38,62 @@ import (
 // In JSON:
 //
 // ```json
-//   "iso_checksum": "946a6077af6f5f95a51f82fdc44051c7aa19f9cfc5f737954845a6050543d7c2",
-//   "iso_url": "ubuntu.org/.../ubuntu-14.04.1-server-amd64.iso"
+//
+//	"iso_checksum": "946a6077af6f5f95a51f82fdc44051c7aa19f9cfc5f737954845a6050543d7c2",
+//	"iso_url": "ubuntu.org/.../ubuntu-14.04.1-server-amd64.iso"
+//
 // ```
 //
 // ```json
-//   "iso_checksum": "file:ubuntu.org/..../ubuntu-14.04.1-server-amd64.iso.sum",
-//   "iso_url": "ubuntu.org/.../ubuntu-14.04.1-server-amd64.iso"
+//
+//	"iso_checksum": "file:ubuntu.org/..../ubuntu-14.04.1-server-amd64.iso.sum",
+//	"iso_url": "ubuntu.org/.../ubuntu-14.04.1-server-amd64.iso"
+//
 // ```
 //
 // ```json
-//   "iso_checksum": "file://./shasums.txt",
-//   "iso_url": "ubuntu.org/.../ubuntu-14.04.1-server-amd64.iso"
+//
+//	"iso_checksum": "file://./shasums.txt",
+//	"iso_url": "ubuntu.org/.../ubuntu-14.04.1-server-amd64.iso"
+//
 // ```
 //
 // ```json
-//   "iso_checksum": "file:./shasums.txt",
-//   "iso_url": "ubuntu.org/.../ubuntu-14.04.1-server-amd64.iso"
+//
+//	"iso_checksum": "file:./shasums.txt",
+//	"iso_url": "ubuntu.org/.../ubuntu-14.04.1-server-amd64.iso"
+//
 // ```
 //
 // In HCL2:
 //
 // ```hcl
-//   iso_checksum = "946a6077af6f5f95a51f82fdc44051c7aa19f9cfc5f737954845a6050543d7c2"
-//   iso_url = "ubuntu.org/.../ubuntu-14.04.1-server-amd64.iso"
+//
+//	iso_checksum = "946a6077af6f5f95a51f82fdc44051c7aa19f9cfc5f737954845a6050543d7c2"
+//	iso_url = "ubuntu.org/.../ubuntu-14.04.1-server-amd64.iso"
+//
 // ```
 //
 // ```hcl
-//   iso_checksum = "file:ubuntu.org/..../ubuntu-14.04.1-server-amd64.iso.sum"
-//   iso_url = "ubuntu.org/.../ubuntu-14.04.1-server-amd64.iso"
+//
+//	iso_checksum = "file:ubuntu.org/..../ubuntu-14.04.1-server-amd64.iso.sum"
+//	iso_url = "ubuntu.org/.../ubuntu-14.04.1-server-amd64.iso"
+//
 // ```
 //
 // ```hcl
-//   iso_checksum = "file://./shasums.txt"
-//   iso_url = "ubuntu.org/.../ubuntu-14.04.1-server-amd64.iso"
+//
+//	iso_checksum = "file://./shasums.txt"
+//	iso_url = "ubuntu.org/.../ubuntu-14.04.1-server-amd64.iso"
+//
 // ```
 //
 // ```hcl
-//   iso_checksum = "file:./shasums.txt",
-//   iso_url = "ubuntu.org/.../ubuntu-14.04.1-server-amd64.iso"
-// ```
 //
+//	iso_checksum = "file:./shasums.txt",
+//	iso_url = "ubuntu.org/.../ubuntu-14.04.1-server-amd64.iso"
+//
+// ```
 type ISOConfig struct {
 	// The checksum for the ISO file or virtual hard drive file. The type of
 	// the checksum is specified within the checksum field as a prefix, ex:

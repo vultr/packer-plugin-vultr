@@ -1,10 +1,12 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package commonsteps
 
 import (
 	"context"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -260,7 +262,9 @@ func (s *StepCreateCD) AddFile(dst, src string) error {
 		// Clean up pathing so that we preserve the base directory provided by
 		// the user but not the local pathing to that directory.
 		allDirs, base := filepath.Split(pathname)
-		intermediaryDirs := strings.Replace(allDirs, discardPath, "", 1)
+		allDirsSlashSafe := filepath.ToSlash(allDirs)
+		discardPathSlashSafe := filepath.ToSlash(discardPath)
+		intermediaryDirs := strings.Replace(allDirsSlashSafe, discardPathSlashSafe, "", 1)
 
 		dstPath := filepath.Join(dst, base)
 		if intermediaryDirs != "" {
@@ -311,7 +315,7 @@ func (s *StepCreateCD) AddContent(dst, path, content string) error {
 	if err != nil {
 		return fmt.Errorf("error creating new directory %s: %s", dstDir, err)
 	}
-	err = ioutil.WriteFile(dstPath, []byte(content), 0666)
+	err = os.WriteFile(dstPath, []byte(content), 0666)
 	if err != nil {
 		return fmt.Errorf("Error writing file %s on CD: %s", path, err)
 	}

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package commonsteps
 
 import (
@@ -104,7 +107,7 @@ func (s *StepProvision) runWithHook(ctx context.Context, state multistep.StateBa
 	if comm == nil {
 		raw, ok := state.Get("communicator").(packersdk.Communicator)
 		if ok {
-			comm = raw.(packersdk.Communicator)
+			comm = raw
 		}
 	}
 

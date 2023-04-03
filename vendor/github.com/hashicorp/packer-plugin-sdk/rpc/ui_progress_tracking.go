@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package rpc
 
 import (
@@ -82,7 +85,7 @@ type ProgressTrackingServer struct {
 }
 
 func (t *ProgressTrackingServer) Add(size int, _ *interface{}) error {
-	stubBytes := make([]byte, size, size)
+	stubBytes := make([]byte, size)
 	t.stream.Read(stubBytes)
 	return nil
 }

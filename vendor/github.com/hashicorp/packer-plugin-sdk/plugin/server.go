@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // The plugin package provides the functionality to both expose a Packer
 // plugin binary and to connect to an existing Packer plugin binary.
 //

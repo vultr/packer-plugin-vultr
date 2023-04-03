@@ -1,15 +1,18 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package ssh
 
 import (
+	"golang.org/x/term"
 	"io"
 	"log"
 
 	"golang.org/x/crypto/ssh"
-	"golang.org/x/crypto/ssh/terminal"
 )
 
 func KeyboardInteractive(c io.ReadWriter) ssh.KeyboardInteractiveChallenge {
-	t := terminal.NewTerminal(c, "")
+	t := term.NewTerminal(c, "")
 	return func(user, instruction string, questions []string, echos []bool) ([]string, error) {
 		if len(questions) == 0 {
 			return []string{}, nil
@@ -26,7 +29,7 @@ func KeyboardInteractive(c io.ReadWriter) ssh.KeyboardInteractiveChallenge {
 			if err != nil {
 				return nil, err
 			}
-			answers[i] = string(s)
+			answers[i] = s
 		}
 		return answers, nil
 	}

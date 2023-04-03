@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // Package net contains some helper wrapping functions for the http and net
 // golang libraries that meet Packer-specific needs.
 package net
