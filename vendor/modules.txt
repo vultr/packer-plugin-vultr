@@ -342,10 +342,11 @@ github.com/ulikunitz/xz/lzma
 # github.com/vultr/govultr/v2 v2.17.2
 ## explicit; go 1.17
 github.com/vultr/govultr/v2
-# github.com/zclconf/go-cty v1.10.0
-## explicit; go 1.12
+# github.com/zclconf/go-cty v1.13.1
+## explicit; go 1.18
 github.com/zclconf/go-cty/cty
 github.com/zclconf/go-cty/cty/convert
+github.com/zclconf/go-cty/cty/ctystrings
 github.com/zclconf/go-cty/cty/function
 github.com/zclconf/go-cty/cty/gocty
 github.com/zclconf/go-cty/cty/json
