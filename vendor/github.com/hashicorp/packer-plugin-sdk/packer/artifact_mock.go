@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package packer
 
 // MockArtifact is an implementation of Artifact that can be used for tests.

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // Package pathing determines where to put the Packer config directory based on
 // host OS architecture and user environment variables.
 package pathing
@@ -21,17 +24,19 @@ func ConfigFile() (string, error) {
 // ConfigDir returns the configuration directory for Packer.
 // NOTE: config directory will change depending on operating system dependent
 // For Windows:
-//   PACKER_CONFIG_DIR=""           ConfigDir() => "/{homeDir()}/packer.config/
-//   PACKER_CONFIG_DIR="bar"        ConfigDir() => "/bar/packer.config/
+//
+//	PACKER_CONFIG_DIR=""           ConfigDir() => "/{homeDir()}/packer.config/
+//	PACKER_CONFIG_DIR="bar"        ConfigDir() => "/bar/packer.config/
 //
 // NOTE: Default_config_present=TRUE means that there is configuration directory at old location => $HOME/.packer.d
 // NOTE: This is not list all permutations, just some examples, view the
 // configDir function for your OS for the exact logic
 // For Unix:
-//   PACKER_CONFIG_DIR=""    Default_config_present=FALSE XDG_CONFIG_HOME=""    ConfigDir() => "$HOME/.config/packer
-//   PACKER_CONFIG_DIR="bar" Default_config_present=FALSE	XDG_CONFIG_HOME=""    ConfigDir() => "/bar/.packer.d/
-//   PACKER_CONFIG_DIR=""    Default_config_present=TRUE 	XDG_CONFIG_HOME=""    ConfigDir() => "/$HOME/.packer.d/
-//   PACKER_CONFIG_DIR=""    Default_config_present=TRUE 	XDG_CONFIG_HOME="bar" ConfigDir() => "/bar/.packer.d/
+//
+//	PACKER_CONFIG_DIR=""    Default_config_present=FALSE XDG_CONFIG_HOME=""    ConfigDir() => "$HOME/.config/packer
+//	PACKER_CONFIG_DIR="bar" Default_config_present=FALSE	XDG_CONFIG_HOME=""    ConfigDir() => "/bar/.packer.d/
+//	PACKER_CONFIG_DIR=""    Default_config_present=TRUE 	XDG_CONFIG_HOME=""    ConfigDir() => "/$HOME/.packer.d/
+//	PACKER_CONFIG_DIR=""    Default_config_present=TRUE 	XDG_CONFIG_HOME="bar" ConfigDir() => "/bar/.packer.d/
 func ConfigDir() (string, error) {
 	return configDir()
 }

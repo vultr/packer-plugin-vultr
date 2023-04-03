@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package rpc
 
 import (
@@ -123,7 +126,10 @@ func (b *BuilderServer) Run(streamId uint32, reply *uint32) error {
 	if artifact != nil {
 		streamId = b.mux.NextId()
 		artifactServer := newServerWithMux(b.mux, streamId)
-		artifactServer.RegisterArtifact(artifact)
+		err := artifactServer.RegisterArtifact(artifact)
+		if err != nil {
+			return err
+		}
 		go artifactServer.Serve()
 		*reply = streamId
 	}

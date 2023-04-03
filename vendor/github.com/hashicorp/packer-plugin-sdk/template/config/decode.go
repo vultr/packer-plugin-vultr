@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package config
 
 import (
@@ -186,7 +189,7 @@ func Decode(target interface{}, config *DecodeOpts, raws ...interface{}) error {
 							}
 						}
 					}
-					if fixable == true {
+					if fixable {
 						break
 					}
 				}

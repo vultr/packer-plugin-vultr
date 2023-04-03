@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 /*
 Package communicator provides common steps for connecting to an instance
 using the Packer communicator. These steps can be implemented by builders.

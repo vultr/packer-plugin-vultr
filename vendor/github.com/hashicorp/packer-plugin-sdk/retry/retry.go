@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // Package retry provides tooling to retry API calls which are known to be
 // vulnerable to throttling or flakiness due to eventual consistency.
 package retry
@@ -40,12 +43,13 @@ func (err *RetryExhaustedError) Error() string {
 
 // Run will repeatedly retry the proivided fn within the constraints set in the
 // retry Config. It will retry until one of the following conditions is met:
-// - The provided context is cancelled.
-// - The Config.StartTimeout time has passed.
-// - The function returns without an error.
-// - The maximum number of tries, Config.Tries is exceeded.
-// - The function returns with an error that does not satisfy conditions
-//   set in the Config.ShouldRetry function.
+//   - The provided context is cancelled.
+//   - The Config.StartTimeout time has passed.
+//   - The function returns without an error.
+//   - The maximum number of tries, Config.Tries is exceeded.
+//   - The function returns with an error that does not satisfy conditions
+//     set in the Config.ShouldRetry function.
+//
 // If the given function (fn) does not return an error, then Run will return
 // nil. Otherwise, Run will return a relevant error.
 func (cfg Config) Run(ctx context.Context, fn func(context.Context) error) error {
@@ -102,7 +106,9 @@ type Backoff struct {
 }
 
 // Linear Backoff returns a linearly increasing Duration.
-//  n = n * Multiplier.
+//
+//	n = n * Multiplier.
+//
 // the first value of n is InitialBackoff. n is maxed by MaxBackoff.
 func (lb *Backoff) Linear() time.Duration {
 	wait := lb.InitialBackoff

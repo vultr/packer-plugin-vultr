@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 /*
 The commonsteps package contains the multistep runner that comprises the main
 architectural convention of Packer builder plugins. It enables builders

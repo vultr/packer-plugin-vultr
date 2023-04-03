@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package commonsteps
 
 import (
@@ -28,8 +31,9 @@ import (
 // progress reporting, interrupt handling, etc.
 //
 // Uses:
-//   cache packer.Cache
-//   ui    packersdk.Ui
+//
+//	cache packer.Cache
+//	ui    packersdk.Ui
 type StepDownload struct {
 	// The checksum and the type of the checksum for the download
 	Checksum string
@@ -121,7 +125,7 @@ func (s *StepDownload) Run(ctx context.Context, state multistep.StateBag) multis
 			// TODO(adrien): make go-getter allow using files in place.
 			// ovf files usually point to a file in the same directory, so
 			// using them in place is the only way.
-			ui.Say(fmt.Sprintf("Using ovf inplace"))
+			ui.Say("Using ovf inplace")
 			dst = source
 		} else {
 			dst, err = s.download(ctx, ui, source)

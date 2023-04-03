@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package plugin
 
 import (
@@ -15,7 +18,9 @@ import (
 // Use this name to make the name of the plugin in the packer template match
 // the multiplugin suffix, instead of requiring a second part.
 // For example, calling :
-//  pps.RegisterProvisioner(plugin.DEFAULT_NAME, new(CommentProvisioner))
+//
+//	pps.RegisterProvisioner(plugin.DEFAULT_NAME, new(CommentProvisioner))
+//
 // On a plugin named `packer-plugin-foo`, will make the `foo` provisioner available
 // with your CommentProvisioner doing that. There can only be one unnamed
 // plugin per plugin type.
@@ -93,9 +98,9 @@ func (i *Set) RegisterDatasource(name string, datasource packersdk.Datasource) {
 }
 
 // Run takes the os Args and runs a packer plugin command from it.
-//  * "describe" command makes the plugin set describe itself.
-//  * "start builder builder-name" starts the builder "builder-name"
-//  * "start post-processor example" starts the post-processor "example"
+//   - "describe" command makes the plugin set describe itself.
+//   - "start builder builder-name" starts the builder "builder-name"
+//   - "start post-processor example" starts the post-processor "example"
 func (i *Set) Run() error {
 	args := os.Args[1:]
 	return i.RunCommand(args...)

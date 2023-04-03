@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package commonsteps
 
 import (
@@ -30,10 +33,12 @@ func HTTPServerFromHTTPConfig(cfg *HTTPConfig) *StepHTTPServer {
 // template.
 //
 // Uses:
-//   ui     packersdk.Ui
+//
+//	ui     packersdk.Ui
 //
 // Produces:
-//   http_port int - The port the HTTP server started on.
+//
+//	http_port int - The port the HTTP server started on.
 type StepHTTPServer struct {
 	HTTPDir     string
 	HTTPContent map[string]string

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // Package SSH provides tooling for generating a temporary SSH keypair, and
 // provides tooling for connecting to an instance via a tunnel.
 package ssh
@@ -5,7 +8,7 @@ package ssh
 import (
 	"encoding/pem"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"time"
 
@@ -19,7 +22,7 @@ func parseKeyFile(path string) ([]byte, error) {
 	}
 	defer f.Close()
 
-	keyBytes, err := ioutil.ReadAll(f)
+	keyBytes, err := io.ReadAll(f)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +65,7 @@ func ReadCertificate(certificatePath string, keySigner ssh.Signer) (ssh.Signer, 
 	}
 
 	// Load the certificate
-	cert, err := ioutil.ReadFile(certificatePath)
+	cert, err := os.ReadFile(certificatePath)
 	if err != nil {
 		return nil, fmt.Errorf("unable to read certificate file: %v", err)
 	}

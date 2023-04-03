@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // Package secretsmanager provide methods to get data from
 // AWS Secret Manager
 package secretsmanager
@@ -81,7 +84,7 @@ func getSecretValue(s *SecretString, spec *SecretSpec) (string, error) {
 	blob := []byte(s.SecretString)
 
 	//For those plaintext secrets just return the value
-	if json.Valid(blob) != true {
+	if !json.Valid(blob) {
 		return s.SecretString, nil
 	}
 
