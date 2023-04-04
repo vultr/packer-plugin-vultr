@@ -13,7 +13,7 @@ import (
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	"github.com/hashicorp/packer-plugin-sdk/packer"
 	"github.com/hashicorp/packer-plugin-sdk/uuid"
-	"github.com/vultr/govultr/v2"
+	"github.com/vultr/govultr/v3"
 	"golang.org/x/crypto/ssh"
 )
 
@@ -66,7 +66,7 @@ func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) mult
 		Name:   name,
 		SSHKey: string(config.Comm.SSHPublicKey),
 	}
-	key, err := s.client.SSHKey.Create(context.Background(), sshKeyReq)
+	key, _, err := s.client.SSHKey.Create(context.Background(), sshKeyReq)
 	if err != nil {
 		err := fmt.Errorf("error creating temporary SSH key: %s", err)
 		state.Put("error", err)
