@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/vultr/govultr/v2"
+	"github.com/vultr/govultr/v3"
 )
 
 func waitForISOState(state string, isoID string, client *govultr.Client, timeout time.Duration) error {
@@ -19,7 +19,7 @@ func waitForISOState(state string, isoID string, client *govultr.Client, timeout
 			attempts++
 			log.Printf("Checking ISO status... (attempt: %d)", attempts)
 
-			iso, err := client.ISO.Get(context.Background(), isoID)
+			iso, _, err := client.ISO.Get(context.Background(), isoID)
 			if err != nil {
 				result <- err
 				return
@@ -59,7 +59,7 @@ func waitForServerState(state string, power string, serverID string, client *gov
 		for {
 			attempts++
 			log.Printf("Checking server status... (attempt: %d)", attempts)
-			serverInfo, err := client.Instance.Get(context.Background(), serverID)
+			serverInfo, _, err := client.Instance.Get(context.Background(), serverID)
 			if err != nil {
 				result <- err
 				return
@@ -100,7 +100,7 @@ func waitForSnapshotState(state string, snapshotID string, client *govultr.Clien
 			attempts++
 			log.Printf("Checking snapshot status... (attempt: %d)", attempts)
 
-			snapshot, err := client.Snapshot.Get(context.Background(), snapshotID)
+			snapshot, _, err := client.Snapshot.Get(context.Background(), snapshotID)
 			if err != nil {
 				result <- err
 				return

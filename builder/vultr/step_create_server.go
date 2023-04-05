@@ -8,7 +8,7 @@ import (
 
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	"github.com/hashicorp/packer-plugin-sdk/packer"
-	"github.com/vultr/govultr/v2"
+	"github.com/vultr/govultr/v3"
 )
 
 type stepCreateServer struct {
@@ -53,7 +53,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		Tag:                  c.Tag,
 	}
 
-	instance, err := s.client.Instance.Create(ctx, instanceReq)
+	instance, _, err := s.client.Instance.Create(ctx, instanceReq)
 	if err != nil {
 		err = errors.New("Error creating server: " + err.Error())
 		state.Put("error", err)
@@ -73,7 +73,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		return multistep.ActionHalt
 	}
 
-	if instance, err = s.client.Instance.Get(context.Background(), instance.ID); err != nil {
+	if instance, _, err = s.client.Instance.Get(context.Background(), instance.ID); err != nil {
 		err := fmt.Errorf("error getting server: %s", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
@@ -97,14 +97,14 @@ func (s *stepCreateServer) Cleanup(state multistep.StateBag) {
 
 	// If an ISO was uploaded as part of this build, detach from the instance before destroying
 	if iso, ok := state.GetOk("iso"); ok {
-		iso_status, iso_status_err := s.client.Instance.ISOStatus(context.Background(), instance.ID)
-		if iso_status_err != nil {
-			state.Put("error", iso_status_err)
+		iso_status, _, err := s.client.Instance.ISOStatus(context.Background(), instance.ID)
+		if err != nil {
+			state.Put("error", err)
 		}
 
 		if iso_status.State == "isomounted" && iso_status.IsoID == iso.(*govultr.ISO).ID {
-			if detach_err := s.client.Instance.DetachISO(context.Background(), instance.ID); detach_err != nil {
-				state.Put("error", detach_err)
+			if _, err := s.client.Instance.DetachISO(context.Background(), instance.ID); err != nil {
+				state.Put("error", err)
 			}
 		}
 	}

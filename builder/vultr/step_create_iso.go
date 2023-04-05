@@ -8,7 +8,7 @@ import (
 
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	"github.com/hashicorp/packer-plugin-sdk/packer"
-	"github.com/vultr/govultr/v2"
+	"github.com/vultr/govultr/v3"
 )
 
 type stepCreateISO struct {
@@ -26,7 +26,7 @@ func (s *stepCreateISO) Run(ctx context.Context, state multistep.StateBag) multi
 			URL: c.ISOURL,
 		}
 
-		iso, err := s.client.ISO.Create(ctx, isoReq)
+		iso, _, err := s.client.ISO.Create(ctx, isoReq)
 		if err != nil {
 			err = errors.New("Error creating ISO: " + err.Error())
 			state.Put("error", err)
@@ -46,7 +46,7 @@ func (s *stepCreateISO) Run(ctx context.Context, state multistep.StateBag) multi
 			return multistep.ActionHalt
 		}
 
-		if _, err = s.client.ISO.Get(context.Background(), iso.ID); err != nil {
+		if _, _, err = s.client.ISO.Get(context.Background(), iso.ID); err != nil {
 			err := fmt.Errorf("error getting ISO: %s", err)
 			state.Put("error", err)
 			ui.Error(err.Error())

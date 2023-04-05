@@ -9,7 +9,7 @@ import (
 
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	"github.com/hashicorp/packer-plugin-sdk/packer"
-	"github.com/vultr/govultr/v2"
+	"github.com/vultr/govultr/v3"
 )
 
 type stepCreateSnapshot struct {
@@ -29,7 +29,7 @@ func (s *stepCreateSnapshot) Run(ctx context.Context, state multistep.StateBag) 
 		InstanceID:  instance.ID,
 		Description: c.Description,
 	}
-	snapshot, err := s.client.Snapshot.Create(ctx, snapshotReq)
+	snapshot, _, err := s.client.Snapshot.Create(ctx, snapshotReq)
 	if err != nil {
 		err := fmt.Errorf("error creating snapshot: %s", err)
 		state.Put("error", err)

@@ -7,7 +7,7 @@ import (
 
 	registryimage "github.com/hashicorp/packer-plugin-sdk/packer/registry/image"
 
-	"github.com/vultr/govultr/v2"
+	"github.com/vultr/govultr/v3"
 )
 
 type Artifact struct {
