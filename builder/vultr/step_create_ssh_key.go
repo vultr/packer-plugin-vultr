@@ -7,6 +7,7 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
+	"io/fs"
 	"os"
 	"runtime"
 
@@ -15,6 +16,12 @@ import (
 	"github.com/hashicorp/packer-plugin-sdk/uuid"
 	"github.com/vultr/govultr/v3"
 	"golang.org/x/crypto/ssh"
+)
+
+var (
+	rsaBits        int         = 2048
+	fileMode       int         = 0600
+	sshKeyFileMode fs.FileMode = os.FileMode(fileMode)
 )
 
 type stepCreateSSHKey struct {
@@ -26,20 +33,21 @@ type stepCreateSSHKey struct {
 	SSHKeyID string
 }
 
+// Run provides the step create SSH key run functionality
 func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
 	config := state.Get("config").(*Config)
 
-	if !config.create_temp_ssh_pair {
+	if !config.createTempSSHPair {
 		return multistep.ActionContinue
 	}
 
 	ui.Say("Creating temporary SSH key...")
 
-	priv, err := rsa.GenerateKey(rand.Reader, 2048)
+	priv, err := rsa.GenerateKey(rand.Reader, rsaBits)
 	if err != nil {
-		err := fmt.Errorf("error creating temporary SSH key: %s", err)
-		state.Put("error", err)
+		errOut := fmt.Errorf("error creating temporary SSH key: %s", err)
+		state.Put("error", errOut)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
 	}
@@ -52,8 +60,8 @@ func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) mult
 
 	pub, err := ssh.NewPublicKey(&priv.PublicKey)
 	if err != nil {
-		err := fmt.Errorf("error creating temporary SSH key: %s", err)
-		state.Put("error", err)
+		errOut := fmt.Errorf("error creating temporary SSH key: %s", err)
+		state.Put("error", errOut)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
 	}
@@ -68,9 +76,9 @@ func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) mult
 	}
 	key, _, err := s.client.SSHKey.Create(context.Background(), sshKeyReq)
 	if err != nil {
-		err := fmt.Errorf("error creating temporary SSH key: %s", err)
-		state.Put("error", err)
-		ui.Error(err.Error())
+		errOut := fmt.Errorf("error creating temporary SSH key: %s", err)
+		state.Put("error", errOut)
+		ui.Error(errOut.Error())
 		return multistep.ActionHalt
 	}
 
@@ -97,7 +105,7 @@ func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) mult
 
 		// Chmod it so that it is SSH ready
 		if runtime.GOOS != "windows" {
-			if err := f.Chmod(0600); err != nil {
+			if err := f.Chmod(sshKeyFileMode); err != nil {
 				state.Put("error", fmt.Errorf("error setting permissions of debug key: %s", err))
 				return multistep.ActionHalt
 			}
@@ -106,6 +114,7 @@ func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) mult
 	return multistep.ActionContinue
 }
 
+// Cleanup provides the step create SSH key cleanup functionality
 func (s *stepCreateSSHKey) Cleanup(state multistep.StateBag) {
 	if s.SSHKeyID == "" {
 		return
