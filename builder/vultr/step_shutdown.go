@@ -18,6 +18,7 @@ type stepShutdown struct {
 	client *govultr.Client
 }
 
+// Run provides the step shutdown run functionality
 func (s *stepShutdown) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
 	ui.Say("Performing graceful shutdown...")
@@ -46,5 +47,6 @@ func (s *stepShutdown) Run(ctx context.Context, state multistep.StateBag) multis
 	return multistep.ActionContinue
 }
 
+// Cleanup provides the step shutdown cleanup functionality
 func (s *stepShutdown) Cleanup(state multistep.StateBag) {
 }

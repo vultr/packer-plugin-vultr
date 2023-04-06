@@ -15,6 +15,7 @@ type stepCreateISO struct {
 	client *govultr.Client
 }
 
+// Run provides the stepCreateISO run function
 func (s *stepCreateISO) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	c := state.Get("config").(*Config)
 	ui := state.Get("ui").(packer.Ui)
@@ -47,9 +48,9 @@ func (s *stepCreateISO) Run(ctx context.Context, state multistep.StateBag) multi
 		}
 
 		if _, _, err = s.client.ISO.Get(context.Background(), iso.ID); err != nil {
-			err := fmt.Errorf("error getting ISO: %s", err)
-			state.Put("error", err)
-			ui.Error(err.Error())
+			errOut := fmt.Errorf("error getting ISO: %s", err)
+			state.Put("error", errOut)
+			ui.Error(errOut.Error())
 			return multistep.ActionHalt
 		}
 	}
@@ -57,9 +58,10 @@ func (s *stepCreateISO) Run(ctx context.Context, state multistep.StateBag) multi
 	return multistep.ActionContinue
 }
 
+// Cleanup provides the step create ISO cleanup function
 func (s *stepCreateISO) Cleanup(state multistep.StateBag) {
-	iso, iso_ok := state.GetOk("iso")
-	if !iso_ok {
+	iso, isoOK := state.GetOk("iso")
+	if !isoOK {
 		return
 	}
 

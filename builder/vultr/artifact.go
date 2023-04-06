@@ -10,6 +10,7 @@ import (
 	"github.com/vultr/govultr/v3"
 )
 
+// Artifact provides the artifact struct
 type Artifact struct {
 	// The ID of the snapshot
 	SnapshotID string
@@ -27,22 +28,27 @@ type Artifact struct {
 	StateData map[string]interface{}
 }
 
-func (a *Artifact) BuilderId() string {
+// BuilderId provides the builder ID
+func (a *Artifact) BuilderId() string { //nolint:stylecheck
 	return BuilderID
 }
 
+// Files provides nil
 func (a *Artifact) Files() []string {
 	return nil
 }
 
-func (a *Artifact) Id() string {
+// Id provides the snapshot ID
+func (a *Artifact) Id() string { //nolint:stylecheck
 	return a.SnapshotID
 }
 
+// String provides the snapshot description and ID in a string
 func (a *Artifact) String() string {
 	return fmt.Sprintf("Vultr Snapshot: %s (%s)", a.Description, a.SnapshotID)
 }
 
+// State provides the artifact state
 func (a *Artifact) State(name string) interface{} {
 	if name == registryimage.ArtifactStateURI {
 		img, err := registryimage.FromArtifact(a,
@@ -60,6 +66,7 @@ func (a *Artifact) State(name string) interface{} {
 	return a.StateData[name]
 }
 
+// Destroy destroys the artifact snapshot
 func (a *Artifact) Destroy() error {
 	log.Printf("Destroying Vultr Snapshot: %s (%s)", a.SnapshotID, a.Description)
 	err := a.client.Snapshot.Delete(context.Background(), a.SnapshotID)

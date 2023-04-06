@@ -9,7 +9,7 @@ import (
 	"github.com/vultr/govultr/v3"
 )
 
-func waitForISOState(state string, isoID string, client *govultr.Client, timeout time.Duration) error {
+func waitForISOState(state, isoID string, client *govultr.Client, timeout time.Duration) error { //nolint:dupl
 	done := make(chan struct{})
 	defer close(done)
 	result := make(chan error, 1)
@@ -50,7 +50,7 @@ func waitForISOState(state string, isoID string, client *govultr.Client, timeout
 
 // waitForState simply blocks until the server is in a state we expect,
 // while eventually timing out.
-func waitForServerState(state string, power string, serverID string, client *govultr.Client, timeout time.Duration) error {
+func waitForServerState(state, power, serverID string, client *govultr.Client, timeout time.Duration) error {
 	done := make(chan struct{})
 	defer close(done)
 	result := make(chan error, 1)
@@ -90,7 +90,7 @@ func waitForServerState(state string, power string, serverID string, client *gov
 	}
 }
 
-func waitForSnapshotState(state string, snapshotID string, client *govultr.Client, timeout time.Duration) error {
+func waitForSnapshotState(state, snapshotID string, client *govultr.Client, timeout time.Duration) error { //nolint:dupl
 	done := make(chan struct{})
 	defer close(done)
 	result := make(chan error, 1)

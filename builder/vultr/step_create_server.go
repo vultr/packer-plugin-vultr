@@ -15,27 +15,28 @@ type stepCreateServer struct {
 	client *govultr.Client
 }
 
+// Run provides the step create server run functionality
 func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	c := state.Get("config").(*Config)
 	ui := state.Get("ui").(packer.Ui)
 
 	ui.Say("Creating Vultr instance...")
 
-	ssh_keys := c.SSHKeyIDs
-	key, key_ok := state.GetOk("temp_ssh_key_id")
-	if key_ok {
-		ssh_keys = append(ssh_keys, key.(string))
+	sshKeys := c.SSHKeyIDs
+	key, keyOK := state.GetOk("temp_ssh_key_id")
+	if keyOK {
+		sshKeys = append(sshKeys, key.(string))
 	}
 
 	// check if ISO ID should be populated by the result of creating an ISO in step_create_iso via 'iso_url'
-	iso_id := c.ISOID
-	iso, iso_ok := state.GetOk("iso")
-	if iso_ok {
-		iso_id = iso.(*govultr.ISO).ID
+	isoID := c.ISOID
+	iso, isoOK := state.GetOk("iso")
+	if isoOK {
+		isoID = iso.(*govultr.ISO).ID
 	}
 
 	instanceReq := &govultr.InstanceCreateReq{
-		ISOID:                iso_id,
+		ISOID:                isoID,
 		SnapshotID:           c.SnapshotID,
 		OsID:                 c.OSID,
 		Region:               c.RegionID,
@@ -46,7 +47,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		EnableIPv6:           govultr.BoolToBoolPtr(c.EnableIPV6),
 		EnablePrivateNetwork: govultr.BoolToBoolPtr(c.EnablePrivateNetwork),
 		Label:                c.Label,
-		SSHKeys:              ssh_keys,
+		SSHKeys:              sshKeys,
 		UserData:             c.UserData,
 		ActivationEmail:      govultr.BoolToBoolPtr(false),
 		Hostname:             c.Hostname,
@@ -55,9 +56,9 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 
 	instance, _, err := s.client.Instance.Create(ctx, instanceReq)
 	if err != nil {
-		err = errors.New("Error creating server: " + err.Error())
-		state.Put("error", err)
-		ui.Error(err.Error())
+		errOut := errors.New("Error creating server: " + err.Error())
+		state.Put("error", errOut)
+		ui.Error(errOut.Error())
 		return multistep.ActionHalt
 	}
 	state.Put("default_password", instance.DefaultPassword)
@@ -66,17 +67,16 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 	ui.Say(fmt.Sprintf("Waiting %ds for server %s to power on...",
 		int(c.stateTimeout/time.Second), instance.ID))
 
-	err = waitForServerState("active", "running", instance.ID, s.client, c.stateTimeout)
-	if err != nil {
+	if err = waitForServerState("active", "running", instance.ID, s.client, c.stateTimeout); err != nil {
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
 	}
 
 	if instance, _, err = s.client.Instance.Get(context.Background(), instance.ID); err != nil {
-		err := fmt.Errorf("error getting server: %s", err)
-		state.Put("error", err)
-		ui.Error(err.Error())
+		errOut := fmt.Errorf("error getting server: %s", err)
+		state.Put("error", errOut)
+		ui.Error(errOut.Error())
 		return multistep.ActionHalt
 	}
 	state.Put("server", instance)
@@ -86,6 +86,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 	return multistep.ActionContinue
 }
 
+// Cleanup provides the step create server cleanup functionality
 func (s *stepCreateServer) Cleanup(state multistep.StateBag) {
 	server, ok := state.GetOk("server")
 	if !ok {
@@ -97,12 +98,12 @@ func (s *stepCreateServer) Cleanup(state multistep.StateBag) {
 
 	// If an ISO was uploaded as part of this build, detach from the instance before destroying
 	if iso, ok := state.GetOk("iso"); ok {
-		iso_status, _, err := s.client.Instance.ISOStatus(context.Background(), instance.ID)
+		isoStatus, _, err := s.client.Instance.ISOStatus(context.Background(), instance.ID)
 		if err != nil {
 			state.Put("error", err)
 		}
 
-		if iso_status.State == "isomounted" && iso_status.IsoID == iso.(*govultr.ISO).ID {
+		if isoStatus.State == "isomounted" && isoStatus.IsoID == iso.(*govultr.ISO).ID {
 			if _, err := s.client.Instance.DetachISO(context.Background(), instance.ID); err != nil {
 				state.Put("error", err)
 			}

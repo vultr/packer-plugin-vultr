@@ -16,6 +16,7 @@ type stepCreateSnapshot struct {
 	client *govultr.Client
 }
 
+// Run provides the step create snapshot run functionality
 func (s *stepCreateSnapshot) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	c := state.Get("config").(*Config)
 	ui := state.Get("ui").(packer.Ui)
@@ -31,9 +32,9 @@ func (s *stepCreateSnapshot) Run(ctx context.Context, state multistep.StateBag) 
 	}
 	snapshot, _, err := s.client.Snapshot.Create(ctx, snapshotReq)
 	if err != nil {
-		err := fmt.Errorf("error creating snapshot: %s", err)
-		state.Put("error", err)
-		ui.Error(err.Error())
+		errOut := fmt.Errorf("error creating snapshot: %s", err)
+		state.Put("error", errOut)
+		ui.Error(errOut.Error())
 		return multistep.ActionHalt
 	}
 
@@ -42,9 +43,9 @@ func (s *stepCreateSnapshot) Run(ctx context.Context, state multistep.StateBag) 
 
 	err = waitForSnapshotState("complete", snapshot.ID, s.client, c.stateTimeout)
 	if err != nil {
-		err := fmt.Errorf("error waiting for snapshot: %s", err)
-		state.Put("error", err)
-		ui.Error(err.Error())
+		errOut := fmt.Errorf("error waiting for snapshot: %s", err)
+		state.Put("error", errOut)
+		ui.Error(errOut.Error())
 		return multistep.ActionHalt
 	}
 
@@ -52,5 +53,6 @@ func (s *stepCreateSnapshot) Run(ctx context.Context, state multistep.StateBag) 
 	return multistep.ActionContinue
 }
 
+// Cleanup provides the step create snapshot cleanup functionality
 func (s *stepCreateSnapshot) Cleanup(state multistep.StateBag) {
 }

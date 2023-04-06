@@ -14,6 +14,7 @@ import (
 	"github.com/hashicorp/packer-plugin-sdk/template/interpolate"
 )
 
+// Config provides the config struct
 type Config struct {
 	common.PackerConfig `mapstructure:",squash"`
 	Comm                communicator.Config `mapstructure:",squash"`
@@ -42,14 +43,14 @@ type Config struct {
 
 	RawStateTimeout string `mapstructure:"state_timeout"`
 
-	create_temp_ssh_pair bool
+	createTempSSHPair bool
 
 	stateTimeout time.Duration
 	interCtx     interpolate.Context
 }
 
-func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
-
+// Prepare provides the config prepare functionality
+func (c *Config) Prepare(raws ...interface{}) error { //nolint:gocyclo
 	if err := config.Decode(c, &config.DecodeOpts{
 		Interpolate:        true,
 		InterpolateContext: &c.ctx,
@@ -59,7 +60,7 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 			},
 		},
 	}, raws...); err != nil {
-		return nil, err
+		return err
 	}
 
 	var errs *packer.MultiError
@@ -103,7 +104,7 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 	for _, isDefined := range imageConfig {
 		if isDefined {
 			if imageDefined {
-				errs = packer.MultiErrorAppend(errs, errors.New("you can only set one of the following: `app_id`, `iso_id`, `iso_url`, `os_id`, `snapshot_id`"))
+				errs = packer.MultiErrorAppend(errs, errors.New("only set one of the following: `app_id`, `iso_id`, `iso_url`, `os_id`, `snapshot_id`"))
 				break
 			}
 			imageDefined = true
@@ -111,12 +112,12 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 	}
 
 	if c.SnapshotID != "" || c.ISOID != "" || c.ISOURL != "" {
-		c.create_temp_ssh_pair = false
+		c.createTempSSHPair = false
 		if c.Comm.SSHPassword == "" && c.Comm.SSHPrivateKeyFile == "" {
-			errs = packer.MultiErrorAppend(errs, errors.New("either `ssh_password` or `ssh_private_key_file` must be defined for snapshot or custom OS"))
+			errs = packer.MultiErrorAppend(errs, errors.New("define `ssh_password` or `ssh_private_key_file` for snapshot or custom OS"))
 		}
 	} else {
-		c.create_temp_ssh_pair = true
+		c.createTempSSHPair = true
 	}
 
 	if c.RawStateTimeout == "" {
@@ -134,10 +135,10 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 	}
 
 	if errs != nil && len(errs.Errors) > 0 {
-		return nil, errs
+		return errs
 	}
 
 	packer.LogSecretFilter.Set(c.APIKey)
 
-	return nil, nil
+	return nil
 }

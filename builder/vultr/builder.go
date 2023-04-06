@@ -16,22 +16,25 @@ import (
 // BuilderID is the unique ID for the builder
 const BuilderID = "packer.vultr"
 
-// Builder ...
+// Builder provides the builder struct
 type Builder struct {
 	config Config
 	runner multistep.Runner
 }
 
+// ConfigSpec returns the HCL spec
 func (b *Builder) ConfigSpec() hcldec.ObjectSpec { return b.config.FlatMapstructure().HCL2Spec() }
 
-func (b *Builder) Prepare(raws ...interface{}) ([]string, []string, error) {
-	warnings, errs := b.config.Prepare(raws...)
+// Prepare provides the builder prepare function
+func (b *Builder) Prepare(raws ...interface{}) ([]string, []string, error) { //nolint:gocritic
+	errs := b.config.Prepare(raws...)
 	if errs != nil {
-		return nil, warnings, errs
+		return nil, nil, errs
 	}
 	return nil, nil, nil
 }
 
+// Run provides the builder run functionality
 func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (ret packer.Artifact, err error) {
 	ui.Say("Running Vultr builder...")
 
@@ -71,7 +74,7 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (ret 
 	}
 
 	if _, ok := state.GetOk(multistep.StateCancelled); ok {
-		return nil, errors.New("build was cancelled")
+		return nil, errors.New("build was canceled")
 	}
 
 	if _, ok := state.GetOk(multistep.StateHalted); ok {
