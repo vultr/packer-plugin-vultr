@@ -22,6 +22,7 @@
 ### Other
 - Add gochecks workflow [PR 216](https://github.com/vultr/packer-plugin-vultr/pull/216)
 - Fix/refit to align with stricter linting [PR 230](https://github.com/vultr/packer-plugin-vultr/pull/230)
+- Replace unnsupported gpg workflow [PR 232](https://github.com/vultr/packer-plugin-vultr/pull/232)
 
 ### New Contributors
 - @jasites made their first contribution in [PR 208](https://github.com/vultr/packer-plugin-vultr/pull/208)
