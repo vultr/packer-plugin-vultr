@@ -20,7 +20,7 @@ Then, run [`packer init`](https://www.packer.io/docs/commands/init).
 packer {
   required_plugins {
     vultr = {
-      version = ">= 2.4.5"
+      version = ">= 2.5.0"
       source  = "github.com/vultr/vultr"
     }
   }
@@ -53,4 +53,3 @@ The Vultr plugin is intended as a starting point for creating Packer plugins, co
 ### Builders
 
 - [builder](/docs/builders/vultr.mdx) - The builder takes a source image, runs any provisioning necessary on the image after launching it, then snapshots it into a reusable image. This reusable image can then be used as the foundation of new servers that are launched within Vultr.
-

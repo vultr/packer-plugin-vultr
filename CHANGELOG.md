@@ -1,15 +1,41 @@
 # Change Log
+## [v2.5.0](https://github.com/vultr/packer-plugin-vultr/compare/v2.4.5...v2.5.0) (2023-04-06)
+### Enhancements
+- Add support for uploading an ISO for building [PR 208](https://github.com/vultr/packer-plugin-vultr/pull/208)
+
+### Dependencies
+- Update go to v1.20 [PR 226](https://github.com/vultr/packer-plugin-vultr/pull/226)
+- Update govultr to v3.0.2 [PR 228](https://github.com/vultr/packer-plugin-vultr/pull/228)
+- Bump github.com/hashicorp/packer-plugin-sdk from 0.2.13 to 0.3.0 [PR 196](https://github.com/vultr/packer-plugin-vultr/pull/196)
+- Bump github.com/vultr/govultr/v2 from 2.17.1 to 2.17.2 [PR 198](https://github.com/vultr/packer-plugin-vultr/pull/198)
+- Bump github.com/hashicorp/hcl/v2 from 2.12.0 to 2.13.0 [PR 199](https://github.com/vultr/packer-plugin-vultr/pull/199)
+- Bump github.com/hashicorp/packer-plugin-sdk from 0.3.0 to 0.3.1 [PR 200](https://github.com/vultr/packer-plugin-vultr/pull/200)
+- Bump github.com/hashicorp/hcl/v2 from 2.13.0 to 2.14.0 [PR 202](https://github.com/vultr/packer-plugin-vultr/pull/202)
+- Bump golang.org/x/text from 0.3.7 to 0.3.8 [PR 214](https://github.com/vultr/packer-plugin-vultr/pull/214)
+- Bump golang.org/x/net from 0.0.0-20211112202133-69e39bad7dc2 to 0.7.0 [PR 215](https://github.com/vultr/packer-plugin-vultr/pull/215)
+- Bump golang.org/x/oauth2 from 0.0.0-20210819190943-2bc19b11175f to 0.5.0 [PR 217](https://github.com/vultr/packer-plugin-vultr/pull/217)
+- Bump golang.org/x/crypto from 0.0.0-20220517005047-85d78b3ac167 to 0.6.0 [PR 218](https://github.com/vultr/packer-plugin-vultr/pull/218)
+- Bump golang.org/x/crypto from 0.6.0 to 0.7.0 [PR 220](https://github.com/vultr/packer-plugin-vultr/pull/220)
+- Bump golang.org/x/oauth2 from 0.5.0 to 0.6.0 [PR 221](https://github.com/vultr/packer-plugin-vultr/pull/221)
+- Bump github.com/hashicorp/packer-plugin-sdk from 0.3.1 to 0.4.0 [PR 222](https://github.com/vultr/packer-plugin-vultr/pull/222)
+
+### Other
+- Add gochecks workflow [PR 216](https://github.com/vultr/packer-plugin-vultr/pull/216)
+- Fix/refit to align with stricter linting [PR 230](https://github.com/vultr/packer-plugin-vultr/pull/230)
+
+### New Contributors
+- @jasites made their first contribution in [PR 208](https://github.com/vultr/packer-plugin-vultr/pull/208)
 
 ## [v2.4.5](https://github.com/vultr/packer-plugin-vultr/compare/v2.4.4...v2.4.5) (2022-06-07)
+
+### Enhancements
+- Add artifact support for HCP Packer registry [#190](https://github.com/vultr/packer-plugin-vultr/pull/190)
+- Updated goreleaser packer plugin check [#191](https://github.com/vultr/packer-plugin-vultr/pull/191)
 
 ### Dependencies
 - GoVultr from 2.16.0 to 2.17.1 [#188](https://github.com/vultr/packer-plugin-vultr/pull/188)
 - GoVultr from 2.14.0 to 2.16.0 [#184](https://github.com/vultr/packer-plugin-vultr/pull/184)
 - Packer-Plugin-SDK from 0.2.11 to 0.2.13 [#185](https://github.com/vultr/packer-plugin-vultr/pull/185)
-
-### Enhancements
-- Add artifact support for HCP Packer registry [#190](https://github.com/vultr/packer-plugin-vultr/pull/190)
-- Updated goreleaser packer plugin check [#191](https://github.com/vultr/packer-plugin-vultr/pull/191)
 
 ### New Contributors
 - @optik-aper made their first contribution in https://github.com/vultr/packer-plugin-vultr/pull/190
@@ -52,7 +78,7 @@
 
 ## [v2.3.2](https://github.com/vultr/packer-builder-vultr/compare/v2.3.1..v2.3.2) (2021-06-07)
 ### Dependencies
-- Packer-plugin-sdk v0.2.1 -> v0.2.3 [#135](https://github.com/vultr/packer-builder-vultr/pull/135) 
+- Packer-plugin-sdk v0.2.1 -> v0.2.3 [#135](https://github.com/vultr/packer-builder-vultr/pull/135)
 
 ### Documentation
 - Updated documentation README.md (from .mdx) [#136](https://github.com/vultr/packer-builder-vultr/pull/136)
@@ -94,7 +120,7 @@
 ### Changes
 GoVultr was updated to v2.0.0 which is running on API v2.
 
-### Dependencies 
+### Dependencies
 - hcl 2.7.0 -> 2.7.1 [#82](https://github.com/vultr/packer-builder-vultr/pull/82)
 - packer 1.6.4 -> 1.6.5 [#82](https://github.com/vultr/packer-builder-vultr/pull/82)
 - zclconf/go-cty 1.6.1 -> 1.7.0 [#82](https://github.com/vultr/packer-builder-vultr/pull/82)
@@ -126,33 +152,33 @@ GoVultr was updated to v2.0.0 which is running on API v2.
 - GoVultr v0.4.2 -> v0.5.0 [#56](https://github.com/vultr/packer-builder-vultr/pull/56)
 
 ## [v1.0.10](https://github.com/vultr/packer-builder-vultr/compare/v1.0.9..v1.0.10) (2020-07-31)
-### Dependencies 
+### Dependencies
 - packer 1.5.6 -> 1.6.1 [#54](https://github.com/vultr/packer-builder-vultr/pull/54)
 - zclconf/go-cty 1.4.0 -> 1.5.1 [#53](https://github.com/vultr/packer-builder-vultr/pull/53) [#52](https://github.com/vultr/packer-builder-vultr/pull/52)
 
 
 ## [v1.0.9](https://github.com/vultr/packer-builder-vultr/compare/v1.0.8..v1.0.9) (2020-06-09)
-### Dependencies 
+### Dependencies
 - hcl/v2 2.5.1 -> 2.6.0 [#48](https://github.com/vultr/packer-builder-vultr/pull/48)
 - GoVultr v0.4.1 -> v0.4.2 [#47](https://github.com/vultr/packer-builder-vultr/pull/47)
 
 ## [v1.0.8](https://github.com/vultr/packer-builder-vultr/compare/v1.0.7..v1.0.8) (2020-05-19)
-### Dependencies 
+### Dependencies
 - hcl/v2 2.5.0 -> 2.5.1 (Fixes panic) [#45](https://github.com/vultr/packer-builder-vultr/pull/45)
 
 ## [v1.0.7](https://github.com/vultr/packer-builder-vultr/compare/v1.0.6..v1.0.7) (2020-05-11)
-### Dependencies 
+### Dependencies
 - GoVultr v0.3.3 -> v0.4.1 [#43](https://github.com/vultr/packer-builder-vultr/pull/43)
 - hcl/v2 2.4.0 -> 2.5.0 [#42](https://github.com/vultr/packer-builder-vultr/pull/42)
 - packer 1.5.5 -> 1.5.6 [#41](https://github.com/vultr/packer-builder-vultr/pull/41)
 
 ## [v1.0.6](https://github.com/vultr/packer-builder-vultr/compare/v1.0.5..v1.0.6) (2020-04-16)
-### Dependencies 
+### Dependencies
 - GoVultr v0.3.2 -> v0.3.3 [#38](https://github.com/vultr/packer-builder-vultr/pull/38)
 - hcl/v2 2.3.0 -> 2.4.0 [#37](https://github.com/vultr/packer-builder-vultr/pull/37)
 
 ## [v1.0.5](https://github.com/vultr/packer-builder-vultr/compare/v1.0.4..v1.0.5) (2020-03-31)
-### Dependencies 
+### Dependencies
 - GoVultr v0.3.0 -> v0.3.2 [#31](https://github.com/vultr/packer-builder-vultr/pull/31) [#34](https://github.com/vultr/packer-builder-vultr/pull/34)
 - go-cty 1.2.1 -> 1.3.1 [#30](https://github.com/vultr/packer-builder-vultr/pull/30)
 - packer 1.5.4 -> 1.5.5 [33](https://github.com/vultr/packer-builder-vultr/pull/33)
@@ -177,14 +203,14 @@ GoVultr was updated to v2.0.0 which is running on API v2.
 ## [v1.0.0](https://github.com/vultr/packer-builder-vultr/compare/v0.2.1..v1.0.0) (2019-08-12)
 ### Enhancements
 - The packer Vultr plugin has been refactored.
-- Unit and Acceptance tests included 
+- Unit and Acceptance tests included
 - New documentation page [here](https://github.com/vultr/packer-builder-vultr/blob/master/website/source/docs/builders/vultr.html.md)
 - Added the following new config options
   - `instance_label`
   - `userdata`
   - `hostname`
   - `tag`
- 
+
 ### Breaking changes
 - `region_code` renamed to `region_id`
 - `region_id` is now an `int`
@@ -195,12 +221,12 @@ GoVultr was updated to v2.0.0 which is running on API v2.
 - `ipv6` renamed to `enable_ipv6`
 - `private_networking` renamed to `enable_private_network`
 - `description` renamed to `snapshot_description`
-- removal of: 
+- removal of:
   - `region_name`
   - `plan_name`
   - `os_name`
   - `snapshot_name`
-  
+
 ## [v0.2.1](https://github.com/vultr/packer-builder-vultr/releases/tag/v0.2.1) (2019-06-30)
 ### Features
 - Initial release
