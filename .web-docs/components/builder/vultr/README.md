@@ -1,16 +1,3 @@
----
-description: >
-    The vultr Packer builder is able to create new images for use with
-    Vultr. The builder takes a source image, runs any provisioning necessary
-    on the image after launching it, then snapshots it into a reusable image. This
-    reusable image can be then used as the foundation of new servers that are
-    launched within Vultr.
-page_title: Vultr - Builders
-nav_title: Vultr
----
-
-# Vultr
-
 Type: `vultr`
 
 The `vultr` Packer builder is able to create new images for use with
