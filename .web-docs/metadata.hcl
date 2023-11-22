@@ -3,7 +3,7 @@
 integration {
   name = "Vultr"
   description = "TODO"
-  identifier = "packer/BrandonRomano/vultr"
+  identifier = "packer/vultr/vultr"
   component {
     type = "builder"
     name = "Vultr"
