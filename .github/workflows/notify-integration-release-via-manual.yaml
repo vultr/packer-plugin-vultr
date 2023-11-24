@@ -1,5 +1,5 @@
 # Manual release workflow is used for deploying documentation updates
-# on the specified branch without making an official plugin release. 
+# on the specified branch without making an official plugin release.
 name: Notify Integration Release (Manual)
 on:
   workflow_dispatch:
@@ -23,14 +23,14 @@ jobs:
       # Ensure that Docs are Compiled
       - uses: actions/setup-go@93397bea11091df50f3d7e59dc26a7711a8bcfbe # v4.1.0
       - shell: bash
-        run: make generate
+        run: make build-docs
       - shell: bash
         run: |
           if [[ -z "$(git status -s)" ]]; then
             echo "OK"
           else
             echo "Docs have been updated, but the compiled docs have not been committed."
-            echo "Run 'make generate', and commit the result to resolve this error."
+            echo "Run 'make build-docs', and commit the result to resolve this error."
             exit 1
           fi
       # Perform the Release
