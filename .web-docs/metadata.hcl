@@ -2,7 +2,7 @@
 # https://github.com/hashicorp/integration-template#metadata-configuration
 integration {
   name = "Vultr"
-  description = "TODO"
+  description = "A plugin for creating Vultr snapshots."
   identifier = "packer/vultr/vultr"
   component {
     type = "builder"
