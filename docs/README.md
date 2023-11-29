@@ -27,4 +27,4 @@ $ packer plugins install github.com/vultr/vultr
 
 #### Builders
 
-- [vultr](/packer/integrations/vultr/latest/components/builder/vultr) - The builder takes a source image, runs any provisioning necessary on the image after launching it, then snapshots it into a reusable image. This reusable image can then be used as the foundation of new servers that are launched within Vultr.
+- [vultr](/packer/integrations/vultr/vultr/latest/components/builder/vultr) - The builder takes a source image, runs any provisioning necessary on the image after launching it, then snapshots it into a reusable image. This reusable image can then be used as the foundation of new servers that are launched within Vultr.
