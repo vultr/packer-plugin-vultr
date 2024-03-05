@@ -7,7 +7,7 @@ require (
 	github.com/hashicorp/packer-plugin-sdk v0.5.1
 	github.com/vultr/govultr/v3 v3.3.1
 	github.com/zclconf/go-cty v1.12.1
-	golang.org/x/crypto v0.11.0
+	golang.org/x/crypto v0.21.0
 	golang.org/x/oauth2 v0.10.0
 )
 
@@ -81,10 +81,10 @@ require (
 	github.com/ugorji/go/codec v1.2.6 // indirect
 	github.com/ulikunitz/xz v0.5.10 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/net v0.12.0 // indirect
-	golang.org/x/sys v0.10.0 // indirect
-	golang.org/x/term v0.10.0 // indirect
-	golang.org/x/text v0.11.0 // indirect
+	golang.org/x/net v0.21.0 // indirect
+	golang.org/x/sys v0.18.0 // indirect
+	golang.org/x/term v0.18.0 // indirect
+	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/time v0.0.0-20210723032227-1f47c861a9ac // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/api v0.126.0 // indirect
