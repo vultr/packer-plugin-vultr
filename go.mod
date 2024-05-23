@@ -8,13 +8,12 @@ require (
 	github.com/vultr/govultr/v3 v3.3.1
 	github.com/zclconf/go-cty v1.12.1
 	golang.org/x/crypto v0.23.0
-	golang.org/x/oauth2 v0.10.0
+	golang.org/x/oauth2 v0.20.0
 )
 
 require (
 	cloud.google.com/go v0.110.2 // indirect
-	cloud.google.com/go/compute v1.20.1 // indirect
-	cloud.google.com/go/compute/metadata v0.2.3 // indirect
+	cloud.google.com/go/compute/metadata v0.3.0 // indirect
 	cloud.google.com/go/iam v0.13.0 // indirect
 	cloud.google.com/go/storage v1.29.0 // indirect
 	github.com/Azure/go-ntlmssp v0.0.0-20200615164410-66371956d46c // indirect
