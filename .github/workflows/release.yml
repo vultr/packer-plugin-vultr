@@ -28,7 +28,7 @@ jobs:
     outputs:
       new_tag: ${{ steps.tagger.outputs.new_tag }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         fetch-depth: '0'
 
@@ -49,7 +49,7 @@ jobs:
       - name: Unshallow
         run: git fetch --prune --unshallow
       - name: Set up Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v5
         with:
           go-version: "1.21"
       - name: Describe plugin
@@ -62,7 +62,7 @@ jobs:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v2
+        uses: goreleaser/goreleaser-action@v5
         with:
           version: latest
           args: release --rm-dist
@@ -70,10 +70,9 @@ jobs:
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           API_VERSION: ${{ steps.plugin_describe.outputs.api_version }}
-      - run: |
-          echo "{\"text\":\"Packer : Release https://github.com/${{ github.repository }}/releases/tag/${{ needs.create-tag.outputs.new_tag }} \"}" > mattermost.json
       - uses: mattermost/action-mattermost-notify@2.0.0
         with:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
           MATTERMOST_USERNAME: ${{ secrets.MATTERMOST_USERNAME}}
           MATTERMOST_ICON: ${{ secrets.MATTERMOST_ICON }}
+          TEXT: "${{ github.repository }} : Release https://github.com/${{ github.repository }}/releases/tag/${{ needs.create-tag.outputs.new_tag }}"
