@@ -1,6 +1,8 @@
 module github.com/vultr/packer-plugin-vultr
 
-go 1.20
+go 1.21
+
+toolchain go1.22.7
 
 require (
 	github.com/hashicorp/hcl/v2 v2.16.2
