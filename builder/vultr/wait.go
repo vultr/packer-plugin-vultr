@@ -9,6 +9,11 @@ import (
 	"github.com/vultr/govultr/v3"
 )
 
+const (
+	sleepDurationSeconds = 3
+	stateTimeoutMinutes  = 10
+)
+
 func waitForISOState(state, isoID string, client *govultr.Client, timeout time.Duration) error { //nolint:dupl
 	done := make(chan struct{})
 	defer close(done)
@@ -30,7 +35,7 @@ func waitForISOState(state, isoID string, client *govultr.Client, timeout time.D
 				return
 			}
 
-			time.Sleep(3 * time.Second)
+			time.Sleep(sleepDurationSeconds * time.Second)
 
 			select {
 			case <-done:
@@ -69,7 +74,7 @@ func waitForServerState(state, power, serverID string, client *govultr.Client, t
 				return
 			}
 
-			time.Sleep(3 * time.Second)
+			time.Sleep(sleepDurationSeconds * time.Second)
 
 			// Verify we shouldn't exit
 			select {
@@ -111,7 +116,7 @@ func waitForSnapshotState(state, snapshotID string, client *govultr.Client, time
 				return
 			}
 
-			time.Sleep(3 * time.Second)
+			time.Sleep(sleepDurationSeconds * time.Second)
 
 			// Verify we shouldn't exit
 			select {

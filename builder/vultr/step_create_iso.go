@@ -20,7 +20,7 @@ func (s *stepCreateISO) Run(ctx context.Context, state multistep.StateBag) multi
 	c := state.Get("config").(*Config)
 	ui := state.Get("ui").(packer.Ui)
 
-	if len(c.ISOURL) > 0 {
+	if c.ISOURL != "" {
 		ui.Say("Creating ISO in Vultr account...")
 
 		isoReq := &govultr.ISOReq{

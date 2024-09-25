@@ -14,6 +14,10 @@ import (
 	"github.com/hashicorp/packer-plugin-sdk/template/interpolate"
 )
 
+const (
+	defaultStateTimeout = 10 * time.Minute
+)
+
 // Config provides the config struct
 type Config struct {
 	common.PackerConfig `mapstructure:",squash"`
@@ -121,7 +125,7 @@ func (c *Config) Prepare(raws ...interface{}) error { //nolint:gocyclo
 	}
 
 	if c.RawStateTimeout == "" {
-		c.stateTimeout = 10 * time.Minute
+		c.stateTimeout = defaultStateTimeout
 	} else {
 		if stateTimeout, err := time.ParseDuration(c.RawStateTimeout); err == nil {
 			c.stateTimeout = stateTimeout

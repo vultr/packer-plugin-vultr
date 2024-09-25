@@ -17,7 +17,7 @@ jobs:
       - name: Install dependencies
         run: |
           go version
-          go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.52.2
+          go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.61.0
 
       - name: Run golangci-lint
         run: |
