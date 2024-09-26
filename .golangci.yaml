@@ -1,12 +1,4 @@
 linters-settings:
-  depguard:
-    list-type: denylist
-    packages:
-      # logging is allowed only by logutils.Log, logrus
-      # is allowed to use only in logutils package
-      - github.com/sirupsen/logrus
-    packages-with-error-message:
-      - github.com/sirupsen/logrus: "logging is allowed only by logutils.Log"
   dupl:
     threshold: 100
   funlen:
@@ -31,7 +23,7 @@ linters-settings:
     min-complexity: 15
   goimports:
     local-prefixes: github.com/golangci/golangci-lint
-  gomnd:
+  mnd:
     # don't include the "operation" and "assign"
     checks:
       - argument
@@ -47,7 +39,9 @@ linters-settings:
       - strings.SplitN
 
   govet:
-    check-shadowing: true
+    enable-all: true
+    disable:
+      - fieldalignment # a lot of manual overhead for reduced readability and adding a linter "gotcha"
     settings:
       printf:
         funcs:
@@ -71,12 +65,10 @@ linters-settings:
 linters:
   disable-all: true
   enable:
-    - bodyclose
-    - depguard
+    - copyloopvar
     - dogsled
     - dupl
     - errcheck
-    - exportloopref
     - funlen
     - gochecknoinits
     - goconst
@@ -84,7 +76,6 @@ linters:
     - gocyclo
     - gofmt
     - goimports
-    - gomnd
     - goprintffuncname
     - gosec
     - gosimple
@@ -92,6 +83,7 @@ linters:
     - ineffassign
     - lll
     - misspell
+    - mnd
     - nakedret
     - noctx
     - nolintlint
@@ -105,6 +97,8 @@ linters:
     - whitespace
 
   # don't enable:
+  # - bodyclose
+  # - depguard
   # - asciicheck
   # - scopelint
   # - gochecknoglobals
@@ -137,6 +131,8 @@ issues:
         - errcheck
         - dupl
         - gosec
-
+        - lll
+        - goconst
+        - dogsled
 run:
   timeout: 5m
