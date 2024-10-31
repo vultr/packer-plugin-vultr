@@ -36,14 +36,15 @@ type Config struct {
 	AppID       int    `mapstructure:"app_id"`
 	ImageID     string `mapstructure:"image_id"`
 
-	EnableIPV6           bool     `mapstructure:"enable_ipv6"`
-	EnablePrivateNetwork bool     `mapstructure:"enable_private_network"`
-	ScriptID             string   `mapstructure:"script_id"`
-	SSHKeyIDs            []string `mapstructure:"ssh_key_ids"`
-	Label                string   `mapstructure:"instance_label"`
-	UserData             string   `mapstructure:"userdata"`
-	Hostname             string   `mapstructure:"hostname"`
-	Tag                  string   `mapstructure:"tag"`
+	EnableIPV6 bool     `mapstructure:"enable_ipv6"`
+	EnableVPC  bool     `mapstructure:"enable_vpc"`
+	EnableVPC2 bool     `mapstructure:"enable_vpc2"`
+	ScriptID   string   `mapstructure:"script_id"`
+	SSHKeyIDs  []string `mapstructure:"ssh_key_ids"`
+	Label      string   `mapstructure:"instance_label"`
+	UserData   string   `mapstructure:"userdata"`
+	Hostname   string   `mapstructure:"hostname"`
+	Tags       []string `mapstructure:"tags"`
 
 	RawStateTimeout string `mapstructure:"state_timeout"`
 

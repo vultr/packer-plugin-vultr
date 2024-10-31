@@ -232,7 +232,7 @@ func TestBuilderPrepare_StateTimeout(t *testing.T) {
 	}
 }
 
-func TestBuilderPrepare_EnablePrivateNetwork(t *testing.T) {
+func TestBuilderPrepare_EnableVPC(t *testing.T) {
 	var b Builder
 	config := testConfig()
 
@@ -245,12 +245,12 @@ func TestBuilderPrepare_EnablePrivateNetwork(t *testing.T) {
 		t.Fatalf("should not have error: %s", err)
 	}
 
-	if b.config.EnablePrivateNetwork != false {
-		t.Errorf("invalid: %t", b.config.EnablePrivateNetwork)
+	if b.config.EnableVPC != false {
+		t.Errorf("invalid: %t", b.config.EnableVPC)
 	}
 
 	// Test set
-	config["enable_private_network"] = true
+	config["enable_vpc"] = true
 	b = Builder{}
 	_, warnings, err = b.Prepare(config)
 	if len(warnings) > 0 {
@@ -260,8 +260,41 @@ func TestBuilderPrepare_EnablePrivateNetwork(t *testing.T) {
 		t.Fatalf("should not have error: %s", err)
 	}
 
-	if b.config.EnablePrivateNetwork != true {
-		t.Errorf("invalid: %t", b.config.EnablePrivateNetwork)
+	if b.config.EnableVPC != true {
+		t.Errorf("invalid: %t", b.config.EnableVPC)
+	}
+}
+
+func TestBuilderPrepare_EnableVPC2(t *testing.T) {
+	var b Builder
+	config := testConfig()
+
+	// Test default
+	_, warnings, err := b.Prepare(config)
+	if len(warnings) > 0 {
+		t.Fatalf("bad: %#v", warnings)
+	}
+	if err != nil {
+		t.Fatalf("should not have error: %s", err)
+	}
+
+	if b.config.EnableVPC2 != false {
+		t.Errorf("invalid: %t", b.config.EnableVPC2)
+	}
+
+	// Test set
+	config["enable_vpc2"] = true
+	b = Builder{}
+	_, warnings, err = b.Prepare(config)
+	if len(warnings) > 0 {
+		t.Fatalf("bad: %#v", warnings)
+	}
+	if err != nil {
+		t.Fatalf("should not have error: %s", err)
+	}
+
+	if b.config.EnableVPC2 != true {
+		t.Errorf("invalid: %t", b.config.EnableVPC2)
 	}
 }
 
