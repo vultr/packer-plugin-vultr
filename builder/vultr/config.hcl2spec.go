@@ -78,13 +78,14 @@ type FlatConfig struct {
 	AppID                     *int              `mapstructure:"app_id" cty:"app_id" hcl:"app_id"`
 	ImageID                   *string           `mapstructure:"image_id" cty:"image_id" hcl:"image_id"`
 	EnableIPV6                *bool             `mapstructure:"enable_ipv6" cty:"enable_ipv6" hcl:"enable_ipv6"`
-	EnablePrivateNetwork      *bool             `mapstructure:"enable_private_network" cty:"enable_private_network" hcl:"enable_private_network"`
+	EnableVPC                 *bool             `mapstructure:"enable_vpc" cty:"enable_vpc" hcl:"enable_vpc"`
+	EnableVPC2                *bool             `mapstructure:"enable_vpc2" cty:"enable_vpc2" hcl:"enable_vpc2"`
 	ScriptID                  *string           `mapstructure:"script_id" cty:"script_id" hcl:"script_id"`
 	SSHKeyIDs                 []string          `mapstructure:"ssh_key_ids" cty:"ssh_key_ids" hcl:"ssh_key_ids"`
 	Label                     *string           `mapstructure:"instance_label" cty:"instance_label" hcl:"instance_label"`
 	UserData                  *string           `mapstructure:"userdata" cty:"userdata" hcl:"userdata"`
 	Hostname                  *string           `mapstructure:"hostname" cty:"hostname" hcl:"hostname"`
-	Tag                       *string           `mapstructure:"tag" cty:"tag" hcl:"tag"`
+	Tags                      []string          `mapstructure:"tags" cty:"tags" hcl:"tags"`
 	RawStateTimeout           *string           `mapstructure:"state_timeout" cty:"state_timeout" hcl:"state_timeout"`
 }
 
@@ -168,13 +169,14 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"app_id":                       &hcldec.AttrSpec{Name: "app_id", Type: cty.Number, Required: false},
 		"image_id":                     &hcldec.AttrSpec{Name: "image_id", Type: cty.String, Required: false},
 		"enable_ipv6":                  &hcldec.AttrSpec{Name: "enable_ipv6", Type: cty.Bool, Required: false},
-		"enable_private_network":       &hcldec.AttrSpec{Name: "enable_private_network", Type: cty.Bool, Required: false},
+		"enable_vpc":                   &hcldec.AttrSpec{Name: "enable_vpc", Type: cty.Bool, Required: false},
+		"enable_vpc2":                  &hcldec.AttrSpec{Name: "enable_vpc2", Type: cty.Bool, Required: false},
 		"script_id":                    &hcldec.AttrSpec{Name: "script_id", Type: cty.String, Required: false},
 		"ssh_key_ids":                  &hcldec.AttrSpec{Name: "ssh_key_ids", Type: cty.List(cty.String), Required: false},
 		"instance_label":               &hcldec.AttrSpec{Name: "instance_label", Type: cty.String, Required: false},
 		"userdata":                     &hcldec.AttrSpec{Name: "userdata", Type: cty.String, Required: false},
 		"hostname":                     &hcldec.AttrSpec{Name: "hostname", Type: cty.String, Required: false},
-		"tag":                          &hcldec.AttrSpec{Name: "tag", Type: cty.String, Required: false},
+		"tags":                         &hcldec.AttrSpec{Name: "tags", Type: cty.List(cty.String), Required: false},
 		"state_timeout":                &hcldec.AttrSpec{Name: "state_timeout", Type: cty.String, Required: false},
 	}
 	return s
