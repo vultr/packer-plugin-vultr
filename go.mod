@@ -5,7 +5,7 @@ go 1.23
 require (
 	github.com/hashicorp/hcl/v2 v2.16.2
 	github.com/hashicorp/packer-plugin-sdk v0.5.1
-	github.com/vultr/govultr/v3 v3.11.2
+	github.com/vultr/govultr/v3 v3.12.0
 	github.com/zclconf/go-cty v1.13.3
 	golang.org/x/crypto v0.28.0
 	golang.org/x/oauth2 v0.23.0
