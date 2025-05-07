@@ -8,7 +8,7 @@ require (
 	github.com/vultr/govultr/v3 v3.11.2
 	github.com/zclconf/go-cty v1.13.3
 	golang.org/x/crypto v0.28.0
-	golang.org/x/oauth2 v0.23.0
+	golang.org/x/oauth2 v0.26.0
 )
 
 require (
