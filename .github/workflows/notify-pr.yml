@@ -4,13 +4,8 @@ on: pull_request_target
 
 jobs:
   pr:
-    runs-on: ubuntu-latest
-    name: Pull Request Notification
-    steps:
-      - name: Send Notification to Mattermost
-        uses: mattermost/action-mattermost-notify@2.0.0
-        with:
-          MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
-          MATTERMOST_USERNAME: ${{ secrets.MATTERMOST_USERNAME }}
-          MATTERMOST_ICON_URL: ${{ secrets.MATTERMOST_ICON }}
-          TEXT: "${{ github.repository }} : PR https://github.com/${{ github.repository }}/pull/${{ github.event.number }}"
+    uses: vultr/shared-actions/.github/workflows/notify-pr.yml@main
+    secrets: inherit
+    with:
+      repository: ${{ github.repository }}
+      pr_number: ${{ github.event.number }}
