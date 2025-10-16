@@ -1,5 +1,4 @@
-# This is an example goreleaser.yaml file with some sane defaults.
-# Make sure to check the documentation at http://goreleaser.com
+version: 2
 env:
   - CGO_ENABLED=0
 before:
@@ -34,7 +33,7 @@ builds:
       - '-s -w -X {{ .ModulePath }}/version.Version={{.Version}} -X {{ .ModulePath }}/version.VersionPrerelease= '      
     goos:
       - freebsd
-      - openbsd 
+      - openbsd
       - windows
       - linux
       - darwin
@@ -50,18 +49,15 @@ builds:
         goarch: amd64
     binary: '{{ .ProjectName }}_v{{ .Version }}_{{ .Env.API_VERSION }}_{{ .Os }}_{{ .Arch }}'
 archives:
-  - format: zip
+  - formats: zip
     files:
       - none*
-    name_template: '{{ .ProjectName }}_v{{ .Version }}_{{ .Env.API_VERSION }}_{{ .Os }}_{{ .Arch }}'
 checksum:
   name_template: '{{ .ProjectName }}_v{{ .Version }}_SHA256SUMS'
   algorithm: sha256
 signs:
   - artifacts: checksum
     args:
-      # if you are using this is in a GitHub action or some other automated pipeline, you
-      # need to pass the batch flag to indicate its not interactive.
       - "--batch"
       - "--local-user"
       - "{{ .Env.GPG_FINGERPRINT }}"
@@ -69,11 +65,11 @@ signs:
       - "${signature}"
       - "--detach-sign"
       - "${artifact}"
-
 release:
   draft: true
   extra_files:
     - glob: ./docs.zip
-
 changelog:
-  skip: true
+  filters:
+    exclude:
+      - '*'
