@@ -88,7 +88,7 @@ func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) mult
 
 	// If we're in debug mode, output the private key to the working directory.
 	if s.Debug {
-		ui.Message(fmt.Sprintf("saving key for debug purposes: %s", s.DebugKeyPath))
+		ui.Say(fmt.Sprintf("saving key for debug purposes: %s", s.DebugKeyPath))
 		f, err := os.Create(s.DebugKeyPath)
 		if err != nil {
 			state.Put("error", fmt.Errorf("error saving debug key: %s", err))
