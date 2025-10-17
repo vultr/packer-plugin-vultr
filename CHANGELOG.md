@@ -1,5 +1,25 @@
 # Change Log
-## [v2.5.0](https://github.com/vultr/packer-plugin-vultr/compare/v2.4.5...v2.5.0) (2023-04-06)
+## [v2.6.0](https://github.com/vultr/packer-plugin-vultr/compare/v2.5.0...v2.6.0) (2025-10-17)
+### Dependencies
+- Bump github.com/ulikunitz/xz from 0.5.12 to 0.5.14 [PR 355](https://github.com/vultr/packer-plugin-vultr/pull/226)
+- Bump golang.org/x/oauth2 from 0.23.0 to 0.32.0 [PR 360](https://github.com/vultr/packer-plugin-vultr/pull/228)
+- Bump golang.org/x/crypto from 0.28.0 to 0.43.0 [PR 362](https://github.com/vultr/packer-plugin-vultr/pull/362/)
+- Bump github.com/go-jose/go-jose/v4 from 4.0.4 to 4.0.5 [PR 349](https://github.com/vultr/packer-plugin-vultr/pull/349)
+- Bump github.com/vultr/govultr/v3 from 3.11.2 to 3.24.0 [PR 359](https://github.com/vultr/packer-plugin-vultr/pull/359)
+- Update core packer dependencies (hcl/v2, packer-plugin-sdk, go-cty) [PR 366](https://github.com/vultr/packer-plugin-vultr/pull/366)
+
+### Automation
+- Update goreleaser.yml to v2 [PR 365](https://github.com/vultr/packer-plugin-vultr/pull/365)
+- Migrate golangci-lint configuration to v2 [PR 353](https://github.com/vultr/packer-plugin-vultr/pull/353)
+- Update workflows to use GITHUB_OUTPUT [PR 338](https://github.com/vultr/packer-plugin-vultr/pull/338)
+
+### Documentation
+- Update Vultr Packer documentation to reflect tags attribute [PR 363](https://github.com/vultr/packer-plugin-vultr/pull/363) 
+
+### New Contributors
+- @pawalt made their first contribution in [PR 363](https://github.com/vultr/packer-plugin-vultr/pull/363)
+
+## [v2.5.0](https://github.com/vultr/packer-plugin-vultr/compare/v2.45.0...v2.5.0) (2023-04-06)
 ### Enhancements
 - Add support for uploading an ISO for building [PR 208](https://github.com/vultr/packer-plugin-vultr/pull/208)
 
