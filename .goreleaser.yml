@@ -75,4 +75,4 @@ release:
 changelog:
   filters:
     exclude:
-      - '*'
+      - '.*'
