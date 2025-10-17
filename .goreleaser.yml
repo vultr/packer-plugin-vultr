@@ -47,9 +47,12 @@ builds:
         goarch: '386'
       - goos: linux
         goarch: amd64
+      - goos: windows
+        goarch: arm
     binary: '{{ .ProjectName }}_v{{ .Version }}_{{ .Env.API_VERSION }}_{{ .Os }}_{{ .Arch }}'
 archives:
-  - formats: zip
+  - 
+    formats: ["zip"]
     files:
       - none*
 checksum:
