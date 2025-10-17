@@ -1,7 +1,14 @@
 # Change Log
+## [v2.6.2](https://github.com/vultr/packer-plugin-vultr/compare/v2.6.1...v2.6.2) (2025-10-17)
+### Dependencies
+- Bump github.com/ulikunitz/xz from 0.5.12 to 0.5.14 [PR 370](https://github.com/vultr/packer-plugin-vultr/pull/370)
+
+### Automation
+- Fix goreleaser regex [PR 371](https://github.com/vultr/packer-plugin-vultr/pull/371)
+
 ## [v2.6.1](https://github.com/vultr/packer-plugin-vultr/compare/v2.6.0...v2.6.1) (2025-10-17)
 ### Automation
-* Update goreleaser config and action [PR 368](https://github.com/vultr/packer-plugin-vultr/pull/368)
+- Update goreleaser config and action [PR 368](https://github.com/vultr/packer-plugin-vultr/pull/368)
 
 ## [v2.6.0](https://github.com/vultr/packer-plugin-vultr/compare/v2.5.0...v2.6.0) (2025-10-17)
 ### Dependencies
