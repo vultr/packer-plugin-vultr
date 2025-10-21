@@ -28,13 +28,13 @@ jobs:
     outputs:
       new_tag: ${{ steps.tagger.outputs.new_tag }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         fetch-depth: '0'
 
     - name: Bump version and push tag
       id: tagger
-      uses: anothrNick/github-tag-action@1.71.0
+      uses: anothrNick/github-tag-action@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WITH_V: true
@@ -71,10 +71,10 @@ jobs:
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           API_VERSION: ${{ steps.plugin_describe.outputs.api_version }}
-      - run: |
-          echo "{\"text\":\"Packer : Release https://github.com/${{ github.repository }}/releases/tag/${{ needs.create-tag.outputs.new_tag }} \"}" > mattermost.json
-      - uses: mattermost/action-mattermost-notify@2.0.0
+      - name: Release notification
+        uses: mattermost/action-mattermost-notify@2.0.0
         with:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
-          MATTERMOST_USERNAME: ${{ secrets.MATTERMOST_USERNAME}}
-          MATTERMOST_ICON: ${{ secrets.MATTERMOST_ICON }}
+          MATTERMOST_USERNAME: ${{ secrets.MATTERMOST_USERNAME }}
+          MATTERMOST_ICON_URL: ${{ secrets.MATTERMOST_ICON }}
+          TEXT: "${{ github.repository }} : Release https://github.com/${{ github.repository }}/releases/tag/${{ needs.create-tag.outputs.new_tag }}"

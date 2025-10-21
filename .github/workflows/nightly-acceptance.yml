@@ -8,8 +8,8 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
         with:
           go-version: '^1.25'
       - run: make test
@@ -18,14 +18,13 @@ jobs:
           VULTR_API_KEY: ${{ secrets.VULTR_API_KEY }}
 
   notify:
-    name: MatterMost Notifcation
+    name: Mattermost Notification
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - run: |
-          echo "{\"text\":\"Packer Nightly Acceptance Job Status: ${{ needs.build.result }} \"}" > mattermost.json
-      - uses: mattermost/action-mattermost-notify@master
-        env:
+      - uses: mattermost/action-mattermost-notify@2.0.0
+        with:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
-          MATTERMOST_USERNAME: ${{ secrets.MATTERMOST_USERNAME}}
-          MATTERMOST_ICON: ${{ secrets.MATTERMOST_ICON }}
+          MATTERMOST_USERNAME: ${{ secrets.MATTERMOST_USERNAME }}
+          MATTERMOST_ICON_URL: ${{ secrets.MATTERMOST_ICON }}
+          TEXT: "Packer Nightly Acceptance Job Status: ${{ needs.build.result }}"
