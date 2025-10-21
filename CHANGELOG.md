@@ -1,4 +1,8 @@
 # Change Log
+## [v2.6.3](https://github.com/vultr/packer-plugin-vultr/compare/v2.6.2...v2.6.3) (2025-10-21)
+### Dependencies
+- Bump github.com/ulikunitz/xz from 0.5.14 to 0.5.15 [PR 373](https://github.com/vultr/packer-plugin-vultr/pull/373)
+
 ## [v2.6.2](https://github.com/vultr/packer-plugin-vultr/compare/v2.6.1...v2.6.2) (2025-10-17)
 ### Dependencies
 - Bump github.com/ulikunitz/xz from 0.5.12 to 0.5.14 [PR 370](https://github.com/vultr/packer-plugin-vultr/pull/370)
