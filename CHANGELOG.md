@@ -1,4 +1,8 @@
 # Change Log
+## [v2.6.4](https://github.com/vultr/packer-plugin-vultr/compare/v2.6.3...v2.6.4) (2025-10-21)
+### Automation
+- Fix mattermost releaser notification and update action [PR 375](https://github.com/vultr/packer-plugin-vultr/pull/375)
+
 ## [v2.6.3](https://github.com/vultr/packer-plugin-vultr/compare/v2.6.2...v2.6.3) (2025-10-21)
 ### Dependencies
 - Bump github.com/ulikunitz/xz from 0.5.14 to 0.5.15 [PR 373](https://github.com/vultr/packer-plugin-vultr/pull/373)
