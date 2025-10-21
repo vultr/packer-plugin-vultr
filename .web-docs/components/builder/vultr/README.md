@@ -1,16 +1,3 @@
----
-description: >
-    The vultr Packer builder is able to create new images for use with
-    Vultr. The builder takes a source image, runs any provisioning necessary
-    on the image after launching it, then snapshots it into a reusable image. This
-    reusable image can be then used as the foundation of new servers that are
-    launched within Vultr.
-page_title: Vultr - Builders
-nav_title: Vultr
----
-
-# Vultr
-
 Type: `vultr`
 
 The `vultr` Packer builder is able to create new images for use with
@@ -64,7 +51,7 @@ to use it or delete it.
 
 -   `hostname` (string) - Hostname to assign to this server.
 
--   `tags` (array of string) - The tags to assign to this server.
+-   `tag` (string) - The tag to assign to this server.
 
 -   `state_timeout` (string) - A duration to wait for the instance to boot, or a snapshot to be taken. Must be a string in [golang Duration-parsable format](https://golang.org/pkg/time/#ParseDuration), like "10m" or "30s". Defaults to `10m`
 

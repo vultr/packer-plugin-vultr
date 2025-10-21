@@ -9,7 +9,7 @@ To install this plugin, copy and paste this code into your Packer configuration,
 packer {
   required_plugins {
     vultr = {
-      version = ">= 2.6.3"
+      version = ">= 2.5.0"
       source  = "github.com/vultr/vultr"
     }
   }
