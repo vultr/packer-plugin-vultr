@@ -1,4 +1,21 @@
 # Change Log
+## [v2.7.0](https://github.com/vultr/packer-plugin-vultr/compare/v2.6.4...v2.7.0) (2026-04-30)
+### Dependencies
+- Bump github.com/vultr/govultr/v3 from 3.24.0 to 3.31.1 [PR 391](https://github.com/vultr/packer-plugin-vultr/pull/391)
+- Bump github.com/go-jose/go-jose/v4 from 4.1.3 to 4.1.4 [PR 396](https://github.com/vultr/packer-plugin-vultr/pull/396)
+- Bump github.com/Azure/go-ntlmssp [PR 390](https://github.com/vultr/packer-plugin-vultr/pull/390)
+- Bump golang.org/x/oauth2 from 0.34.0 to 0.36.0 [PR 393](https://github.com/vultr/packer-plugin-vultr/pull/393)
+- Bump go.opentelemetry.io/otel from 1.39.0 to 1.41.0 [PR 397](https://github.com/vultr/packer-plugin-vultr/pull/397)
+- Bump golang.org/x/crypto from 0.46.0 to 0.50.0 [PR 394](https://github.com/vultr/packer-plugin-vultr/pull/394)
+- Bump google.golang.org/grpc from 1.67.0 to 1.79.3 [PR 395](https://github.com/vultr/packer-plugin-vultr/pull/395)
+- Bump github.com/hashicorp/packer-plugin-sdk from 0.6.4 to 0.6.7 [PR 392](https://github.com/vultr/packer-plugin-vultr/pull/392)
+
+### Automation
+- Fix GoReleaser archive naming for Packer plugin assets [PR 389](https://github.com/vultr/packer-plugin-vultr/pull/389)
+
+### New Contributors
+- @MatricalDefunkt made their first contribution in [PR 389](https://github.com/vultr/packer-plugin-vultr/pull/389)
+
 ## [v2.6.4](https://github.com/vultr/packer-plugin-vultr/compare/v2.6.3...v2.6.4) (2025-10-21)
 ### Automation
 - Fix mattermost releaser notification and update action [PR 375](https://github.com/vultr/packer-plugin-vultr/pull/375)
