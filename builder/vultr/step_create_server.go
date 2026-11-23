@@ -46,7 +46,6 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		ImageID:         c.ImageID,
 		EnableIPv6:      govultr.BoolToBoolPtr(c.EnableIPV6),
 		EnableVPC:       govultr.BoolToBoolPtr(c.EnableVPC),
-		EnableVPC2:      govultr.BoolToBoolPtr(c.EnableVPC2),
 		Label:           c.Label,
 		SSHKeys:         sshKeys,
 		UserData:        c.UserData,

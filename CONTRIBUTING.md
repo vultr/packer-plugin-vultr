@@ -1,38 +1,38 @@
-# Contributing to `packer-builder-vultr`
+# Contributing to `packer-plugin-vultr`
 
-We would love to get your feedback, thoughts, and overall improvements to `packer-builder-vultr`! 
-
-## Overview
-
-- All Code should run through `go fmt`
+Feedback, bug reports, and pull requests are welcome.
 
 ## Getting started
 
-Packer-builder-vultr supports `go modules` so you can pull down the repo outside of your `$GOPATH`.
+Clone this repository and install the Go version specified in `go.mod` (or newer).
 
-You can also run:
-`go get -u github.com/vultr/packer-builder-vultr`
+```sh
+make build
+make test
+make lint
+```
 
-## Versioning 
+Format Go changes with `gofmt`. After changing the configuration schema, run
+`make install-packer-sdc` and `PATH="$(go env GOPATH)/bin:$PATH" go generate ./...`.
+Run `make plugin-check` to check Packer plugin compatibility. To install a local
+build, install Packer and run `make install`.
 
-Packer-builder-vultr follows [SemVer](http://semver.org/) for versioning. New functionality will result in a increment to the minor version. While, 
-bug fixes will result in a increment to the patch version. 
+Acceptance tests require `PACKER_ACC=1` and `VULTR_API_KEY` and create billable
+Vultr resources.
+
+## Versioning
+
+This project follows [SemVer](https://semver.org/): breaking changes increment
+the major version, features the minor version, and fixes the patch version.
 
 ## Releases
-Releases of new versions are done as their independent pull requests - They will also be done by the maintainers.
 
-To release a new version of `packer-builder-vultr` we must do the following.
+Maintainers prepare release changes in a pull request:
 
-- Make the appropriate updates to `CHANGELOG.md`. This should include the 
-    - Version, 
-    - List of fix/features with accompanying pull request ID
-    - Description of each fix/feature
-    
-```
-## v0.0.1 (2019-06-12)
-
-### Fixes
-* Fixed random bug #12
-```
-- Submit a pull request with the following changes
-- Once the pull request is merged in - create a new tag and publish.
+1. Update `Version` in `main.go`, `CHANGELOG.md`, and the documented plugin version.
+2. Run tests, lint, plugin checks, and a GoReleaser snapshot build.
+3. After the changes pass review and CI, push a release commit to `master` with
+   the exact subject `Release vX.Y.Z #major`, `#minor`, or `#patch` as appropriate.
+4. The release workflow creates that exact tag, builds the platform archives and
+   documentation, signs the checksums, and creates a draft GitHub release.
+5. Verify the artifacts and version metadata, add release notes, and publish the draft.

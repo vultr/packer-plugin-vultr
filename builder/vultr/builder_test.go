@@ -2,6 +2,7 @@ package vultr
 
 import (
 	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/hashicorp/packer-plugin-sdk/packer"
@@ -289,12 +290,8 @@ func TestBuilderPrepare_EnableVPC2(t *testing.T) {
 	if len(warnings) > 0 {
 		t.Fatalf("bad: %#v", warnings)
 	}
-	if err != nil {
-		t.Fatalf("should not have error: %s", err)
-	}
-
-	if b.config.EnableVPC2 != true {
-		t.Errorf("invalid: %t", b.config.EnableVPC2)
+	if err == nil || !strings.Contains(err.Error(), "enable_vpc2 is no longer supported") {
+		t.Fatalf("expected VPC 2.0 migration error, got: %v", err)
 	}
 }
 

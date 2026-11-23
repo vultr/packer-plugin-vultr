@@ -1,6 +1,6 @@
 BINARY = packer-plugin-vultr
-PLUGIN_DIR = ~/.packer.d/plugins
 GOBIN = $(shell go env GOPATH)/bin
+GOLANGCI_LINT_VERSION = v2.15.0
 HASHICORP_PACKER_PLUGIN_SDK_VERSION?=$(shell go list -m github.com/hashicorp/packer-plugin-sdk | cut -d " " -f2)
 
 .PHONY: default
@@ -11,35 +11,31 @@ build:
 	go install
 
 .PHONY: install
-install: build
-	mkdir -p $(PLUGIN_DIR)
-	cp -f $(GOBIN)/$(BINARY) $(PLUGIN_DIR)/$(BINARY)
+install: build-binary
+	packer plugins install --path ./$(BINARY) github.com/vultr/vultr
 
 .PHONY: test
 test:
-	go test -v . ./builder/vultr -timeout 60m
+	go test -v ./... -timeout 60m
 
 .PHONY: lint
 lint:
-	golint . ./builder/vultr
-	golangci-lint run --skip-dirs=test,vendor --fast ./...
+	go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@$(GOLANGCI_LINT_VERSION) run ./...
 
 .PHONY: clean
 clean:
-	rm -rf dist $(BINARY)
+	rm -rf dist $(BINARY) docs.zip
 
+.PHONY: build-binary
 build-binary:
-	go install
 	@go build -o ${BINARY}
-	mkdir -p $(PLUGIN_DIR)
-	cp -f $(GOBIN)/$(BINARY) $(PLUGIN_DIR)/$(BINARY)
 
 install-packer-sdc: ## Install packer sofware development command
 	@go install github.com/hashicorp/packer-plugin-sdk/cmd/packer-sdc@${HASHICORP_PACKER_PLUGIN_SDK_VERSION}
 
 ci-release-docs: install-packer-sdc
-	@packer-sdc renderdocs -src docs -partials docs-partials/ -dst docs/
+	@$(GOBIN)/packer-sdc renderdocs -src docs -partials docs-partials/ -dst docs/
 	@/bin/sh -c "[ -d docs ] && zip -r docs.zip docs/"
 
 plugin-check: install-packer-sdc build-binary
-	@packer-sdc plugin-check ${BINARY}
+	@$(GOBIN)/packer-sdc plugin-check ${BINARY}

@@ -104,6 +104,10 @@ func (c *Config) Prepare(raws ...interface{}) error { //nolint:gocyclo
 		errs = packer.MultiErrorAppend(errs, errors.New("plan_id is required"))
 	}
 
+	if c.EnableVPC2 {
+		errs = packer.MultiErrorAppend(errs, errors.New("enable_vpc2 is no longer supported; use enable_vpc instead"))
+	}
+
 	imageConfig := []bool{(c.AppID != 0), (c.ISOID != ""), (c.ISOURL != ""), (c.OSID != 0), (c.SnapshotID != "")}
 	imageDefined := false
 	for _, isDefined := range imageConfig {

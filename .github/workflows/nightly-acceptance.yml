@@ -8,10 +8,10 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-go@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
         with:
-          go-version: '^1.25'
+          go-version-file: go.mod
       - run: make test
         env:
           PACKER_ACC: ${{ secrets.PACKER_ACC }}
@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - uses: mattermost/action-mattermost-notify@2.0.0
+      - uses: mattermost/action-mattermost-notify@v2.1.0
         with:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
           MATTERMOST_USERNAME: ${{ secrets.MATTERMOST_USERNAME }}

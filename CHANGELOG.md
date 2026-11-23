@@ -1,4 +1,18 @@
 # Change Log
+## [v3.0.0](https://github.com/vultr/packer-plugin-vultr/compare/v2.7.0...v3.0.0) (2026-11-23)
+
+### Breaking changes
+- VPC 2.0 support was removed upstream. `enable_vpc2 = true` now fails validation with migration guidance; use `enable_vpc` instead.
+- DSA SSH keys are no longer supported by the Packer SDK. Use Ed25519, ECDSA, or RSA keys.
+- Building from source requires Go 1.27.4 or newer.
+
+### Updates
+- Update Packer plugin SDK to v0.6.14, GoVultr to v3.34.0, HCL to v2.25.0, and refresh transitive dependencies.
+- Regenerate the HCL schema to expose the SDK's WinRM retry interval and connection timeout options.
+- Update GitHub Actions, GoReleaser, and golangci-lint; use the Go version in go.mod throughout CI.
+- Fix release version injection and deterministic release tagging.
+- Modernize local plugin installation, lint commands, and installation documentation.
+
 ## [v2.7.0](https://github.com/vultr/packer-plugin-vultr/compare/v2.6.4...v2.7.0) (2026-04-30)
 ### Dependencies
 - Bump github.com/vultr/govultr/v3 from 3.24.0 to 3.31.1 [PR 391](https://github.com/vultr/packer-plugin-vultr/pull/391)
