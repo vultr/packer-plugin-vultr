@@ -11,6 +11,8 @@
 *.out
 
 /packer-builder-vultr
+/packer-plugin-vultr
+/docs.zip
 /dist/
 .*.swp
 .idea
